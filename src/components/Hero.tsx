@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { ArrowDown, Github, Heart } from 'lucide-react';
 
@@ -33,18 +32,18 @@ export function Hero() {
           </p>
           
           <div className="mt-10 flex items-center justify-center gap-x-6">
-            <Button size="lg" asChild className="bg-gradient-to-r from-slate-700 to-gray-700 hover:from-slate-600 hover:to-gray-600 text-white">
+            <Button size="lg" asChild>
               <a href="/projects">
                 View My Projects
               </a>
             </Button>
-            <Button variant="outline" size="lg" asChild className="border-gradient">
+            <Button variant="outline" size="lg" asChild>
               <a href="https://github.com/hi-manshu" target="_blank" rel="noopener noreferrer">
                 <Github className="mr-2 h-4 w-4" />
                 GitHub
               </a>
             </Button>
-            <Button variant="outline" size="lg" asChild className="border-gradient bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-950/20 dark:to-pink-950/20 hover:from-red-100 hover:to-pink-100 dark:hover:from-red-900/30 dark:hover:to-pink-900/30">
+            <Button variant="outline" size="lg" asChild>
               <a href="https://github.com/sponsors/hi-manshu" target="_blank" rel="noopener noreferrer">
                 <Heart className="mr-2 h-4 w-4 text-red-500" />
                 Sponsor
