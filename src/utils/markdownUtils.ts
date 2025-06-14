@@ -39,12 +39,23 @@ export function parseFrontmatter(content: string): { frontmatter: any; body: str
         value = value.slice(1, -1);
       }
       
-      // Handle arrays (tags)
+      // Handle arrays (tags) - support both formats: [tag1, tag2] and ["tag1", "tag2"]
       if (value.startsWith('[') && value.endsWith(']')) {
-        const arrayValue = value.slice(1, -1).split(',').map(item => 
-          item.trim().replace(/"/g, '').replace(/'/g, '')
-        );
-        frontmatter[key] = arrayValue;
+        const arrayContent = value.slice(1, -1);
+        if (arrayContent.trim()) {
+          const arrayValue = arrayContent.split(',').map(item => {
+            let cleanItem = item.trim();
+            // Remove quotes if present
+            if ((cleanItem.startsWith('"') && cleanItem.endsWith('"')) || 
+                (cleanItem.startsWith("'") && cleanItem.endsWith("'"))) {
+              cleanItem = cleanItem.slice(1, -1);
+            }
+            return cleanItem;
+          });
+          frontmatter[key] = arrayValue;
+        } else {
+          frontmatter[key] = [];
+        }
       } else {
         frontmatter[key] = value;
       }
@@ -102,25 +113,35 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
     const blogModules = import.meta.glob('/src/content/blogs/*.md', { as: 'raw' });
     const posts: BlogPost[] = [];
     
+    console.log('Loading blog posts from:', Object.keys(blogModules));
+    
     for (const path in blogModules) {
       const content = await blogModules[path]();
       const filename = path.split('/').pop()?.replace('.md', '') || '';
       
+      console.log('Processing file:', filename);
+      console.log('Content preview:', content.substring(0, 200));
+      
       const { frontmatter, body } = parseFrontmatter(content);
+      
+      console.log('Parsed frontmatter:', frontmatter);
       
       // Create slug from filename if not provided in frontmatter
       const slug = frontmatter.slug || filename;
       
-      posts.push({
+      const post: BlogPost = {
         title: frontmatter.title || 'Untitled',
-        description: frontmatter.description || '',
-        date: frontmatter.date || new Date().toISOString().split('T')[0],
-        readTime: frontmatter.readTime || '5 min read',
-        tags: frontmatter.tags || [],
+        description: frontmatter.description || frontmatter.excerpt || '',
+        date: frontmatter.date || frontmatter.publishedAt || new Date().toISOString().split('T')[0],
+        readTime: frontmatter.readTime || frontmatter.readingTime || '5 min read',
+        tags: frontmatter.tags || frontmatter.categories || [],
         author: frontmatter.author || 'Himanshu Singh',
         slug,
         content: markdownToHtml(body)
-      });
+      };
+      
+      console.log('Created post:', post.title);
+      posts.push(post);
     }
     
     // Sort posts by date (newest first)
