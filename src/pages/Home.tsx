@@ -4,9 +4,10 @@ import { ProjectCard } from '@/components/ProjectCard';
 import { BlogCard } from '@/components/BlogCard';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
+import { getAllBlogPosts } from '@/utils/markdownUtils';
 
 export default function Home() {
-  // Mock data - in real implementation, this would come from your GitHub API and blog posts
+  // Mock data - in real implementation, this would come from your GitHub API
   const featuredProjects = [
     {
       title: "Charty",
@@ -34,32 +35,9 @@ export default function Home() {
     }
   ];
 
-  const recentBlogPosts = [
-    {
-      title: "Building Modern Android Apps with Jetpack Compose",
-      description: "Learn how to create beautiful, reactive UIs using Jetpack Compose and modern Android development practices.",
-      date: "2024-01-15",
-      readTime: "8 min read",
-      tags: ["Android", "Jetpack Compose", "UI"],
-      slug: "modern-android-jetpack-compose"
-    },
-    {
-      title: "Creating Custom Charts in Android",
-      description: "A deep dive into building custom chart components for Android applications with performance optimization.",
-      date: "2024-01-10",
-      readTime: "12 min read",
-      tags: ["Android", "Custom Views", "Charts"],
-      slug: "custom-charts-android"
-    },
-    {
-      title: "Open Source Contribution Guide",
-      description: "Everything you need to know about contributing to open source projects and building a strong developer profile.",
-      date: "2024-01-05",
-      readTime: "6 min read",
-      tags: ["Open Source", "Career", "Development"],
-      slug: "open-source-contribution-guide"
-    }
-  ];
+  // Get recent blog posts from markdown files
+  const allBlogPosts = getAllBlogPosts();
+  const recentBlogPosts = allBlogPosts.slice(0, 3);
 
   return (
     <div className="flex flex-col min-h-screen">

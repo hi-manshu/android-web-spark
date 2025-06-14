@@ -3,42 +3,27 @@ import { useParams } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
+import { getBlogPostBySlug } from '@/utils/markdownUtils';
 
 export default function BlogPost() {
   const { slug } = useParams();
+  const post = slug ? getBlogPostBySlug(slug) : null;
 
-  // Mock blog post data - in real implementation, this would load markdown content
-  const post = {
-    title: "Building Modern Android Apps with Jetpack Compose",
-    content: `
-      <p>Jetpack Compose is Android's modern toolkit for building native UI. It simplifies and accelerates UI development on Android with less code, powerful tools, and intuitive Kotlin APIs.</p>
-      
-      <h2>Getting Started with Compose</h2>
-      <p>To get started with Jetpack Compose, you'll need to set up your development environment and create a new project with Compose support.</p>
-      
-      <h3>Setting up the Environment</h3>
-      <p>Make sure you have the latest version of Android Studio and create a new project with Compose Activity template.</p>
-      
-      <h2>Core Concepts</h2>
-      <p>Understanding the core concepts of Compose is essential for building effective UIs:</p>
-      <ul>
-        <li>Composable functions</li>
-        <li>State management</li>
-        <li>Recomposition</li>
-        <li>Side effects</li>
-      </ul>
-      
-      <h2>Building Your First Compose UI</h2>
-      <p>Let's start by building a simple UI component that demonstrates the power of Compose.</p>
-      
-      <h2>Conclusion</h2>
-      <p>Jetpack Compose represents the future of Android UI development. Its declarative approach makes building complex UIs much more intuitive and maintainable.</p>
-    `,
-    date: "2024-01-15",
-    readTime: "8 min read",
-    tags: ["Android", "Jetpack Compose", "UI"],
-    author: "Himanshu Singh"
-  };
+  if (!post) {
+    return (
+      <div className="container py-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl font-bold tracking-tight mb-4">Post Not Found</h1>
+          <p className="text-muted-foreground mb-8">
+            The blog post you're looking for doesn't exist.
+          </p>
+          <Button variant="outline" asChild>
+            <a href="/blog">← Back to Blog</a>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container py-10">
