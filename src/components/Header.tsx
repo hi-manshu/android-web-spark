@@ -1,9 +1,10 @@
+
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ThemeToggle } from './ThemeToggle';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Github, Menu, Code } from 'lucide-react';
+import { Github, Menu } from 'lucide-react';
 
 export function Header() {
   const location = useLocation();
@@ -24,7 +25,7 @@ export function Header() {
         {/* Desktop Navigation */}
         <div className="mr-4 hidden md:flex">
           <Link to="/" className="mr-6 flex items-center space-x-2">
-            <Code className="h-6 w-6" />
+            <img src="/lovable-uploads/add6b1f6-ea67-4b5c-9955-49b02fb3cd9b.png" alt="Logo" className="h-6 w-6" />
             <span className="hidden font-bold sm:inline-block">
               Portfolio
             </span>
@@ -58,7 +59,7 @@ export function Header() {
             <SheetContent side="left" className="w-[240px] sm:w-[280px]">
               <div className="flex flex-col space-y-4 mt-4">
                 <Link to="/" className="flex items-center space-x-2 pb-4">
-                  <Code className="h-6 w-6" />
+                  <img src="/lovable-uploads/add6b1f6-ea67-4b5c-9955-49b02fb3cd9b.png" alt="Logo" className="h-6 w-6" />
                   <span className="font-bold text-lg">Portfolio</span>
                 </Link>
                 <nav className="flex flex-col space-y-3">
@@ -86,7 +87,7 @@ export function Header() {
           {/* Mobile title */}
           <div className="flex md:hidden">
             <Link to="/" className="flex items-center space-x-2">
-              <Code className="h-5 w-5" />
+              <img src="/lovable-uploads/add6b1f6-ea67-4b5c-9955-49b02fb3cd9b.png" alt="Logo" className="h-5 w-5" />
               <span className="font-bold">Portfolio</span>
             </Link>
           </div>
