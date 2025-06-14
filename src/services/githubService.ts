@@ -20,7 +20,7 @@ interface ProjectData {
 
 export const fetchGitHubRepos = async (username: string): Promise<ProjectData[]> => {
   try {
-    const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=20`);
+    const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
     
     if (!response.ok) {
       throw new Error(`GitHub API error: ${response.status}`);
@@ -28,9 +28,10 @@ export const fetchGitHubRepos = async (username: string): Promise<ProjectData[]>
     
     const repos: GitHubRepo[] = await response.json();
     
-    // Filter out forks and private repos, and transform to our format
+    // Filter out forks and private repos, sort by stars, and transform to our format
     return repos
       .filter(repo => !repo.name.includes('.') && repo.description) // Basic filtering
+      .sort((a, b) => b.stargazers_count - a.stargazers_count) // Sort by stars descending
       .slice(0, 6) // Limit to 6 repos
       .map(repo => ({
         title: repo.name,
