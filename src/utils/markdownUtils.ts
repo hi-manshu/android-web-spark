@@ -1,4 +1,3 @@
-
 // Blog post interface
 export interface BlogPost {
   title: string;
@@ -25,42 +24,40 @@ export function parseFrontmatter(content: string): { frontmatter: any; body: str
   console.log('Raw content length:', content.length);
   console.log('Content start:', content.substring(0, 200));
   
-  // Try multiple frontmatter patterns
-  const patterns = [
-    /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/,
-    /^---\r?\n([\s\S]*?)\r?\n---\r?\n\r?\n([\s\S]*)$/,
-    /^---\s*\r?\n([\s\S]*?)\r?\n---\s*\r?\n([\s\S]*)$/
-  ];
+  // Check if content starts with frontmatter
+  if (!content.trim().startsWith('---')) {
+    console.log('Content does not start with frontmatter delimiter');
+    return { frontmatter: {}, body: content };
+  }
   
-  let match = null;
-  let patternUsed = -1;
+  // Find the end of frontmatter
+  const lines = content.split('\n');
+  let frontmatterEndIndex = -1;
   
-  for (let i = 0; i < patterns.length; i++) {
-    match = content.match(patterns[i]);
-    if (match) {
-      patternUsed = i;
-      console.log(`Frontmatter matched with pattern ${i}`);
+  // Skip the first line (opening ---)
+  for (let i = 1; i < lines.length; i++) {
+    if (lines[i].trim() === '---') {
+      frontmatterEndIndex = i;
       break;
     }
   }
   
-  if (!match) {
-    console.log('No frontmatter match found with any pattern');
-    console.log('First 500 chars:', content.substring(0, 500));
+  if (frontmatterEndIndex === -1) {
+    console.log('No closing frontmatter delimiter found');
     return { frontmatter: {}, body: content };
   }
   
-  const frontmatterText = match[1];
-  const body = match[2];
+  const frontmatterLines = lines.slice(1, frontmatterEndIndex);
+  const bodyLines = lines.slice(frontmatterEndIndex + 1);
+  const body = bodyLines.join('\n').trim();
   
-  console.log('Frontmatter text:', frontmatterText);
+  console.log('Frontmatter lines:', frontmatterLines);
   console.log('Body start:', body.substring(0, 100));
   
   // Parse YAML-like frontmatter
   const frontmatter: any = {};
-  const lines = frontmatterText.split(/\r?\n/);
   
-  for (const line of lines) {
+  for (const line of frontmatterLines) {
     const trimmedLine = line.trim();
     if (!trimmedLine || trimmedLine.startsWith('#')) continue;
     
