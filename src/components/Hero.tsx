@@ -5,8 +5,8 @@ import { ArrowDown, Github, Heart, Linkedin, Instagram, X } from 'lucide-react';
 export function Hero() {
   return (
     <section className="relative overflow-hidden py-24 lg:py-32">
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-500/5 via-gray-500/5 to-zinc-500/5 animate-gradient-xy"></div>
+      {/* Animated gradient background - more subtle */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50/20 via-gray-50/10 to-zinc-50/20 dark:from-slate-800/10 dark:via-gray-800/5 dark:to-zinc-800/10 animate-gradient-xy"></div>
       
       <div className="container relative">
         <div className="mx-auto max-w-[64rem] text-center">
@@ -22,7 +22,7 @@ export function Hero() {
           
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
             Hi, I'm{' '}
-            <span className="bg-gradient-to-r from-slate-700 via-gray-700 to-zinc-700 dark:from-slate-300 dark:via-gray-300 dark:to-zinc-300 bg-clip-text text-transparent animate-pulse">
+            <span className="bg-gradient-to-r from-slate-600 via-gray-600 to-zinc-600 dark:from-slate-400 dark:via-gray-400 dark:to-zinc-400 bg-clip-text text-transparent">
               Himanshu Singh
             </span>
           </h1>
@@ -87,13 +87,13 @@ export function Hero() {
         </div>
       </div>
       
-      {/* Enhanced gradient blurs */}
+      {/* Enhanced gradient blurs - more subtle */}
       <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-slate-500 via-gray-500 to-zinc-500 opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] animate-pulse" />
+        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-slate-300/10 via-gray-300/5 to-zinc-300/10 dark:from-slate-600/10 dark:via-gray-600/5 dark:to-zinc-600/10 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] animate-pulse" />
       </div>
       
       <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-        <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-zinc-500 via-gray-500 to-slate-500 opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" />
+        <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-zinc-300/10 via-gray-300/5 to-slate-300/10 dark:from-zinc-600/10 dark:via-gray-600/5 dark:to-slate-600/10 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" />
       </div>
     </section>
   );
