@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { ArrowDown, Github, Heart, Linkedin, Instagram, Twitter } from 'lucide-react';
+import { ArrowDown, Github, Heart, Linkedin, Instagram, X } from 'lucide-react';
 
 export function Hero() {
   return (
@@ -73,8 +73,8 @@ export function Hero() {
                 </Button>
                 <Button variant="ghost" size="sm" asChild>
                   <a href="https://x.com/hi_man_shoe" target="_blank" rel="noopener noreferrer">
-                    <Twitter className="h-4 w-4 text-blue-500" />
-                    <span className="sr-only">Twitter/X</span>
+                    <X className="h-4 w-4 text-black dark:text-white" />
+                    <span className="sr-only">X</span>
                   </a>
                 </Button>
               </div>
