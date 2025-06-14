@@ -12,6 +12,7 @@ interface HashnodePost {
   slug: string;
   content: {
     html: string;
+    markdown: string;
   };
 }
 
@@ -48,6 +49,7 @@ export async function fetchHashnodePosts(publicationId: string): Promise<Hashnod
               slug
               content {
                 html
+                markdown
               }
             }
           }
@@ -80,15 +82,29 @@ export async function fetchHashnodePosts(publicationId: string): Promise<Hashnod
   }
 }
 
-export function convertHashnodePostToBlogPost(post: HashnodePost): import('@/utils/markdownUtils').BlogPost {
-  return {
-    title: post.title,
-    description: post.brief,
-    date: new Date(post.dateAdded).toISOString().split('T')[0],
-    readTime: `${post.readTimeInMinutes} min read`,
-    tags: post.tags.map(tag => tag.name),
-    author: post.author.name,
-    slug: post.slug,
-    content: post.content.html,
-  };
+export function convertHashnodePostToMarkdown(post: HashnodePost): string {
+  const frontmatter = `---
+title: "${post.title}"
+description: "${post.brief}"
+date: "${new Date(post.dateAdded).toISOString().split('T')[0]}"
+readTime: "${post.readTimeInMinutes} min read"
+tags: [${post.tags.map(tag => `"${tag.name}"`).join(', ')}]
+author: "${post.author.name}"
+---
+
+${post.content.markdown || post.content.html}`;
+
+  return frontmatter;
+}
+
+export function downloadMarkdownFile(filename: string, content: string) {
+  const blob = new Blob([content], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `${filename}.md`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }

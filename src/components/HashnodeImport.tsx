@@ -5,13 +5,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/components/ui/sonner';
-import { fetchHashnodePosts, convertHashnodePostToBlogPost } from '@/services/hashnodeService';
+import { fetchHashnodePosts, convertHashnodePostToMarkdown, downloadMarkdownFile } from '@/services/hashnodeService';
 
-interface HashnodeImportProps {
-  onImport: (posts: import('@/utils/markdownUtils').BlogPost[]) => void;
-}
-
-export function HashnodeImport({ onImport }: HashnodeImportProps) {
+export function HashnodeImport() {
   const [publicationId, setPublicationId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,10 +30,13 @@ export function HashnodeImport({ onImport }: HashnodeImportProps) {
         return;
       }
 
-      const blogPosts = hashnodePosts.map(convertHashnodePostToBlogPost);
-      onImport(blogPosts);
+      // Download each post as a markdown file
+      hashnodePosts.forEach(post => {
+        const markdownContent = convertHashnodePostToMarkdown(post);
+        downloadMarkdownFile(post.slug, markdownContent);
+      });
       
-      toast.success(`Successfully imported ${blogPosts.length} posts from Hashnode! Posts are saved locally.`);
+      toast.success(`Successfully downloaded ${hashnodePosts.length} markdown files! Add them to src/content/blogs/ to see them in your blog.`);
       setPublicationId('');
     } catch (error) {
       console.error('Error importing Hashnode posts:', error);
@@ -52,7 +51,7 @@ export function HashnodeImport({ onImport }: HashnodeImportProps) {
       <CardHeader>
         <CardTitle>Import from Hashnode</CardTitle>
         <CardDescription>
-          One-time import: Enter your publication ID to fetch and store posts locally
+          Download your posts as markdown files to add to your project
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -68,11 +67,11 @@ export function HashnodeImport({ onImport }: HashnodeImportProps) {
               disabled={isLoading}
             />
             <p className="text-xs text-muted-foreground">
-              Find your publication ID in your Hashnode dashboard URL. Posts will be stored locally in your browser.
+              Find your publication ID in your Hashnode dashboard URL. Files will be downloaded to add to src/content/blogs/
             </p>
           </div>
           <Button type="submit" disabled={isLoading || !publicationId.trim()} className="w-full">
-            {isLoading ? 'Importing...' : 'Import & Store Posts'}
+            {isLoading ? 'Downloading...' : 'Download Markdown Files'}
           </Button>
         </form>
       </CardContent>
