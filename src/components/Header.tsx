@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ThemeToggle } from './ThemeToggle';
 import { Button } from '@/components/ui/button';
-import { Github } from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Github, Menu } from 'lucide-react';
 
 export function Header() {
   const location = useLocation();
@@ -16,9 +17,12 @@ export function Header() {
     { name: 'About', href: '/about' },
   ];
 
+  const closeMenu = () => setIsMenuOpen(false);
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-screen-2xl items-center">
+        {/* Desktop Navigation */}
         <div className="mr-4 hidden md:flex">
           <Link to="/" className="mr-6 flex items-center space-x-2">
             <span className="hidden font-bold sm:inline-block">
@@ -41,9 +45,51 @@ export function Header() {
             ))}
           </nav>
         </div>
+
+        {/* Mobile Navigation */}
+        <div className="flex md:hidden">
+          <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Toggle menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[240px] sm:w-[280px]">
+              <div className="flex flex-col space-y-4 mt-4">
+                <Link to="/" className="flex items-center space-x-2 pb-4">
+                  <span className="font-bold text-lg">Himanshu Singh</span>
+                </Link>
+                <nav className="flex flex-col space-y-3">
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      onClick={closeMenu}
+                      className={`text-lg transition-colors hover:text-foreground/80 ${
+                        location.pathname === item.href
+                          ? 'text-foreground font-medium'
+                          : 'text-foreground/60'
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </nav>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
         
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <div className="w-full flex-1 md:w-auto md:flex-none">
+          {/* Mobile title */}
+          <div className="flex md:hidden">
+            <Link to="/" className="font-bold">
+              Himanshu Singh
+            </Link>
+          </div>
+
+          <div className="flex items-center space-x-2">
             <Button variant="ghost" size="sm" asChild>
               <a
                 href="https://github.com/hi-manshu"
@@ -54,10 +100,8 @@ export function Header() {
                 <span className="sr-only">GitHub</span>
               </a>
             </Button>
-          </div>
-          <nav className="flex items-center">
             <ThemeToggle />
-          </nav>
+          </div>
         </div>
       </div>
     </header>
