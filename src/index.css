@@ -1,87 +1,107 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+/* Material 3 Expressive Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Material 3 Light Theme - Expressive */
+    --md-sys-color-primary: 103 80% 60%;
+    --md-sys-color-on-primary: 0 0% 100%;
+    --md-sys-color-primary-container: 103 100% 95%;
+    --md-sys-color-on-primary-container: 103 100% 10%;
+    
+    --md-sys-color-secondary: 270 50% 70%;
+    --md-sys-color-on-secondary: 0 0% 100%;
+    --md-sys-color-secondary-container: 270 100% 95%;
+    --md-sys-color-on-secondary-container: 270 100% 10%;
+    
+    --md-sys-color-tertiary: 45 100% 65%;
+    --md-sys-color-on-tertiary: 0 0% 0%;
+    --md-sys-color-tertiary-container: 45 100% 95%;
+    --md-sys-color-on-tertiary-container: 45 100% 10%;
+    
+    --md-sys-color-surface: 0 0% 99%;
+    --md-sys-color-on-surface: 0 0% 10%;
+    --md-sys-color-surface-variant: 220 20% 96%;
+    --md-sys-color-on-surface-variant: 220 10% 30%;
+    
+    --md-sys-color-outline: 220 10% 50%;
+    --md-sys-color-outline-variant: 220 10% 80%;
+    
+    --md-sys-color-background: 0 0% 100%;
+    --md-sys-color-on-background: 0 0% 10%;
+    
+    --md-sys-color-error: 0 70% 60%;
+    --md-sys-color-on-error: 0 0% 100%;
+    --md-sys-color-error-container: 0 100% 95%;
+    --md-sys-color-on-error-container: 0 100% 10%;
+    
+    /* Expressive Elevation and Effects */
+    --md-sys-elevation-level0: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+    --md-sys-elevation-level1: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+    --md-sys-elevation-level2: 0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+    --md-sys-elevation-level3: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+    --md-sys-elevation-level4: 0px 6px 10px 4px rgba(0, 0, 0, 0.15), 0px 2px 3px 0px rgba(0, 0, 0, 0.3);
+    --md-sys-elevation-level5: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
+    
+    /* Legacy mappings for compatibility */
+    --background: var(--md-sys-color-background);
+    --foreground: var(--md-sys-color-on-background);
+    --card: var(--md-sys-color-surface);
+    --card-foreground: var(--md-sys-color-on-surface);
+    --popover: var(--md-sys-color-surface);
+    --popover-foreground: var(--md-sys-color-on-surface);
+    --primary: var(--md-sys-color-primary);
+    --primary-foreground: var(--md-sys-color-on-primary);
+    --secondary: var(--md-sys-color-secondary-container);
+    --secondary-foreground: var(--md-sys-color-on-secondary-container);
+    --muted: var(--md-sys-color-surface-variant);
+    --muted-foreground: var(--md-sys-color-on-surface-variant);
+    --accent: var(--md-sys-color-tertiary-container);
+    --accent-foreground: var(--md-sys-color-on-tertiary-container);
+    --destructive: var(--md-sys-color-error);
+    --destructive-foreground: var(--md-sys-color-on-error);
+    --border: var(--md-sys-color-outline-variant);
+    --input: var(--md-sys-color-outline-variant);
+    --ring: var(--md-sys-color-primary);
+    --radius: 1rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Material 3 Dark Theme - Expressive */
+    --md-sys-color-primary: 103 80% 80%;
+    --md-sys-color-on-primary: 103 100% 10%;
+    --md-sys-color-primary-container: 103 80% 30%;
+    --md-sys-color-on-primary-container: 103 100% 90%;
+    
+    --md-sys-color-secondary: 270 50% 80%;
+    --md-sys-color-on-secondary: 270 100% 10%;
+    --md-sys-color-secondary-container: 270 50% 30%;
+    --md-sys-color-on-secondary-container: 270 100% 90%;
+    
+    --md-sys-color-tertiary: 45 100% 75%;
+    --md-sys-color-on-tertiary: 45 100% 10%;
+    --md-sys-color-tertiary-container: 45 100% 20%;
+    --md-sys-color-on-tertiary-container: 45 100% 90%;
+    
+    --md-sys-color-surface: 0 0% 6%;
+    --md-sys-color-on-surface: 0 0% 90%;
+    --md-sys-color-surface-variant: 220 10% 15%;
+    --md-sys-color-on-surface-variant: 220 10% 80%;
+    
+    --md-sys-color-outline: 220 10% 60%;
+    --md-sys-color-outline-variant: 220 10% 30%;
+    
+    --md-sys-color-background: 0 0% 4%;
+    --md-sys-color-on-background: 0 0% 90%;
+    
+    --md-sys-color-error: 0 70% 70%;
+    --md-sys-color-on-error: 0 100% 10%;
+    --md-sys-color-error-container: 0 70% 20%;
+    --md-sys-color-on-error-container: 0 100% 90%;
   }
 }
 
@@ -92,28 +112,205 @@
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
-/* Custom styles for prose content */
+/* Material 3 Typography Scale */
+.md-typescale-display-large {
+  font-family: inherit;
+  font-size: 3.5rem;
+  font-weight: 400;
+  line-height: 4rem;
+  letter-spacing: -0.025em;
+}
+
+.md-typescale-display-medium {
+  font-family: inherit;
+  font-size: 2.8125rem;
+  font-weight: 400;
+  line-height: 3.25rem;
+  letter-spacing: 0;
+}
+
+.md-typescale-display-small {
+  font-family: inherit;
+  font-size: 2.25rem;
+  font-weight: 400;
+  line-height: 2.75rem;
+  letter-spacing: 0;
+}
+
+.md-typescale-headline-large {
+  font-family: inherit;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 2.5rem;
+  letter-spacing: 0;
+}
+
+.md-typescale-headline-medium {
+  font-family: inherit;
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 2.25rem;
+  letter-spacing: 0;
+}
+
+.md-typescale-title-large {
+  font-family: inherit;
+  font-size: 1.375rem;
+  font-weight: 500;
+  line-height: 1.75rem;
+  letter-spacing: 0;
+}
+
+.md-typescale-body-large {
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  letter-spacing: 0.03125em;
+}
+
+.md-typescale-label-large {
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: 0.00625em;
+}
+
+/* Material 3 Expressive Motion */
+@keyframes md-emphasized-accelerate {
+  0% {
+    animation-timing-function: cubic-bezier(0.3, 0, 0.8, 0.15);
+  }
+  100% {
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+}
+
+@keyframes md-emphasized-decelerate {
+  0% {
+    animation-timing-function: cubic-bezier(0.05, 0.7, 0.1, 1);
+  }
+  100% {
+    animation-timing-function: cubic-bezier(0.3, 0, 0.8, 0.15);
+  }
+}
+
+@keyframes md-standard {
+  0% {
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+  100% {
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+}
+
+/* Material 3 Surface Styles */
+.md-surface {
+  background-color: hsl(var(--md-sys-color-surface));
+  color: hsl(var(--md-sys-color-on-surface));
+}
+
+.md-surface-variant {
+  background-color: hsl(var(--md-sys-color-surface-variant));
+  color: hsl(var(--md-sys-color-on-surface-variant));
+}
+
+.md-elevation-1 {
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+.md-elevation-2 {
+  box-shadow: var(--md-sys-elevation-level2);
+}
+
+.md-elevation-3 {
+  box-shadow: var(--md-sys-elevation-level3);
+}
+
+.md-elevation-4 {
+  box-shadow: var(--md-sys-elevation-level4);
+}
+
+.md-elevation-5 {
+  box-shadow: var(--md-sys-elevation-level5);
+}
+
+/* Enhanced Gradient Animations for Material 3 */
+@keyframes md-gradient-flow {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  75% {
+    background-position: 0% 50%;
+  }
+}
+
+.md-gradient-expressive {
+  background: linear-gradient(45deg, 
+    hsl(var(--md-sys-color-primary)), 
+    hsl(var(--md-sys-color-secondary)), 
+    hsl(var(--md-sys-color-tertiary)));
+  background-size: 400% 400%;
+  animation: md-gradient-flow 8s ease-in-out infinite;
+}
+
+/* Material 3 Interactive States */
+.md-state-hover:hover {
+  position: relative;
+}
+
+.md-state-hover:hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: hsl(var(--md-sys-color-on-surface) / 0.08);
+  border-radius: inherit;
+}
+
+.md-state-focus:focus-visible {
+  outline: 2px solid hsl(var(--md-sys-color-primary));
+  outline-offset: 2px;
+}
+
+.md-state-pressed:active {
+  transform: scale(0.98);
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Custom prose styles for Material 3 */
 .prose {
   max-width: none;
 }
 
 .prose h1 {
-  @apply text-3xl font-bold tracking-tight mb-4;
+  @apply md-typescale-display-small mb-6;
+  color: hsl(var(--md-sys-color-on-surface));
 }
 
 .prose h2 {
-  @apply text-2xl font-semibold tracking-tight mb-3 mt-8;
+  @apply md-typescale-headline-large mb-4 mt-8;
+  color: hsl(var(--md-sys-color-on-surface));
 }
 
 .prose h3 {
-  @apply text-xl font-semibold tracking-tight mb-2 mt-6;
+  @apply md-typescale-headline-medium mb-3 mt-6;
+  color: hsl(var(--md-sys-color-on-surface));
 }
 
 .prose p {
-  @apply mb-4 leading-7;
+  @apply md-typescale-body-large mb-4;
+  color: hsl(var(--md-sys-color-on-surface-variant));
 }
 
 .prose ul {
@@ -122,121 +319,18 @@
 
 .prose li {
   @apply mb-1;
+  color: hsl(var(--md-sys-color-on-surface-variant));
 }
 
 .prose pre {
-  @apply bg-muted p-4 rounded-lg overflow-x-auto mb-4;
+  @apply md-surface-variant p-4 rounded-2xl overflow-x-auto mb-4 md-elevation-1;
 }
 
 .prose code {
-  @apply bg-muted px-1 py-0.5 rounded text-sm;
+  @apply md-surface-variant px-2 py-1 rounded-lg text-sm;
+  color: hsl(var(--md-sys-color-on-surface-variant));
 }
 
 .prose pre code {
   @apply bg-transparent p-0;
-}
-
-/* Gradient Animations and Effects */
-@keyframes gradient-xy {
-  0%, 100% {
-    background-size: 400% 400%;
-    background-position: left center;
-  }
-  50% {
-    background-size: 200% 200%;
-    background-position: right center;
-  }
-}
-
-.animate-gradient-xy {
-  animation: gradient-xy 15s ease infinite;
-}
-
-/* Border gradient effect */
-.border-gradient {
-  position: relative;
-  background: linear-gradient(var(--background), var(--background)) padding-box,
-              linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.3), transparent) border-box;
-  border: 1px solid transparent;
-}
-
-.border-gradient:hover {
-  background: linear-gradient(var(--background), var(--background)) padding-box,
-              linear-gradient(135deg, hsl(var(--primary)), hsl(220 13% 69%), hsl(215 16% 47%)) border-box;
-}
-
-/* Animation utilities */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-out;
-}
-
-/* Gradient text animation */
-@keyframes shimmer {
-  0% {
-    background-position: -200% center;
-  }
-  100% {
-    background-position: 200% center;
-  }
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, 
-    hsl(var(--primary)) 0%, 
-    hsl(220 13% 69%) 50%, 
-    hsl(var(--primary)) 100%);
-  background-size: 200% auto;
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  animation: shimmer 3s linear infinite;
-}
-
-/* Moving gradient border animation */
-@keyframes border-spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.moving-border {
-  position: relative;
-  overflow: hidden;
-}
-
-.moving-border::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  padding: 2px;
-  background: conic-gradient(from 0deg, 
-    hsl(var(--primary)), 
-    hsl(220 13% 69%), 
-    hsl(215 16% 47%), 
-    hsl(var(--primary)));
-  border-radius: inherit;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: xor;
-  -webkit-mask-composite: xor;
-  animation: border-spin 2s linear infinite;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.moving-border.active::before {
-  opacity: 1;
 }
