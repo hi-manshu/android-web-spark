@@ -30,11 +30,10 @@ export function parseFrontmatter(content: string): { frontmatter: any; body: str
     return { frontmatter: {}, body: content };
   }
   
-  // Find the end of frontmatter
   const lines = content.split('\n');
   let frontmatterEndIndex = -1;
   
-  // Skip the first line (opening ---)
+  // Find the closing --- delimiter
   for (let i = 1; i < lines.length; i++) {
     if (lines[i].trim() === '---') {
       frontmatterEndIndex = i;
@@ -47,15 +46,15 @@ export function parseFrontmatter(content: string): { frontmatter: any; body: str
     return { frontmatter: {}, body: content };
   }
   
-  const frontmatterLines = lines.slice(1, frontmatterEndIndex);
-  const bodyLines = lines.slice(frontmatterEndIndex + 1);
-  const body = bodyLines.join('\n').trim();
+  const frontmatterContent = lines.slice(1, frontmatterEndIndex).join('\n');
+  const bodyContent = lines.slice(frontmatterEndIndex + 1).join('\n').trim();
   
-  console.log('Frontmatter lines:', frontmatterLines);
-  console.log('Body start:', body.substring(0, 100));
+  console.log('Frontmatter content:', frontmatterContent);
+  console.log('Body start:', bodyContent.substring(0, 100));
   
-  // Parse YAML-like frontmatter
+  // Parse YAML frontmatter
   const frontmatter: any = {};
+  const frontmatterLines = frontmatterContent.split('\n');
   
   for (const line of frontmatterLines) {
     const trimmedLine = line.trim();
@@ -64,7 +63,7 @@ export function parseFrontmatter(content: string): { frontmatter: any; body: str
     const colonIndex = trimmedLine.indexOf(':');
     if (colonIndex !== -1) {
       const key = trimmedLine.substring(0, colonIndex).trim();
-      let value: string = trimmedLine.substring(colonIndex + 1).trim();
+      let value = trimmedLine.substring(colonIndex + 1).trim();
       
       // Remove quotes if present
       if ((value.startsWith('"') && value.endsWith('"')) || 
@@ -72,13 +71,12 @@ export function parseFrontmatter(content: string): { frontmatter: any; body: str
         value = value.slice(1, -1);
       }
       
-      // Handle arrays (tags) - support both formats: [tag1, tag2] and ["tag1", "tag2"]
+      // Handle arrays (tags)
       if (value.startsWith('[') && value.endsWith(']')) {
         const arrayContent = value.slice(1, -1);
         if (arrayContent.trim()) {
           const arrayValue = arrayContent.split(',').map(item => {
             let cleanItem = item.trim();
-            // Remove quotes if present
             if ((cleanItem.startsWith('"') && cleanItem.endsWith('"')) || 
                 (cleanItem.startsWith("'") && cleanItem.endsWith("'"))) {
               cleanItem = cleanItem.slice(1, -1);
@@ -96,7 +94,7 @@ export function parseFrontmatter(content: string): { frontmatter: any; body: str
   }
   
   console.log('Parsed frontmatter result:', frontmatter);
-  return { frontmatter, body };
+  return { frontmatter, body: bodyContent };
 }
 
 // Convert markdown content to HTML (basic conversion)
