@@ -5,35 +5,20 @@ import { BlogCard } from '@/components/BlogCard';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
 import { getAllBlogPosts } from '@/utils/markdownUtils';
+import { useQuery } from '@tanstack/react-query';
+import { fetchGitHubRepos } from '@/services/githubService';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Home() {
-  // Mock data - in real implementation, this would come from your GitHub API
-  const featuredProjects = [
-    {
-      title: "Charty",
-      description: "A comprehensive Android chart library for creating beautiful, interactive charts with ease.",
-      tags: ["Android", "Kotlin", "Charts", "Library"],
-      githubUrl: "https://github.com/hi-manshu/Charty",
-      stars: 250,
-      language: "Kotlin"
-    },
-    {
-      title: "Kalendar",
-      description: "A beautiful calendar component for Android applications with customizable themes.",
-      tags: ["Android", "Compose", "Calendar", "UI"],
-      githubUrl: "https://github.com/hi-manshu/Kalendar",
-      stars: 180,
-      language: "Kotlin"
-    },
-    {
-      title: "Pluck",
-      description: "An image picker library for Android with modern design and smooth animations.",
-      tags: ["Android", "Image Picker", "UI", "Library"],
-      githubUrl: "https://github.com/hi-manshu/Pluck",
-      stars: 95,
-      language: "Kotlin"
-    }
-  ];
+  // Fetch GitHub repos for featured projects
+  const { data: allProjects, isLoading: projectsLoading } = useQuery({
+    queryKey: ['github-repos'],
+    queryFn: () => fetchGitHubRepos('hi-manshu'), // Replace with actual GitHub username
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+  });
+
+  // Get first 3 projects as featured
+  const featuredProjects = allProjects?.slice(0, 3) || [];
 
   // Get recent blog posts from markdown files
   const allBlogPosts = getAllBlogPosts();
@@ -62,9 +47,24 @@ export default function Home() {
           </div>
           
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {featuredProjects.map((project) => (
-              <ProjectCard key={project.title} {...project} />
-            ))}
+            {projectsLoading ? (
+              // Loading skeletons
+              Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="space-y-4 p-6 border rounded-lg">
+                  <Skeleton className="h-6 w-3/4" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-2/3" />
+                  <div className="flex gap-2">
+                    <Skeleton className="h-6 w-16" />
+                    <Skeleton className="h-6 w-20" />
+                  </div>
+                </div>
+              ))
+            ) : (
+              featuredProjects.map((project) => (
+                <ProjectCard key={project.title} {...project} />
+              ))
+            )}
           </div>
         </div>
       </section>
