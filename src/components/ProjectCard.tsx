@@ -24,7 +24,7 @@ export function ProjectCard({ title, description, tags, githubUrl, stars, langua
 
   return (
     <Card 
-      className={`group relative overflow-hidden transition-all hover:shadow-lg hover:shadow-primary/10 border-gradient moving-border cursor-pointer ${isActive ? 'active' : ''}`}
+      className={`group relative overflow-hidden transition-all border-gradient moving-border cursor-pointer ${isActive ? 'active' : ''}`}
       onClick={handleClick}
     >
       {/* Gradient overlay on hover */}

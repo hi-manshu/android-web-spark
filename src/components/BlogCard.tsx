@@ -23,7 +23,7 @@ export function BlogCard({ title, description, date, readTime, tags, slug }: Blo
 
   return (
     <Card 
-      className={`group cursor-pointer transition-all hover:shadow-lg hover:shadow-primary/10 border-gradient moving-border ${isActive ? 'active' : ''}`}
+      className={`group cursor-pointer transition-all border-gradient moving-border ${isActive ? 'active' : ''}`}
       onClick={handleClick}
     >
       {/* Gradient overlay on hover */}
