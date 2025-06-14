@@ -14,8 +14,15 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ title, description, tags, githubUrl, stars, language }: ProjectCardProps) {
+  const handleCardClick = () => {
+    window.open(githubUrl, '_blank', 'noopener,noreferrer');
+  };
+
   return (
-    <Card className="group relative overflow-hidden transition-all border-gradient cursor-pointer">
+    <Card 
+      className="group relative overflow-hidden transition-all border-gradient cursor-pointer"
+      onClick={handleCardClick}
+    >
       {/* Gradient overlay on hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-500/5 via-transparent to-gray-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       
@@ -56,11 +63,17 @@ export function ProjectCard({ title, description, tags, githubUrl, stars, langua
             )}
           </div>
           
-          <Button variant="ghost" size="sm" asChild className="hover:bg-gradient-to-r hover:from-slate-500/10 hover:to-gray-500/10">
-            <a href={githubUrl} target="_blank" rel="noopener noreferrer">
-              <Github className="h-4 w-4 mr-1" />
-              <ArrowUp className="h-3 w-3 rotate-45" />
-            </a>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            className="hover:bg-gradient-to-r hover:from-slate-500/10 hover:to-gray-500/10"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent card click when button is clicked
+              window.open(githubUrl, '_blank', 'noopener,noreferrer');
+            }}
+          >
+            <Github className="h-4 w-4 mr-1" />
+            <ArrowUp className="h-3 w-3 rotate-45" />
           </Button>
         </div>
       </CardContent>
