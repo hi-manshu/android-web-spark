@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Github, ArrowUp } from 'lucide-react';
+import { useState } from 'react';
 
 interface ProjectCardProps {
   title: string;
@@ -14,8 +15,18 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ title, description, tags, githubUrl, stars, language }: ProjectCardProps) {
+  const [isActive, setIsActive] = useState(false);
+
+  const handleClick = () => {
+    setIsActive(true);
+    setTimeout(() => setIsActive(false), 2000); // Remove animation after 2 seconds
+  };
+
   return (
-    <Card className="group relative overflow-hidden transition-all hover:shadow-lg hover:shadow-primary/10 border-gradient">
+    <Card 
+      className={`group relative overflow-hidden transition-all hover:shadow-lg hover:shadow-primary/10 border-gradient moving-border cursor-pointer ${isActive ? 'active' : ''}`}
+      onClick={handleClick}
+    >
       {/* Gradient overlay on hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-500/5 via-transparent to-gray-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       
