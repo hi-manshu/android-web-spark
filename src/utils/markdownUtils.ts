@@ -1,3 +1,4 @@
+
 // Blog post interface
 export interface BlogPost {
   title: string;
@@ -21,25 +22,31 @@ export interface BlogSeries {
 
 // Parse frontmatter from markdown content
 export function parseFrontmatter(content: string): { frontmatter: any; body: string } {
-  const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+  const frontmatterRegex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/;
   const match = content.match(frontmatterRegex);
   
   if (!match) {
+    console.log('No frontmatter match found');
     return { frontmatter: {}, body: content };
   }
   
   const frontmatterText = match[1];
   const body = match[2];
   
+  console.log('Frontmatter text:', frontmatterText);
+  
   // Parse YAML-like frontmatter
   const frontmatter: any = {};
-  const lines = frontmatterText.split('\n');
+  const lines = frontmatterText.split(/\r?\n/);
   
   for (const line of lines) {
-    const colonIndex = line.indexOf(':');
+    const trimmedLine = line.trim();
+    if (!trimmedLine) continue;
+    
+    const colonIndex = trimmedLine.indexOf(':');
     if (colonIndex !== -1) {
-      const key = line.substring(0, colonIndex).trim();
-      let value: string | string[] = line.substring(colonIndex + 1).trim();
+      const key = trimmedLine.substring(0, colonIndex).trim();
+      let value: string | string[] = trimmedLine.substring(colonIndex + 1).trim();
       
       // Remove quotes if present
       if ((value.startsWith('"') && value.endsWith('"')) || 
@@ -70,6 +77,7 @@ export function parseFrontmatter(content: string): { frontmatter: any; body: str
     }
   }
   
+  console.log('Parsed frontmatter result:', frontmatter);
   return { frontmatter, body };
 }
 
@@ -128,11 +136,8 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       const filename = path.split('/').pop()?.replace('.md', '') || '';
       
       console.log('Processing file:', filename);
-      console.log('Content preview:', content.substring(0, 200));
       
       const { frontmatter, body } = parseFrontmatter(content);
-      
-      console.log('Parsed frontmatter:', frontmatter);
       
       // Create slug from filename if not provided in frontmatter
       const slug = frontmatter.slug || filename;

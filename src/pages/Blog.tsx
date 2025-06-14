@@ -1,15 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { BlogCard } from '@/components/BlogCard';
-import { SeriesCard } from '@/components/SeriesCard';
-import { HashnodeImport } from '@/components/HashnodeImport';
-import { Button } from '@/components/ui/button';
+import { SeriesStepper } from '@/components/SeriesStepper';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, FileText, Download, BookOpen, FileIcon } from 'lucide-react';
+import { FileText, BookOpen, FileIcon } from 'lucide-react';
 import { getBlogSeries, getIndividualBlogPosts, BlogPost, BlogSeries } from '@/utils/markdownUtils';
 
 export default function Blog() {
-  const [showImport, setShowImport] = useState(false);
   const [series, setSeries] = useState<BlogSeries[]>([]);
   const [individualPosts, setIndividualPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,39 +42,19 @@ export default function Blog() {
   return (
     <div className="container py-10">
       <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-4xl font-bold tracking-tight">Blog</h1>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowImport(!showImport)}
-          >
-            <Download className="h-4 w-4 mr-2" />
-            Import from Hashnode
-          </Button>
-        </div>
+        <h1 className="text-4xl font-bold tracking-tight mb-4">Blog</h1>
         <p className="text-xl text-muted-foreground">
           Thoughts on Android development, open source, and technology
         </p>
       </div>
-
-      {showImport && (
-        <div className="mb-8 flex justify-center">
-          <HashnodeImport />
-        </div>
-      )}
 
       {!hasContent ? (
         <div className="text-center py-12">
           <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
           <h3 className="text-lg font-medium mb-2">No blog posts yet</h3>
           <p className="text-muted-foreground mb-4">
-            Import your posts from Hashnode or add markdown files to src/content/blogs/
+            Add markdown files to src/content/blogs/ to see them here
           </p>
-          <Button onClick={() => setShowImport(true)}>
-            <Download className="h-4 w-4 mr-2" />
-            Import from Hashnode
-          </Button>
         </div>
       ) : (
         <Tabs defaultValue="all" className="w-full">
@@ -99,7 +76,7 @@ export default function Blog() {
                 <h2 className="text-2xl font-bold mb-4">Blog Series</h2>
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {series.map((serie) => (
-                    <SeriesCard key={serie.name} {...serie} />
+                    <SeriesStepper key={serie.name} {...serie} />
                   ))}
                 </div>
               </div>
@@ -121,7 +98,7 @@ export default function Blog() {
             {series.length > 0 ? (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {series.map((serie) => (
-                  <SeriesCard key={serie.name} {...serie} />
+                  <SeriesStepper key={serie.name} {...serie} />
                 ))}
               </div>
             ) : (
