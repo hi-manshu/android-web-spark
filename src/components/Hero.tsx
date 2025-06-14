@@ -12,7 +12,7 @@ export function Hero() {
         <div className="mx-auto max-w-[64rem] text-center">
           <div className="mb-8 flex justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-muted-foreground ring-1 ring-border hover:ring-gray-300 dark:hover:ring-gray-700 bg-gradient-to-r from-background/80 to-background/60 backdrop-blur-sm">
-              Android Developer & Open Source Enthusiast{' '}
+              Software Engineer & Open Source Enthusiast{' '}
               <a href="/about" className="font-semibold text-primary">
                 <span className="absolute inset-0" aria-hidden="true" />
                 Learn more <span aria-hidden="true">&rarr;</span>
@@ -28,10 +28,10 @@ export function Hero() {
           </h1>
           
           <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto">
-            Passionate Android developer with expertise in Kotlin, Jetpack Compose, and modern Android architecture. 
-            I specialize in creating beautiful, performant mobile applications and building open source libraries 
+            Passionate Software Engineer with expertise in modern technologies and software architecture. 
+            I specialize in creating beautiful, performant applications and building open source libraries 
             that help developers worldwide. When I'm not coding, I enjoy sharing knowledge through technical writing 
-            and contributing to the Android community.
+            and contributing to the developer community.
           </p>
           
           <div className="mt-10 flex items-center justify-center gap-x-6">
