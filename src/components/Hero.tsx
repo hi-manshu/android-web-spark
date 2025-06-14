@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { ArrowDown, Github, Heart } from 'lucide-react';
+import { ArrowDown, Github, Heart, Linkedin, Instagram, Twitter } from 'lucide-react';
 
 export function Hero() {
   return (
@@ -34,24 +34,51 @@ export function Hero() {
             and contributing to the developer community.
           </p>
           
-          <div className="mt-10 flex items-center justify-center gap-x-6">
-            <Button size="lg" asChild>
-              <a href="/projects">
-                View My Projects
-              </a>
-            </Button>
-            <Button variant="outline" size="lg" asChild>
-              <a href="https://github.com/hi-manshu" target="_blank" rel="noopener noreferrer">
-                <Github className="mr-2 h-4 w-4" />
-                GitHub
-              </a>
-            </Button>
-            <Button variant="outline" size="lg" asChild>
-              <a href="https://github.com/sponsors/hi-manshu" target="_blank" rel="noopener noreferrer">
-                <Heart className="mr-2 h-4 w-4 text-red-500" />
-                Sponsor
-              </a>
-            </Button>
+          <div className="mt-10 flex flex-col items-center gap-6">
+            <div className="flex items-center justify-center gap-x-6 flex-wrap">
+              <Button size="lg" asChild>
+                <a href="/projects">
+                  View My Projects
+                </a>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <a href="https://github.com/hi-manshu" target="_blank" rel="noopener noreferrer">
+                  <Github className="mr-2 h-4 w-4" />
+                  GitHub
+                </a>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <a href="https://github.com/sponsors/hi-manshu" target="_blank" rel="noopener noreferrer">
+                  <Heart className="mr-2 h-4 w-4 text-red-500" />
+                  Sponsor
+                </a>
+              </Button>
+            </div>
+            
+            {/* Social Media Links */}
+            <div className="flex items-center justify-center gap-4">
+              <p className="text-sm text-muted-foreground">Connect with me:</p>
+              <div className="flex gap-3">
+                <Button variant="ghost" size="sm" asChild>
+                  <a href="https://www.linkedin.com/in/himanshoe/" target="_blank" rel="noopener noreferrer">
+                    <Linkedin className="h-4 w-4 text-blue-600" />
+                    <span className="sr-only">LinkedIn</span>
+                  </a>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <a href="https://www.instagram.com/hi_man_shoe/" target="_blank" rel="noopener noreferrer">
+                    <Instagram className="h-4 w-4 text-pink-600" />
+                    <span className="sr-only">Instagram</span>
+                  </a>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <a href="https://x.com/hi_man_shoe" target="_blank" rel="noopener noreferrer">
+                    <Twitter className="h-4 w-4 text-blue-500" />
+                    <span className="sr-only">Twitter/X</span>
+                  </a>
+                </Button>
+              </div>
+            </div>
           </div>
           
           <div className="mt-16 flex justify-center">
