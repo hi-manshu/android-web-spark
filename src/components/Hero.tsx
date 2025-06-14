@@ -5,10 +5,13 @@ import { ArrowDown, Github } from 'lucide-react';
 export function Hero() {
   return (
     <section className="relative overflow-hidden py-24 lg:py-32">
-      <div className="container">
+      {/* Animated gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-purple-500/5 to-blue-500/5 animate-gradient-xy"></div>
+      
+      <div className="container relative">
         <div className="mx-auto max-w-[64rem] text-center">
           <div className="mb-8 flex justify-center">
-            <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-muted-foreground ring-1 ring-border hover:ring-gray-300 dark:hover:ring-gray-700">
+            <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-muted-foreground ring-1 ring-border hover:ring-gray-300 dark:hover:ring-gray-700 bg-gradient-to-r from-background/80 to-background/60 backdrop-blur-sm">
               Android Developer & Open Source Enthusiast{' '}
               <a href="/about" className="font-semibold text-primary">
                 <span className="absolute inset-0" aria-hidden="true" />
@@ -19,7 +22,7 @@ export function Hero() {
           
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
             Hi, I'm{' '}
-            <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary via-purple-600 to-blue-600 bg-clip-text text-transparent animate-pulse">
               Himanshu Singh
             </span>
           </h1>
@@ -30,12 +33,12 @@ export function Hero() {
           </p>
           
           <div className="mt-10 flex items-center justify-center gap-x-6">
-            <Button size="lg" asChild>
+            <Button size="lg" asChild className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90">
               <a href="/projects">
                 View My Projects
               </a>
             </Button>
-            <Button variant="outline" size="lg" asChild>
+            <Button variant="outline" size="lg" asChild className="border-gradient">
               <a href="https://github.com/hi-manshu" target="_blank" rel="noopener noreferrer">
                 <Github className="mr-2 h-4 w-4" />
                 GitHub
@@ -49,8 +52,13 @@ export function Hero() {
         </div>
       </div>
       
+      {/* Enhanced gradient blurs */}
       <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-primary to-secondary opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" />
+        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-primary via-purple-500 to-blue-500 opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] animate-pulse" />
+      </div>
+      
+      <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
+        <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-blue-500 via-purple-500 to-primary opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" />
       </div>
     </section>
   );

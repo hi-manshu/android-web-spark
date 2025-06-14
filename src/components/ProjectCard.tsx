@@ -15,11 +15,14 @@ interface ProjectCardProps {
 
 export function ProjectCard({ title, description, tags, githubUrl, stars, language }: ProjectCardProps) {
   return (
-    <Card className="group relative overflow-hidden transition-all hover:shadow-lg">
-      <CardHeader>
+    <Card className="group relative overflow-hidden transition-all hover:shadow-lg hover:shadow-primary/10 border-gradient">
+      {/* Gradient overlay on hover */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      
+      <CardHeader className="relative">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
-            <CardTitle className="text-xl group-hover:text-primary transition-colors">
+            <CardTitle className="text-xl group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-600 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
               {title}
             </CardTitle>
             <CardDescription className="line-clamp-2">
@@ -29,10 +32,10 @@ export function ProjectCard({ title, description, tags, githubUrl, stars, langua
         </div>
       </CardHeader>
       
-      <CardContent>
+      <CardContent className="relative">
         <div className="flex flex-wrap gap-2 mb-4">
           {tags.map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs">
+            <Badge key={tag} variant="secondary" className="text-xs bg-gradient-to-r from-secondary to-secondary/80 hover:from-primary/10 hover:to-purple-500/10 transition-all duration-300">
               {tag}
             </Badge>
           ))}
@@ -42,7 +45,7 @@ export function ProjectCard({ title, description, tags, githubUrl, stars, langua
           <div className="flex items-center space-x-4 text-sm text-muted-foreground">
             {language && (
               <span className="flex items-center">
-                <div className="w-3 h-3 bg-primary rounded-full mr-1" />
+                <div className="w-3 h-3 bg-gradient-to-r from-primary to-purple-600 rounded-full mr-1" />
                 {language}
               </span>
             )}
@@ -53,7 +56,7 @@ export function ProjectCard({ title, description, tags, githubUrl, stars, langua
             )}
           </div>
           
-          <Button variant="ghost" size="sm" asChild>
+          <Button variant="ghost" size="sm" asChild className="hover:bg-gradient-to-r hover:from-primary/10 hover:to-purple-500/10">
             <a href={githubUrl} target="_blank" rel="noopener noreferrer">
               <Github className="h-4 w-4 mr-1" />
               <ArrowUp className="h-3 w-3 rotate-45" />
