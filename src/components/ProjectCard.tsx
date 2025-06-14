@@ -40,9 +40,9 @@ export function ProjectCard({ title, description, tags, githubUrl, stars, langua
       </CardHeader>
       
       <CardContent className="relative flex flex-col flex-grow">
-        <div className="flex flex-wrap gap-2 mb-4 flex-grow">
+        <div className="flex flex-wrap gap-1 mb-4">
           {tags.map((tag) => (
-            <Badge key={tag} variant="secondary" className="text-xs bg-gradient-to-r from-secondary to-secondary/80 hover:from-slate-500/10 hover:to-gray-500/10 transition-all duration-300">
+            <Badge key={tag} variant="secondary" className="text-xs px-2 py-0.5 bg-gradient-to-r from-secondary to-secondary/80 hover:from-slate-500/10 hover:to-gray-500/10 transition-all duration-300">
               {tag}
             </Badge>
           ))}
