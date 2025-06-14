@@ -7,21 +7,21 @@
 
 @layer base {
   :root {
-    /* Material 3 Light Theme - Expressive */
-    --md-sys-color-primary: 103 80% 60%;
+    /* Material 3 Light Theme - More Subtle */
+    --md-sys-color-primary: 220 70% 50%;
     --md-sys-color-on-primary: 0 0% 100%;
-    --md-sys-color-primary-container: 103 100% 95%;
-    --md-sys-color-on-primary-container: 103 100% 10%;
+    --md-sys-color-primary-container: 220 100% 95%;
+    --md-sys-color-on-primary-container: 220 100% 10%;
     
-    --md-sys-color-secondary: 270 50% 70%;
+    --md-sys-color-secondary: 260 40% 60%;
     --md-sys-color-on-secondary: 0 0% 100%;
-    --md-sys-color-secondary-container: 270 100% 95%;
-    --md-sys-color-on-secondary-container: 270 100% 10%;
+    --md-sys-color-secondary-container: 260 100% 95%;
+    --md-sys-color-on-secondary-container: 260 100% 10%;
     
-    --md-sys-color-tertiary: 45 100% 65%;
+    --md-sys-color-tertiary: 200 50% 55%;
     --md-sys-color-on-tertiary: 0 0% 0%;
-    --md-sys-color-tertiary-container: 45 100% 95%;
-    --md-sys-color-on-tertiary-container: 45 100% 10%;
+    --md-sys-color-tertiary-container: 200 100% 95%;
+    --md-sys-color-on-tertiary-container: 200 100% 10%;
     
     --md-sys-color-surface: 0 0% 99%;
     --md-sys-color-on-surface: 0 0% 10%;
@@ -67,25 +67,25 @@
     --border: var(--md-sys-color-outline-variant);
     --input: var(--md-sys-color-outline-variant);
     --ring: var(--md-sys-color-primary);
-    --radius: 1rem;
+    --radius: 0.5rem;
   }
 
   .dark {
-    /* Material 3 Dark Theme - Expressive */
-    --md-sys-color-primary: 103 80% 80%;
-    --md-sys-color-on-primary: 103 100% 10%;
-    --md-sys-color-primary-container: 103 80% 30%;
-    --md-sys-color-on-primary-container: 103 100% 90%;
+    /* Material 3 Dark Theme - More Subtle */
+    --md-sys-color-primary: 220 70% 70%;
+    --md-sys-color-on-primary: 220 100% 10%;
+    --md-sys-color-primary-container: 220 70% 30%;
+    --md-sys-color-on-primary-container: 220 100% 90%;
     
-    --md-sys-color-secondary: 270 50% 80%;
-    --md-sys-color-on-secondary: 270 100% 10%;
-    --md-sys-color-secondary-container: 270 50% 30%;
-    --md-sys-color-on-secondary-container: 270 100% 90%;
+    --md-sys-color-secondary: 260 40% 70%;
+    --md-sys-color-on-secondary: 260 100% 10%;
+    --md-sys-color-secondary-container: 260 40% 30%;
+    --md-sys-color-on-secondary-container: 260 100% 90%;
     
-    --md-sys-color-tertiary: 45 100% 75%;
-    --md-sys-color-on-tertiary: 45 100% 10%;
-    --md-sys-color-tertiary-container: 45 100% 20%;
-    --md-sys-color-on-tertiary-container: 45 100% 90%;
+    --md-sys-color-tertiary: 200 50% 65%;
+    --md-sys-color-on-tertiary: 200 100% 10%;
+    --md-sys-color-tertiary-container: 200 50% 20%;
+    --md-sys-color-on-tertiary-container: 200 100% 90%;
     
     --md-sys-color-surface: 0 0% 6%;
     --md-sys-color-on-surface: 0 0% 90%;

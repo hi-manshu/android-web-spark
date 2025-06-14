@@ -6,28 +6,28 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden py-24 lg:py-32">
       {/* Material 3 Expressive Background */}
-      <div className="absolute inset-0 md-gradient-expressive opacity-10"></div>
+      <div className="absolute inset-0 md-gradient-expressive opacity-5"></div>
       
       <div className="container relative">
         <div className="mx-auto max-w-[64rem] text-center">
           <div className="mb-8 flex justify-center">
             <div className="relative rounded-full px-4 py-2 md-typescale-label-large md-surface-variant md-elevation-1 md-state-hover">
               Software Engineer & Open Source Enthusiast{' '}
-              <a href="/about" className="font-semibold" style={{ color: 'hsl(var(--md-sys-color-primary))' }}>
+              <a href="/about" className="font-semibold text-blue-600 dark:text-blue-400">
                 <span className="absolute inset-0" aria-hidden="true" />
                 Learn more <span aria-hidden="true">&rarr;</span>
               </a>
             </div>
           </div>
           
-          <h1 className="md-typescale-display-large font-bold tracking-tight">
+          <h1 className="md-typescale-display-large font-bold tracking-tight text-gray-900 dark:text-gray-100">
             Hi, I'm{' '}
-            <span className="md-gradient-expressive bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Himanshu Singh
             </span>
           </h1>
           
-          <p className="mt-6 md-typescale-body-large max-w-2xl mx-auto" style={{ color: 'hsl(var(--md-sys-color-on-surface-variant))' }}>
+          <p className="mt-6 md-typescale-body-large max-w-2xl mx-auto text-gray-600 dark:text-gray-300">
             Passionate Software Engineer with expertise in modern technologies and software architecture. 
             I specialize in creating beautiful, performant applications and building open source libraries 
             that help developers worldwide. When I'm not coding, I enjoy sharing knowledge through technical writing 
@@ -49,7 +49,7 @@ export function Hero() {
               </Button>
               <Button variant="outline" size="lg" className="md-state-hover md-state-pressed" asChild>
                 <a href="https://github.com/sponsors/hi-manshu" target="_blank" rel="noopener noreferrer">
-                  <Heart className="mr-2 h-4 w-4" style={{ color: 'hsl(var(--md-sys-color-error))' }} />
+                  <Heart className="mr-2 h-4 w-4 text-red-500" />
                   Sponsor
                 </a>
               </Button>
@@ -57,23 +57,23 @@ export function Hero() {
             
             {/* Social Media Links */}
             <div className="flex items-center justify-center gap-4">
-              <p className="md-typescale-label-large" style={{ color: 'hsl(var(--md-sys-color-on-surface-variant))' }}>Connect with me:</p>
+              <p className="md-typescale-label-large text-gray-500 dark:text-gray-400">Connect with me:</p>
               <div className="flex gap-3">
-                <Button variant="ghost" size="sm" className="md-state-hover rounded-full" asChild>
+                <Button variant="ghost" size="sm" className="md-state-hover rounded-lg" asChild>
                   <a href="https://www.linkedin.com/in/himanshoe/" target="_blank" rel="noopener noreferrer">
-                    <Linkedin className="h-4 w-4" style={{ color: 'hsl(var(--md-sys-color-primary))' }} />
+                    <Linkedin className="h-4 w-4 text-blue-600" />
                     <span className="sr-only">LinkedIn</span>
                   </a>
                 </Button>
-                <Button variant="ghost" size="sm" className="md-state-hover rounded-full" asChild>
+                <Button variant="ghost" size="sm" className="md-state-hover rounded-lg" asChild>
                   <a href="https://www.instagram.com/hi_man_shoe/" target="_blank" rel="noopener noreferrer">
-                    <Instagram className="h-4 w-4" style={{ color: 'hsl(var(--md-sys-color-secondary))' }} />
+                    <Instagram className="h-4 w-4 text-pink-600" />
                     <span className="sr-only">Instagram</span>
                   </a>
                 </Button>
-                <Button variant="ghost" size="sm" className="md-state-hover rounded-full" asChild>
+                <Button variant="ghost" size="sm" className="md-state-hover rounded-lg" asChild>
                   <a href="https://x.com/hi_man_shoe" target="_blank" rel="noopener noreferrer">
-                    <X className="h-4 w-4" style={{ color: 'hsl(var(--md-sys-color-on-surface))' }} />
+                    <X className="h-4 w-4 text-gray-700 dark:text-gray-300" />
                     <span className="sr-only">X</span>
                   </a>
                 </Button>
@@ -82,20 +82,18 @@ export function Hero() {
           </div>
           
           <div className="mt-16 flex justify-center">
-            <ArrowDown className="h-6 w-6 animate-bounce" style={{ color: 'hsl(var(--md-sys-color-on-surface-variant))' }} />
+            <ArrowDown className="h-6 w-6 animate-bounce text-gray-400" />
           </div>
         </div>
       </div>
       
       {/* Material 3 Expressive Background Elements */}
       <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-             style={{ background: 'linear-gradient(135deg, hsl(var(--md-sys-color-primary)), hsl(var(--md-sys-color-secondary)))' }} />
+        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] opacity-10 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] bg-gradient-to-r from-blue-400 to-purple-400" />
       </div>
       
       <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-        <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
-             style={{ background: 'linear-gradient(135deg, hsl(var(--md-sys-color-tertiary)), hsl(var(--md-sys-color-primary)))' }} />
+        <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 opacity-10 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem] bg-gradient-to-r from-purple-400 to-blue-400" />
       </div>
     </section>
   );
