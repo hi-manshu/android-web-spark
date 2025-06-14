@@ -18,11 +18,17 @@ export default function Home() {
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes
   });
 
+  // Fetch blog posts
+  const { data: allBlogPosts = [], isLoading: blogLoading } = useQuery({
+    queryKey: ['blog-posts'],
+    queryFn: getAllBlogPosts,
+    staleTime: 5 * 60 * 1000,
+  });
+
   // Get first 3 projects as featured
   const featuredProjects = allProjects?.slice(0, 3) || [];
 
-  // Get recent blog posts from markdown files
-  const allBlogPosts = getAllBlogPosts();
+  // Get recent blog posts
   const recentBlogPosts = allBlogPosts.slice(0, 3);
 
   return (
@@ -145,11 +151,22 @@ export default function Home() {
           </FadeInView>
           
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {recentBlogPosts.map((post, index) => (
-              <FadeInView key={post.slug} delay={index * 150}>
-                <BlogCard {...post} />
-              </FadeInView>
-            ))}
+            {blogLoading ? (
+              // Loading skeletons
+              Array.from({ length: 3 }).map((_, i) => (
+                <FadeInView key={i} delay={i * 150}>
+                  <div className="animate-pulse">
+                    <div className="bg-muted rounded-lg h-48"></div>
+                  </div>
+                </FadeInView>
+              ))
+            ) : (
+              recentBlogPosts.map((post, index) => (
+                <FadeInView key={post.slug} delay={index * 150}>
+                  <BlogCard {...post} />
+                </FadeInView>
+              ))
+            )}
           </div>
           
           {/* Mobile button */}

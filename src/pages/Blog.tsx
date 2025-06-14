@@ -1,15 +1,37 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BlogCard } from '@/components/BlogCard';
 import { HashnodeImport } from '@/components/HashnodeImport';
 import { Button } from '@/components/ui/button';
 import { Plus, FileText, Download } from 'lucide-react';
-import { getAllBlogPosts } from '@/utils/markdownUtils';
+import { getAllBlogPosts, BlogPost } from '@/utils/markdownUtils';
 
 export default function Blog() {
   const [showImport, setShowImport] = useState(false);
-  
-  const allPosts = getAllBlogPosts();
+  const [allPosts, setAllPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadPosts = async () => {
+      setIsLoading(true);
+      const posts = await getAllBlogPosts();
+      setAllPosts(posts);
+      setIsLoading(false);
+    };
+    
+    loadPosts();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="container py-10">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold tracking-tight mb-4">Blog</h1>
+          <p className="text-xl text-muted-foreground">Loading posts...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container py-10">
