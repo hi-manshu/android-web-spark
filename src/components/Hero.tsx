@@ -48,8 +48,8 @@ export function Hero() {
                 </a>
               </Button>
               <div className="relative">
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-400 to-red-400 rounded-md opacity-75 animate-spin-slow"></div>
-                <Button size="lg" className="relative md-elevation-2 md-state-pressed bg-gradient-to-r from-pink-400 to-red-400 hover:from-pink-500 hover:to-red-500 text-white font-semibold" asChild>
+                <div className="absolute -inset-1 bg-gradient-to-r from-pink-400 via-red-400 to-pink-400 rounded-md animate-spin-slow blur-sm opacity-60"></div>
+                <Button size="lg" className="relative md-elevation-2 md-state-pressed bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-semibold border border-transparent" asChild>
                   <a href="https://github.com/sponsors/hi-manshu" target="_blank" rel="noopener noreferrer">
                     <Heart className="mr-2 h-4 w-4" />
                     Sponsor
