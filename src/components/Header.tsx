@@ -25,10 +25,7 @@ export function Header() {
         {/* Desktop Navigation */}
         <div className="mr-4 hidden md:flex">
           <Link to="/" className="mr-6 flex items-center space-x-2">
-            <img src="/lovable-uploads/add6b1f6-ea67-4b5c-9955-49b02fb3cd9b.png" alt="Logo" className="h-6 w-6" />
-            <span className="hidden font-bold sm:inline-block">
-              Portfolio
-            </span>
+            <img src="/lovable-uploads/add6b1f6-ea67-4b5c-9955-49b02fb3cd9b.png" alt="Logo" className="h-8 w-8" />
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             {navigation.map((item) => (
@@ -59,8 +56,7 @@ export function Header() {
             <SheetContent side="left" className="w-[240px] sm:w-[280px]">
               <div className="flex flex-col space-y-4 mt-4">
                 <Link to="/" className="flex items-center space-x-2 pb-4">
-                  <img src="/lovable-uploads/add6b1f6-ea67-4b5c-9955-49b02fb3cd9b.png" alt="Logo" className="h-6 w-6" />
-                  <span className="font-bold text-lg">Portfolio</span>
+                  <img src="/lovable-uploads/add6b1f6-ea67-4b5c-9955-49b02fb3cd9b.png" alt="Logo" className="h-8 w-8" />
                 </Link>
                 <nav className="flex flex-col space-y-3">
                   {navigation.map((item) => (
@@ -87,8 +83,7 @@ export function Header() {
           {/* Mobile title */}
           <div className="flex md:hidden">
             <Link to="/" className="flex items-center space-x-2">
-              <img src="/lovable-uploads/add6b1f6-ea67-4b5c-9955-49b02fb3cd9b.png" alt="Logo" className="h-5 w-5" />
-              <span className="font-bold">Portfolio</span>
+              <img src="/lovable-uploads/add6b1f6-ea67-4b5c-9955-49b02fb3cd9b.png" alt="Logo" className="h-7 w-7" />
             </Link>
           </div>
 
