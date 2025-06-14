@@ -36,7 +36,7 @@ export function Hero() {
           
           <div className="mt-10 flex flex-col items-center gap-6">
             <div className="flex items-center justify-center gap-x-6 flex-wrap">
-              <Button size="lg" className="md-elevation-2 md-state-pressed bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold" asChild>
+              <Button variant="outline" size="lg" className="md-state-hover md-state-pressed" asChild>
                 <a href="/projects">
                   View My Projects
                 </a>
@@ -47,15 +47,12 @@ export function Hero() {
                   GitHub
                 </a>
               </Button>
-              <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-r from-pink-400 via-red-400 to-pink-400 rounded-md animate-spin-slow blur-sm opacity-60"></div>
-                <Button size="lg" className="relative md-elevation-2 md-state-pressed bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-semibold border border-transparent" asChild>
-                  <a href="https://github.com/sponsors/hi-manshu" target="_blank" rel="noopener noreferrer">
-                    <Heart className="mr-2 h-4 w-4" />
-                    Sponsor
-                  </a>
-                </Button>
-              </div>
+              <Button size="lg" className="md-elevation-2 md-state-pressed bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-semibold" asChild>
+                <a href="https://github.com/sponsors/hi-manshu" target="_blank" rel="noopener noreferrer">
+                  <Heart className="mr-2 h-4 w-4" />
+                  Sponsor
+                </a>
+              </Button>
             </div>
             
             {/* Social Media Links */}
