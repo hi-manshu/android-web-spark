@@ -4,11 +4,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { ThemeToggle } from './ThemeToggle';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Github, Menu } from 'lucide-react';
+import { Github, Menu, Search } from 'lucide-react';
+import { useSearch } from '@/contexts/SearchContext';
 
 export function Header() {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { openSearch } = useSearch();
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -18,6 +20,19 @@ export function Header() {
   ];
 
   const closeMenu = () => setIsMenuOpen(false);
+
+  // Handle keyboard shortcut
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        openSearch();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [openSearch]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -88,6 +103,18 @@ export function Header() {
           </div>
 
           <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={openSearch}
+              className="h-8 w-8 md:w-auto md:justify-start md:px-3"
+            >
+              <Search className="h-4 w-4" />
+              <span className="hidden md:inline-flex ml-2">Search</span>
+              <span className="hidden md:inline-flex ml-auto text-xs text-muted-foreground">
+                ⌘K
+              </span>
+            </Button>
             <Button variant="ghost" size="sm" asChild>
               <a
                 href="https://github.com/hi-manshu"
