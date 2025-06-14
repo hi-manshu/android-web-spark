@@ -4,12 +4,32 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
 import { getBlogPostBySlug } from '@/utils/markdownUtils';
+import { useQuery } from '@tanstack/react-query';
 
 export default function BlogPost() {
   const { slug } = useParams();
-  const post = slug ? getBlogPostBySlug(slug) : null;
+  
+  const { data: post, isLoading, error } = useQuery({
+    queryKey: ['blog-post', slug],
+    queryFn: () => slug ? getBlogPostBySlug(slug) : Promise.resolve(null),
+    enabled: !!slug,
+    staleTime: 5 * 60 * 1000,
+  });
 
-  if (!post) {
+  if (isLoading) {
+    return (
+      <div className="container py-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-4xl font-bold tracking-tight mb-4">Loading...</h1>
+          <p className="text-muted-foreground">
+            Please wait while we load the blog post.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !post) {
     return (
       <div className="container py-10">
         <div className="max-w-4xl mx-auto text-center">

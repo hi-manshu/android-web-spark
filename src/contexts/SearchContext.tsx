@@ -34,7 +34,11 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     staleTime: 5 * 60 * 1000,
   });
 
-  const blogPosts = getAllBlogPosts();
+  const { data: blogPosts = [] } = useQuery({
+    queryKey: ['blog-posts'],
+    queryFn: getAllBlogPosts,
+    staleTime: 5 * 60 * 1000,
+  });
 
   const openSearch = useCallback(() => setIsOpen(true), []);
   const closeSearch = useCallback(() => {
