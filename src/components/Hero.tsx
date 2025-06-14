@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { ArrowDown, Github, Heart } from 'lucide-react';
 
@@ -27,8 +28,10 @@ export function Hero() {
           </h1>
           
           <p className="mt-6 text-lg leading-8 text-muted-foreground max-w-2xl mx-auto">
-            Android developer passionate about creating beautiful, performant mobile applications. 
-            I love building open source libraries and sharing knowledge with the community.
+            Passionate Android developer with expertise in Kotlin, Jetpack Compose, and modern Android architecture. 
+            I specialize in creating beautiful, performant mobile applications and building open source libraries 
+            that help developers worldwide. When I'm not coding, I enjoy sharing knowledge through technical writing 
+            and contributing to the Android community.
           </p>
           
           <div className="mt-10 flex items-center justify-center gap-x-6">
