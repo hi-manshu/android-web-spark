@@ -47,31 +47,34 @@ export function Hero() {
                   GitHub
                 </a>
               </Button>
-              <Button size="lg" className="md-elevation-2 md-state-pressed bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-semibold" asChild>
-                <a href="https://github.com/sponsors/hi-manshu" target="_blank" rel="noopener noreferrer">
-                  <Heart className="mr-2 h-4 w-4" />
-                  Sponsor
-                </a>
-              </Button>
+              <div className="relative">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-400 to-red-400 rounded-md opacity-75 animate-spin-slow"></div>
+                <Button size="lg" className="relative md-elevation-2 md-state-pressed bg-gradient-to-r from-pink-400 to-red-400 hover:from-pink-500 hover:to-red-500 text-white font-semibold" asChild>
+                  <a href="https://github.com/sponsors/hi-manshu" target="_blank" rel="noopener noreferrer">
+                    <Heart className="mr-2 h-4 w-4" />
+                    Sponsor
+                  </a>
+                </Button>
+              </div>
             </div>
             
             {/* Social Media Links */}
             <div className="flex items-center justify-center gap-4">
               <p className="md-typescale-label-large text-gray-500 dark:text-gray-400">Connect with me:</p>
               <div className="flex gap-3">
-                <Button variant="ghost" size="sm" className="md-state-hover rounded-lg" asChild>
+                <Button variant="ghost" size="sm" className="md-state-hover rounded-md" asChild>
                   <a href="https://www.linkedin.com/in/himanshoe/" target="_blank" rel="noopener noreferrer">
                     <Linkedin className="h-4 w-4 text-blue-600" />
                     <span className="sr-only">LinkedIn</span>
                   </a>
                 </Button>
-                <Button variant="ghost" size="sm" className="md-state-hover rounded-lg" asChild>
+                <Button variant="ghost" size="sm" className="md-state-hover rounded-md" asChild>
                   <a href="https://www.instagram.com/hi_man_shoe/" target="_blank" rel="noopener noreferrer">
                     <Instagram className="h-4 w-4 text-pink-600" />
                     <span className="sr-only">Instagram</span>
                   </a>
                 </Button>
-                <Button variant="ghost" size="sm" className="md-state-hover rounded-lg" asChild>
+                <Button variant="ghost" size="sm" className="md-state-hover rounded-md" asChild>
                   <a href="https://x.com/hi_man_shoe" target="_blank" rel="noopener noreferrer">
                     <X className="h-4 w-4 text-gray-700 dark:text-gray-300" />
                     <span className="sr-only">X</span>

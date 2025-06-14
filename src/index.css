@@ -209,6 +209,16 @@
   }
 }
 
+/* Slow spinning animation for the revolving border */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Material 3 Surface Styles */
 .md-surface {
   background-color: hsl(var(--md-sys-color-surface));
@@ -333,4 +343,9 @@
 
 .prose pre code {
   @apply bg-transparent p-0;
+}
+
+/* Animation classes */
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
 }
