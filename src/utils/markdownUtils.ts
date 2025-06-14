@@ -1,4 +1,3 @@
-
 // Blog post interface
 export interface BlogPost {
   title: string;
@@ -9,6 +8,15 @@ export interface BlogPost {
   author: string;
   slug: string;
   content: string;
+  series?: string;
+  seriesOrder?: number;
+}
+
+// Blog series interface
+export interface BlogSeries {
+  name: string;
+  description: string;
+  posts: BlogPost[];
 }
 
 // Parse frontmatter from markdown content
@@ -137,7 +145,9 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
         tags: frontmatter.tags || frontmatter.categories || [],
         author: frontmatter.author || 'Himanshu Singh',
         slug,
-        content: markdownToHtml(body)
+        content: markdownToHtml(body),
+        series: frontmatter.series,
+        seriesOrder: frontmatter.seriesOrder ? parseInt(frontmatter.seriesOrder) : undefined
       };
       
       console.log('Created post:', post.title);
@@ -150,6 +160,47 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
     console.error('Error loading blog posts:', error);
     return [];
   }
+}
+
+// Get blog posts organized by series
+export async function getBlogSeries(): Promise<BlogSeries[]> {
+  const posts = await getAllBlogPosts();
+  const seriesMap = new Map<string, BlogPost[]>();
+  
+  // Group posts by series
+  posts.forEach(post => {
+    if (post.series) {
+      if (!seriesMap.has(post.series)) {
+        seriesMap.set(post.series, []);
+      }
+      seriesMap.get(post.series)!.push(post);
+    }
+  });
+  
+  // Convert to BlogSeries array and sort posts within each series
+  const series: BlogSeries[] = [];
+  seriesMap.forEach((posts, seriesName) => {
+    const sortedPosts = posts.sort((a, b) => {
+      if (a.seriesOrder && b.seriesOrder) {
+        return a.seriesOrder - b.seriesOrder;
+      }
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    });
+    
+    series.push({
+      name: seriesName,
+      description: `A series of ${posts.length} articles about ${seriesName}`,
+      posts: sortedPosts
+    });
+  });
+  
+  return series;
+}
+
+// Get individual blog posts (not part of any series)
+export async function getIndividualBlogPosts(): Promise<BlogPost[]> {
+  const posts = await getAllBlogPosts();
+  return posts.filter(post => !post.series);
 }
 
 // Get a single blog post by slug
