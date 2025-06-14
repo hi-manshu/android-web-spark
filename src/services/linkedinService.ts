@@ -56,7 +56,7 @@ export class LinkedInService {
         return { success: false, error: 'Failed to scrape LinkedIn profile' };
       }
 
-      const content = scrapeResult.data?.markdown || '';
+      const content = scrapeResult.markdown || '';
       const profileData = this.parseLinkedInContent(content);
       
       return { success: true, data: profileData };
