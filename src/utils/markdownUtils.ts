@@ -31,7 +31,7 @@ export function parseFrontmatter(content: string): { frontmatter: any; body: str
     const colonIndex = line.indexOf(':');
     if (colonIndex !== -1) {
       const key = line.substring(0, colonIndex).trim();
-      let value = line.substring(colonIndex + 1).trim();
+      let value: string | string[] = line.substring(colonIndex + 1).trim();
       
       // Remove quotes if present
       if ((value.startsWith('"') && value.endsWith('"')) || 
@@ -41,12 +41,13 @@ export function parseFrontmatter(content: string): { frontmatter: any; body: str
       
       // Handle arrays (tags)
       if (value.startsWith('[') && value.endsWith(']')) {
-        value = value.slice(1, -1).split(',').map(item => 
+        const arrayValue = value.slice(1, -1).split(',').map(item => 
           item.trim().replace(/"/g, '').replace(/'/g, '')
         );
+        frontmatter[key] = arrayValue;
+      } else {
+        frontmatter[key] = value;
       }
-      
-      frontmatter[key] = value;
     }
   }
   
