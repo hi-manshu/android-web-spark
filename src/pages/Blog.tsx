@@ -1,22 +1,48 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BlogCard } from '@/components/BlogCard';
 import { HashnodeImport } from '@/components/HashnodeImport';
 import { Button } from '@/components/ui/button';
-import { Plus, FileText } from 'lucide-react';
+import { Plus, FileText, Trash2 } from 'lucide-react';
 import { getAllBlogPosts } from '@/utils/markdownUtils';
 import type { BlogPost } from '@/utils/markdownUtils';
+
+const STORAGE_KEY = 'imported-hashnode-posts';
 
 export default function Blog() {
   const [importedPosts, setImportedPosts] = useState<BlogPost[]>([]);
   const [showImport, setShowImport] = useState(false);
   
   const localBlogPosts = getAllBlogPosts();
+
+  // Load imported posts from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        const posts = JSON.parse(stored);
+        setImportedPosts(posts);
+      } catch (error) {
+        console.error('Error loading stored posts:', error);
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    }
+  }, []);
+
   const allPosts = [...localBlogPosts, ...importedPosts];
 
   const handleImport = (posts: BlogPost[]) => {
-    setImportedPosts(prevPosts => [...prevPosts, ...posts]);
+    const newPosts = [...importedPosts, ...posts];
+    setImportedPosts(newPosts);
+    
+    // Save to localStorage
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newPosts));
     setShowImport(false);
+  };
+
+  const clearImportedPosts = () => {
+    setImportedPosts([]);
+    localStorage.removeItem(STORAGE_KEY);
   };
 
   return (
@@ -33,11 +59,26 @@ export default function Blog() {
               <Plus className="h-4 w-4 mr-2" />
               Import from Hashnode
             </Button>
+            {importedPosts.length > 0 && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={clearImportedPosts}
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Clear Imported
+              </Button>
+            )}
           </div>
         </div>
         <p className="text-xl text-muted-foreground">
           Thoughts on Android development, open source, and technology
         </p>
+        {importedPosts.length > 0 && (
+          <p className="text-sm text-muted-foreground mt-2">
+            {importedPosts.length} posts imported from Hashnode
+          </p>
+        )}
       </div>
 
       {showImport && (

@@ -37,7 +37,7 @@ export function HashnodeImport({ onImport }: HashnodeImportProps) {
       const blogPosts = hashnodePosts.map(convertHashnodePostToBlogPost);
       onImport(blogPosts);
       
-      toast.success(`Successfully imported ${blogPosts.length} posts from Hashnode!`);
+      toast.success(`Successfully imported ${blogPosts.length} posts from Hashnode! Posts are saved locally.`);
       setPublicationId('');
     } catch (error) {
       console.error('Error importing Hashnode posts:', error);
@@ -52,7 +52,7 @@ export function HashnodeImport({ onImport }: HashnodeImportProps) {
       <CardHeader>
         <CardTitle>Import from Hashnode</CardTitle>
         <CardDescription>
-          Enter your Hashnode publication ID to import your blog posts
+          One-time import: Enter your publication ID to fetch and store posts locally
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -68,11 +68,11 @@ export function HashnodeImport({ onImport }: HashnodeImportProps) {
               disabled={isLoading}
             />
             <p className="text-xs text-muted-foreground">
-              You can find your publication ID in your Hashnode dashboard URL
+              Find your publication ID in your Hashnode dashboard URL. Posts will be stored locally in your browser.
             </p>
           </div>
           <Button type="submit" disabled={isLoading || !publicationId.trim()} className="w-full">
-            {isLoading ? 'Importing...' : 'Import Posts'}
+            {isLoading ? 'Importing...' : 'Import & Store Posts'}
           </Button>
         </form>
       </CardContent>
