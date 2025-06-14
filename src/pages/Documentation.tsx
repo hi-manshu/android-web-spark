@@ -1,21 +1,50 @@
-
 import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Github, ArrowUp, BookOpen, Download, Star, GitFork, Eye, Copy, Check } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Documentation() {
   const { project } = useParams();
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState<string>('overview');
 
   const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
     setCopiedCode(id);
     setTimeout(() => setCopiedCode(null), 2000);
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['overview', 'installation', 'charts', 'customization'];
+      const scrollPosition = window.scrollY + 100;
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
+    // Set initial active section from URL hash
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      setActiveSection(hash);
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Call once to set initial state
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Mock documentation data - in real implementation, this would load from markdown files
   const getDocumentation = (projectName: string) => {
@@ -324,7 +353,11 @@ fun MyCalendar() {
                     <a
                       key={section.id}
                       href={`#${section.id}`}
-                      className="block text-sm text-muted-foreground hover:text-foreground transition-colors py-1"
+                      className={`block text-sm py-1 px-3 rounded-md transition-colors ${
+                        activeSection === section.id
+                          ? 'bg-primary text-primary-foreground font-medium'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                      }`}
                     >
                       {section.title}
                     </a>
