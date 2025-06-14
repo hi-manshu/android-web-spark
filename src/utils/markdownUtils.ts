@@ -67,7 +67,7 @@ export function parseFrontmatter(content: string): { frontmatter: any; body: str
     const colonIndex = trimmedLine.indexOf(':');
     if (colonIndex !== -1) {
       const key = trimmedLine.substring(0, colonIndex).trim();
-      let value: string | string[] = trimmedLine.substring(colonIndex + 1).trim();
+      let value: string = trimmedLine.substring(colonIndex + 1).trim();
       
       // Remove quotes if present
       if ((value.startsWith('"') && value.endsWith('"')) || 
