@@ -2,7 +2,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 
 interface BlogCardProps {
   title: string;
@@ -14,18 +13,8 @@ interface BlogCardProps {
 }
 
 export function BlogCard({ title, description, date, readTime, tags, slug }: BlogCardProps) {
-  const [isActive, setIsActive] = useState(false);
-
-  const handleClick = () => {
-    setIsActive(true);
-    setTimeout(() => setIsActive(false), 2000); // Remove animation after 2 seconds
-  };
-
   return (
-    <Card 
-      className={`group cursor-pointer transition-all border-gradient moving-border ${isActive ? 'active' : ''}`}
-      onClick={handleClick}
-    >
+    <Card className="group cursor-pointer transition-all border-gradient">
       {/* Gradient overlay on hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-500/5 via-transparent to-gray-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
       
