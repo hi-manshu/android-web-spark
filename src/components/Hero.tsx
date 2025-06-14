@@ -36,7 +36,7 @@ export function Hero() {
           
           <div className="mt-10 flex flex-col items-center gap-6">
             <div className="flex items-center justify-center gap-x-6 flex-wrap">
-              <Button size="lg" className="md-elevation-2 md-state-pressed" asChild>
+              <Button size="lg" className="md-elevation-2 md-state-pressed bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold" asChild>
                 <a href="/projects">
                   View My Projects
                 </a>
@@ -47,9 +47,9 @@ export function Hero() {
                   GitHub
                 </a>
               </Button>
-              <Button variant="outline" size="lg" className="md-state-hover md-state-pressed" asChild>
+              <Button size="lg" className="md-elevation-2 md-state-pressed bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-semibold" asChild>
                 <a href="https://github.com/sponsors/hi-manshu" target="_blank" rel="noopener noreferrer">
-                  <Heart className="mr-2 h-4 w-4 text-red-500" />
+                  <Heart className="mr-2 h-4 w-4" />
                   Sponsor
                 </a>
               </Button>
