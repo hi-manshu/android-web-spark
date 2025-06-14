@@ -22,11 +22,31 @@ export interface BlogSeries {
 
 // Parse frontmatter from markdown content
 export function parseFrontmatter(content: string): { frontmatter: any; body: string } {
-  const frontmatterRegex = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/;
-  const match = content.match(frontmatterRegex);
+  console.log('Raw content length:', content.length);
+  console.log('Content start:', content.substring(0, 200));
+  
+  // Try multiple frontmatter patterns
+  const patterns = [
+    /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/,
+    /^---\r?\n([\s\S]*?)\r?\n---\r?\n\r?\n([\s\S]*)$/,
+    /^---\s*\r?\n([\s\S]*?)\r?\n---\s*\r?\n([\s\S]*)$/
+  ];
+  
+  let match = null;
+  let patternUsed = -1;
+  
+  for (let i = 0; i < patterns.length; i++) {
+    match = content.match(patterns[i]);
+    if (match) {
+      patternUsed = i;
+      console.log(`Frontmatter matched with pattern ${i}`);
+      break;
+    }
+  }
   
   if (!match) {
-    console.log('No frontmatter match found');
+    console.log('No frontmatter match found with any pattern');
+    console.log('First 500 chars:', content.substring(0, 500));
     return { frontmatter: {}, body: content };
   }
   
@@ -34,6 +54,7 @@ export function parseFrontmatter(content: string): { frontmatter: any; body: str
   const body = match[2];
   
   console.log('Frontmatter text:', frontmatterText);
+  console.log('Body start:', body.substring(0, 100));
   
   // Parse YAML-like frontmatter
   const frontmatter: any = {};
@@ -41,7 +62,7 @@ export function parseFrontmatter(content: string): { frontmatter: any; body: str
   
   for (const line of lines) {
     const trimmedLine = line.trim();
-    if (!trimmedLine) continue;
+    if (!trimmedLine || trimmedLine.startsWith('#')) continue;
     
     const colonIndex = trimmedLine.indexOf(':');
     if (colonIndex !== -1) {
@@ -136,6 +157,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       const filename = path.split('/').pop()?.replace('.md', '') || '';
       
       console.log('Processing file:', filename);
+      console.log('Content preview:', content.substring(0, 200));
       
       const { frontmatter, body } = parseFrontmatter(content);
       
@@ -143,11 +165,11 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
       const slug = frontmatter.slug || filename;
       
       const post: BlogPost = {
-        title: frontmatter.title || 'Untitled',
-        description: frontmatter.description || frontmatter.excerpt || '',
+        title: frontmatter.title || filename.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        description: frontmatter.description || frontmatter.excerpt || 'No description available',
         date: frontmatter.date || frontmatter.publishedAt || new Date().toISOString().split('T')[0],
         readTime: frontmatter.readTime || frontmatter.readingTime || '5 min read',
-        tags: frontmatter.tags || frontmatter.categories || [],
+        tags: frontmatter.tags || frontmatter.categories || ['General'],
         author: frontmatter.author || 'Himanshu Singh',
         slug,
         content: markdownToHtml(body),
@@ -155,7 +177,7 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
         seriesOrder: frontmatter.seriesOrder ? parseInt(frontmatter.seriesOrder) : undefined
       };
       
-      console.log('Created post:', post.title);
+      console.log('Created post:', post.title, 'with slug:', post.slug);
       posts.push(post);
     }
     
