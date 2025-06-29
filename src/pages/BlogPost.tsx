@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowUp, BookOpen, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowUp, BookOpen, ArrowLeft, ArrowRight, Calendar, Clock, User, Share2 } from 'lucide-react';
 import { getBlogPostBySlug, getBlogSeries } from '@/utils/markdownUtils';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
@@ -32,12 +32,18 @@ export default function BlogPost() {
 
   if (isLoading) {
     return (
-      <div className="container py-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl font-bold tracking-tight mb-4">Loading...</h1>
-          <p className="text-muted-foreground">
-            Please wait while we load the blog post.
-          </p>
+      <div className="container py-16">
+        <div className="max-w-4xl mx-auto">
+          <div className="animate-pulse space-y-8">
+            <div className="h-4 bg-muted rounded w-1/4"></div>
+            <div className="h-12 bg-muted rounded w-3/4"></div>
+            <div className="h-4 bg-muted rounded w-1/2"></div>
+            <div className="space-y-4">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="h-4 bg-muted rounded"></div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -45,14 +51,19 @@ export default function BlogPost() {
 
   if (error || !post) {
     return (
-      <div className="container py-10">
+      <div className="container py-16">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl font-bold tracking-tight mb-4">Post Not Found</h1>
-          <p className="text-muted-foreground mb-8">
-            The blog post you're looking for doesn't exist.
-          </p>
-          <Button variant="outline" asChild>
-            <Link to="/blog">← Back to Blog</Link>
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold tracking-tight mb-4">Post Not Found</h1>
+            <p className="text-xl text-muted-foreground mb-8">
+              The blog post you're looking for doesn't exist.
+            </p>
+          </div>
+          <Button variant="outline" asChild size="lg">
+            <Link to="/blog" className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Blog
+            </Link>
           </Button>
         </div>
       </div>
@@ -60,57 +71,91 @@ export default function BlogPost() {
   }
 
   return (
-    <div className="container py-10">
+    <div className="container py-12">
       <div className="max-w-4xl mx-auto">
         <article>
-          <header className="mb-8">
-            <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-              <time dateTime={post.date}>{new Date(post.date).toLocaleDateString()}</time>
-              <span>{post.readTime}</span>
+          {/* Header */}
+          <header className="mb-12">
+            {/* Breadcrumb */}
+            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
+              <Link to="/blog" className="hover:text-primary transition-colors">Blog</Link>
+              <span>/</span>
+              <span>Article</span>
             </div>
-            
+
+            {/* Series Badge */}
             {post.series && (
-              <div className="flex items-center space-x-2 mb-4">
-                <BookOpen className="h-4 w-4 text-primary" />
-                <Badge variant="outline">
+              <div className="flex items-center space-x-2 mb-6">
+                <BookOpen className="h-5 w-5 text-primary" />
+                <Badge variant="outline" className="text-sm px-3 py-1">
                   Part {(currentPostIndex + 1)} of {currentSeries?.posts.length} in {post.series}
                 </Badge>
               </div>
             )}
             
-            <h1 className="text-4xl font-bold tracking-tight mb-4">{post.title}</h1>
+            {/* Title */}
+            <h1 className="text-5xl font-bold tracking-tight mb-6 leading-tight bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+              {post.title}
+            </h1>
             
-            <div className="flex items-center space-x-4 mb-6">
-              <span className="text-sm text-muted-foreground">By {post.author}</span>
+            {/* Meta information */}
+            <div className="flex flex-wrap items-center gap-6 mb-8 text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <User className="h-4 w-4" />
+                <span className="font-medium">{post.author}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                <time dateTime={post.date}>{new Date(post.date).toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}</time>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                <span>{post.readTime}</span>
+              </div>
+              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-primary">
+                <Share2 className="h-4 w-4" />
+                Share
+              </Button>
             </div>
             
-            <div className="flex flex-wrap gap-2 mb-8">
+            {/* Tags */}
+            <div className="flex flex-wrap gap-2 mb-12">
               {post.tags.map((tag) => (
-                <Badge key={tag} variant="secondary">
+                <Badge key={tag} variant="secondary" className="px-3 py-1 bg-primary/10 text-primary hover:bg-primary/20">
                   {tag}
                 </Badge>
               ))}
             </div>
           </header>
           
-          <div 
-            className="prose prose-neutral dark:prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          {/* Content */}
+          <div className="relative">
+            <div 
+              className="prose prose-lg prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:font-bold prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:leading-relaxed prose-pre:bg-muted prose-pre:border prose-img:rounded-lg prose-img:shadow-lg"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
+          </div>
           
           {/* Series Navigation */}
           {currentSeries && (previousPost || nextPost) && (
-            <div className="mt-12 pt-8 border-t border-border">
-              <h3 className="text-lg font-semibold mb-4">Continue Reading</h3>
-              <div className="grid gap-4 md:grid-cols-2">
+            <div className="mt-16 pt-12 border-t border-border">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold mb-2">Continue Reading</h3>
+                <p className="text-muted-foreground">More articles from the {post.series} series</p>
+              </div>
+              <div className="grid gap-6 md:grid-cols-2">
                 {previousPost && (
-                  <Card className="group">
-                    <CardHeader className="pb-2">
-                      <div className="flex items-center text-sm text-muted-foreground mb-1">
-                        <ArrowLeft className="h-3 w-3 mr-1" />
-                        Previous
+                  <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-card to-card/50 border-0">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center text-sm text-muted-foreground mb-2">
+                        <ArrowLeft className="h-4 w-4 mr-2" />
+                        Previous Article
                       </div>
-                      <CardTitle className="text-base group-hover:text-primary transition-colors">
+                      <CardTitle className="text-lg group-hover:text-primary transition-colors">
                         <Link to={`/blog/${previousPost.slug}`}>
                           {previousPost.title}
                         </Link>
@@ -120,13 +165,13 @@ export default function BlogPost() {
                 )}
                 
                 {nextPost && (
-                  <Card className="group">
-                    <CardHeader className="pb-2">
-                      <div className="flex items-center justify-end text-sm text-muted-foreground mb-1">
-                        Next
-                        <ArrowRight className="h-3 w-3 ml-1" />
+                  <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-card to-card/50 border-0">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center justify-end text-sm text-muted-foreground mb-2">
+                        Next Article
+                        <ArrowRight className="h-4 w-4 ml-2" />
                       </div>
-                      <CardTitle className="text-base text-right group-hover:text-primary transition-colors">
+                      <CardTitle className="text-lg text-right group-hover:text-primary transition-colors">
                         <Link to={`/blog/${nextPost.slug}`}>
                           {nextPost.title}
                         </Link>
@@ -138,18 +183,20 @@ export default function BlogPost() {
             </div>
           )}
           
-          <footer className="mt-12 pt-8 border-t border-border">
-            <div className="flex items-center justify-between">
-              <Button variant="outline" asChild>
+          {/* Footer */}
+          <footer className="mt-16 pt-12 border-t border-border">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <Button variant="outline" asChild size="lg" className="gap-2">
                 <Link to="/blog">
-                  ← Back to Blog
+                  <ArrowLeft className="h-4 w-4" />
+                  Back to Blog
                 </Link>
               </Button>
               
-              <Button variant="outline" asChild>
+              <Button variant="outline" asChild size="lg" className="gap-2">
                 <a href="https://github.com/hi-manshu" target="_blank" rel="noopener noreferrer">
                   Follow on GitHub
-                  <ArrowUp className="ml-2 h-3 w-3 rotate-45" />
+                  <ArrowUp className="h-4 w-4 rotate-45" />
                 </a>
               </Button>
             </div>
