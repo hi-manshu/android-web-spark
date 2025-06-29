@@ -15,6 +15,8 @@ import BlogPost from "./pages/BlogPost";
 import Projects from "./pages/Projects";
 import About from "./pages/About";
 import Documentation from "./pages/Documentation";
+import DocumentationHome from "./pages/DocumentationHome";
+import FetchBlog from "./pages/FetchBlog";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,7 +38,9 @@ const App = () => (
                   <Route path="/blog/:slug" element={<BlogPost />} />
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/about" element={<About />} />
+                  <Route path="/docs" element={<DocumentationHome />} />
                   <Route path="/docs/:project" element={<Documentation />} />
+                  <Route path="/fetch-blog" element={<FetchBlog />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>

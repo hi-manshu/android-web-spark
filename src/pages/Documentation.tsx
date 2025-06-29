@@ -4,8 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Github, ArrowUp, BookOpen, Download, Star, GitFork, Eye, Copy, Check, ChevronRight } from 'lucide-react';
+import { Github, ArrowUp, BookOpen, Copy, Check, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { FadeInView } from '@/components/FadeInView';
 
 export default function Documentation() {
   const { project } = useParams();
@@ -35,19 +36,32 @@ export default function Documentation() {
       }
     };
 
-    // Set initial active section from URL hash
     const hash = window.location.hash.replace('#', '');
     if (hash) {
       setActiveSection(hash);
+      setTimeout(() => {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
     }
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Call once to set initial state
+    handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Mock documentation data - in real implementation, this would load from markdown files
+  const scrollToSection = (sectionId: string) => {
+    setActiveSection(sectionId);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Mock documentation data
   const getDocumentation = (projectName: string) => {
     const docs = {
       charty: {
@@ -61,54 +75,6 @@ export default function Documentation() {
           forks: "180",
           watchers: "45"
         },
-        quickStart: {
-          installation: "implementation 'com.himanshoe:charty:2.0.0'",
-          basicUsage: `@Composable
-fun MyChart() {
-    LineChart(
-        data = listOf(
-            ChartData(1f, 10f),
-            ChartData(2f, 15f),
-            ChartData(3f, 8f)
-        ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
-    )
-}`
-        },
-        features: [
-          {
-            title: "Multiple Chart Types",
-            description: "Support for Line, Bar, Pie, Area, and Scatter charts",
-            code: `LineChart(data = lineData)
-BarChart(data = barData)
-PieChart(data = pieData)`
-          },
-          {
-            title: "Jetpack Compose Native",
-            description: "Built specifically for Jetpack Compose with modern APIs",
-            code: `@Composable
-fun ChartExample() {
-    LineChart(
-        data = chartData,
-        modifier = Modifier.fillMaxSize()
-    )
-}`
-          },
-          {
-            title: "Customizable Styling",
-            description: "Extensive customization options for colors, animations, and styling",
-            code: `LineChart(
-    data = data,
-    chartStyle = ChartStyle(
-        primaryColor = Color.Blue,
-        backgroundColor = Color.White,
-        gridColor = Color.Gray
-    )
-)`
-          }
-        ],
         sections: [
           {
             id: "overview",
@@ -183,6 +149,43 @@ fun ChartExample() {
             content: "Real-world examples and use cases for different chart types."
           }
         ],
+        code: {
+          installation: "implementation 'com.himanshoe:charty:2.0.0'",
+          basicUsage: `@Composable
+fun MyChart() {
+    LineChart(
+        data = listOf(
+            ChartData(1f, 10f),
+            ChartData(2f, 15f),
+            ChartData(3f, 8f)
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
+    )
+}`,
+          lineChart: `LineChart(
+    data = lineData,
+    modifier = Modifier
+        .fillMaxWidth()
+        .height(300.dp),
+    chartStyle = ChartStyle(
+        primaryColor = Color.Blue
+    )
+)`,
+          barChart: `BarChart(
+    data = barData,
+    modifier = Modifier.fillMaxSize(),
+    chartStyle = ChartStyle(
+        primaryColor = Color.Green
+    )
+)`,
+          pieChart: `PieChart(
+    data = pieData,
+    modifier = Modifier.size(300.dp),
+    showLabels = true
+)`
+        },
         tags: ["Android", "Kotlin", "Charts", "Jetpack Compose", "UI"]
       },
       kalendar: {
@@ -196,41 +199,6 @@ fun ChartExample() {
           forks: "120",
           watchers: "32"
         },
-        quickStart: {
-          installation: "implementation 'com.himanshoe:kalendar:1.5.0'",
-          basicUsage: `@Composable
-fun MyCalendar() {
-    Kalendar(
-        selectedDate = remember { 
-            mutableStateOf(LocalDate.now()) 
-        },
-        onDateSelected = { date -> 
-            // Handle date selection
-        }
-    )
-}`
-        },
-        features: [
-          {
-            title: "Date Selection",
-            description: "Easy date selection with customizable callbacks",
-            code: `Kalendar(
-    onDateSelected = { date ->
-        println("Selected: $date")
-    }
-)`
-          },
-          {
-            title: "Custom Styling",
-            description: "Fully customizable appearance and theming",
-            code: `Kalendar(
-    calendarStyle = CalendarStyle(
-        selectedDateColor = Color.Blue,
-        todayColor = Color.Red
-    )
-)`
-          }
-        ],
         sections: [
           {
             id: "overview",
@@ -252,6 +220,20 @@ fun MyCalendar() {
             content: "Get started with Kalendar in just a few lines of code."
           }
         ],
+        code: {
+          installation: "implementation 'com.himanshoe:kalendar:1.5.0'",
+          basicUsage: `@Composable
+fun MyCalendar() {
+    Kalendar(
+        selectedDate = remember { 
+            mutableStateOf(LocalDate.now()) 
+        },
+        onDateSelected = { date -> 
+            // Handle date selection
+        }
+    )
+}`
+        },
         tags: ["Android", "Calendar", "Jetpack Compose", "UI", "Date Picker"]
       }
     };
@@ -271,7 +253,7 @@ fun MyCalendar() {
               The documentation for "{project}" could not be found.
             </p>
             <Button asChild size="lg">
-              <a href="/projects">View All Projects</a>
+              <a href="/docs">View All Documentation</a>
             </Button>
           </div>
         </div>
@@ -295,32 +277,30 @@ fun MyCalendar() {
     </div>
   );
 
-  // Helper function to render nested table of contents
   const renderTocItem = (section: any, isNested = false) => {
     const isActive = activeSection === section.id;
     const hasChildren = doc.sections.some(s => s.parent === section.id);
     
     return (
       <div key={section.id}>
-        <a
-          href={`#${section.id}`}
-          className={`flex items-center text-sm py-2 px-3 rounded-md transition-all group ${
+        <button
+          onClick={() => scrollToSection(section.id)}
+          className={`w-full flex items-center text-sm py-3 px-4 rounded-lg transition-all group text-left ${
             isActive
-              ? 'bg-primary text-primary-foreground font-medium shadow-sm'
+              ? 'bg-gradient-to-r from-primary/20 to-blue-500/20 text-primary border border-primary/20 shadow-sm'
               : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-          } ${isNested ? 'ml-4 pl-6 border-l border-border' : ''}`}
+          } ${isNested ? 'ml-4 pl-6 border-l-2 border-border' : ''}`}
         >
           {hasChildren && (
-            <ChevronRight className={`h-3 w-3 mr-1 transition-transform ${
+            <ChevronRight className={`h-4 w-4 mr-2 transition-transform ${
               doc.sections.some(s => s.parent === section.id && activeSection === s.id) ? 'rotate-90' : ''
             }`} />
           )}
-          <span className={`${isNested ? 'text-xs' : ''}`}>{section.title}</span>
-        </a>
+          <span className={`${isNested ? 'text-sm' : 'font-medium'}`}>{section.title}</span>
+        </button>
         
-        {/* Render nested items */}
         {hasChildren && (
-          <div className="ml-2">
+          <div className="mt-1">
             {doc.sections
               .filter(s => s.parent === section.id)
               .map(childSection => renderTocItem(childSection, true))}
@@ -332,119 +312,60 @@ fun MyCalendar() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 dark:from-slate-900 dark:to-gray-900">
-      {/* Hero Section */}
-      <section className="border-b bg-gradient-to-r from-slate-900 via-gray-900 to-slate-900 text-white">
-        <div className="container py-16">
-          <div className="max-w-4xl">
-            <div className="flex items-center space-x-3 mb-4">
-              <BookOpen className="h-8 w-8" />
-              <Badge variant="outline" className="border-slate-400 text-slate-200">
-                v{doc.version}
-              </Badge>
-            </div>
-            
-            <h1 className="text-5xl font-bold tracking-tight mb-4">{doc.title}</h1>
-            <p className="text-xl text-slate-300 mb-2">{doc.subtitle}</p>
-            <p className="text-lg text-slate-400 mb-8 max-w-2xl">{doc.description}</p>
-            
-            <div className="flex flex-wrap items-center gap-4 mb-8">
-              <Button asChild size="lg">
-                <a href={doc.githubUrl} target="_blank" rel="noopener noreferrer">
-                  <Github className="mr-2 h-4 w-4" />
-                  View on GitHub
-                  <ArrowUp className="ml-2 h-3 w-3 rotate-45" />
-                </a>
-              </Button>
-              
-              <div className="flex items-center space-x-6 text-sm text-slate-300">
-                <div className="flex items-center space-x-1">
-                  <Star className="h-4 w-4" />
-                  <span>{doc.stats.stars}</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <GitFork className="h-4 w-4" />
-                  <span>{doc.stats.forks}</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <Eye className="h-4 w-4" />
-                  <span>{doc.stats.watchers}</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex flex-wrap gap-2">
-              {doc.tags.map((tag) => (
-                <Badge key={tag} variant="secondary" className="bg-slate-800 text-slate-200 border-slate-700">
-                  {tag}
+      {/* Hero Section - matching home page style */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-500/5 via-transparent to-gray-500/5" />
+        <div className="container relative">
+          <FadeInView>
+            <div className="max-w-4xl">
+              <div className="flex items-center space-x-3 mb-6">
+                <BookOpen className="h-10 w-10 text-primary" />
+                <Badge variant="outline" className="text-lg px-4 py-2">
+                  v{doc.version}
                 </Badge>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Start Section */}
-      <section className="py-16 bg-white dark:bg-slate-900">
-        <div className="container max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-8">
-            <div>
-              <h2 className="text-3xl font-bold mb-6">Quick Start</h2>
-              
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-semibold mb-3 flex items-center">
-                    <Download className="h-5 w-5 mr-2" />
-                    Installation
-                  </h3>
-                  <p className="text-muted-foreground mb-4">
-                    Add the following dependency to your app's build.gradle file:
-                  </p>
-                  <CodeBlock code={doc.quickStart.installation} language="gradle" id="installation" />
-                </div>
-                
-                <div>
-                  <h3 className="text-xl font-semibold mb-3">Basic Usage</h3>
-                  <p className="text-muted-foreground mb-4">
-                    Get started with a simple example:
-                  </p>
-                  <CodeBlock code={doc.quickStart.basicUsage} id="basic-usage" />
-                </div>
               </div>
-            </div>
-            
-            <div>
-              <h2 className="text-3xl font-bold mb-6">Key Features</h2>
-              <div className="space-y-6">
-                {doc.features.map((feature, index) => (
-                  <Card key={index} className="border-l-4 border-l-primary">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg">{feature.title}</CardTitle>
-                      <CardDescription>{feature.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <CodeBlock code={feature.code} id={`feature-${index}`} />
-                    </CardContent>
-                  </Card>
+              
+              <h1 className="text-5xl font-bold tracking-tight mb-4 bg-gradient-to-r from-slate-700 to-gray-700 dark:from-slate-300 dark:to-gray-300 bg-clip-text text-transparent">
+                {doc.title}
+              </h1>
+              <p className="text-2xl text-muted-foreground mb-2">{doc.subtitle}</p>
+              <p className="text-lg text-muted-foreground mb-8 max-w-2xl leading-relaxed">{doc.description}</p>
+              
+              <div className="flex flex-wrap items-center gap-4 mb-8">
+                <Button asChild size="lg" className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90">
+                  <a href={doc.githubUrl} target="_blank" rel="noopener noreferrer">
+                    <Github className="mr-2 h-4 w-4" />
+                    View on GitHub
+                    <ArrowUp className="ml-2 h-3 w-3 rotate-45" />
+                  </a>
+                </Button>
+              </div>
+              
+              <div className="flex flex-wrap gap-2">
+                {doc.tags.map((tag) => (
+                  <Badge key={tag} variant="secondary" className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                    {tag}
+                  </Badge>
                 ))}
               </div>
             </div>
-          </div>
+          </FadeInView>
         </div>
       </section>
 
-      {/* Documentation Sections */}
-      <section className="py-16 bg-slate-50 dark:bg-slate-800">
-        <div className="container max-w-6xl">
+      {/* Main Content - matching home page layout */}
+      <section className="py-24 bg-gradient-to-br from-slate-50/30 via-white to-gray-50/30 dark:from-slate-900/30 dark:via-background dark:to-gray-900/30">
+        <div className="container">
           <div className="grid lg:grid-cols-4 gap-8">
-            {/* Enhanced Table of Contents */}
+            {/* Enhanced Table of Contents - Fixed position */}
             <div className="lg:col-span-1">
               <div className="sticky top-8">
-                <Card className="p-4 shadow-lg border-0 bg-gradient-to-br from-card to-card/50">
-                  <h3 className="text-lg font-semibold mb-4 flex items-center">
-                    <BookOpen className="h-5 w-5 mr-2" />
+                <Card className="p-6 shadow-lg border-0 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm">
+                  <h3 className="text-xl font-bold mb-6 flex items-center bg-gradient-to-r from-slate-700 to-gray-700 dark:from-slate-300 dark:to-gray-300 bg-clip-text text-transparent">
+                    <BookOpen className="h-5 w-5 mr-2 text-primary" />
                     Table of Contents
                   </h3>
-                  <nav className="space-y-1">
+                  <nav className="space-y-2 max-h-[70vh] overflow-y-auto">
                     {doc.sections
                       .filter(section => section.level === 1)
                       .map(section => renderTocItem(section))}
@@ -455,55 +376,90 @@ fun MyCalendar() {
             
             {/* Main Content */}
             <div className="lg:col-span-3">
-              <div className="prose prose-neutral dark:prose-invert max-w-none">
-                {doc.sections.map((section, index) => (
-                  <div key={section.id} id={section.id} className="mb-12 scroll-mt-8">
-                    <div className={`${section.level === 1 ? 'mb-6' : 'mb-4'}`}>
-                      {section.level === 1 ? (
-                        <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-                          {section.title}
-                        </h2>
-                      ) : (
-                        <h3 className="text-xl font-semibold mb-3 text-primary">
-                          {section.title}
-                        </h3>
+              <FadeInView>
+                <div className="space-y-16">
+                  {doc.sections.map((section, index) => (
+                    <div key={section.id} id={section.id} className="scroll-mt-8">
+                      <div className={`${section.level === 1 ? 'mb-8' : 'mb-6'}`}>
+                        {section.level === 1 ? (
+                          <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                            {section.title}
+                          </h2>
+                        ) : (
+                          <h3 className="text-2xl font-semibold mb-4 text-primary">
+                            {section.title}
+                          </h3>
+                        )}
+                      </div>
+                      
+                      <div className="prose prose-lg prose-neutral dark:prose-invert max-w-none">
+                        <p className="text-muted-foreground leading-relaxed mb-6">
+                          {section.content}
+                        </p>
+                      </div>
+
+                      {/* Code examples for specific sections */}
+                      {section.id === 'installation' && (
+                        <div className="mt-6">
+                          <h4 className="text-lg font-semibold mb-3">Gradle Dependency</h4>
+                          <CodeBlock code={doc.code.installation} language="gradle" id="installation" />
+                        </div>
+                      )}
+
+                      {section.id === 'basic-usage' && (
+                        <div className="mt-6">
+                          <h4 className="text-lg font-semibold mb-3">Basic Example</h4>
+                          <CodeBlock code={doc.code.basicUsage} id="basic-usage" />
+                        </div>
+                      )}
+
+                      {section.id === 'line-charts' && doc.code.lineChart && (
+                        <div className="mt-6">
+                          <h4 className="text-lg font-semibold mb-3">Line Chart Example</h4>
+                          <CodeBlock code={doc.code.lineChart} id="line-chart" />
+                        </div>
+                      )}
+
+                      {section.id === 'bar-charts' && doc.code.barChart && (
+                        <div className="mt-6">
+                          <h4 className="text-lg font-semibold mb-3">Bar Chart Example</h4>
+                          <CodeBlock code={doc.code.barChart} id="bar-chart" />
+                        </div>
+                      )}
+
+                      {section.id === 'pie-charts' && doc.code.pieChart && (
+                        <div className="mt-6">
+                          <h4 className="text-lg font-semibold mb-3">Pie Chart Example</h4>
+                          <CodeBlock code={doc.code.pieChart} id="pie-chart" />
+                        </div>
+                      )}
+
+                      {index < doc.sections.length - 1 && section.level === 1 && (
+                        <Separator className="mt-12" />
                       )}
                     </div>
-                    <p className="text-muted-foreground text-lg leading-relaxed">
-                      {section.content}
-                    </p>
-                    {index < doc.sections.length - 1 && section.level === 1 && (
-                      <Separator className="mt-8" />
-                    )}
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </FadeInView>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer Navigation */}
-      <section className="py-12 border-t">
-        <div className="container max-w-6xl">
+      <section className="py-12 border-t bg-gradient-to-br from-slate-50/50 via-white to-gray-50/50 dark:from-slate-900/50 dark:via-background dark:to-gray-900/50">
+        <div className="container">
           <div className="flex items-center justify-between">
-            <Button variant="outline" asChild>
-              <a href="/projects">
-                ← Back to Projects
+            <Button variant="outline" asChild size="lg">
+              <a href="/docs">
+                ← Back to Documentation
               </a>
             </Button>
             
             <div className="flex items-center space-x-4">
-              <Button variant="outline" asChild>
+              <Button variant="outline" asChild size="lg">
                 <a href={doc.githubUrl} target="_blank" rel="noopener noreferrer">
                   View Source
-                  <ArrowUp className="ml-2 h-3 w-3 rotate-45" />
-                </a>
-              </Button>
-              
-              <Button variant="outline" asChild>
-                <a href={`${doc.githubUrl}/issues`} target="_blank" rel="noopener noreferrer">
-                  Report Issue
                   <ArrowUp className="ml-2 h-3 w-3 rotate-45" />
                 </a>
               </Button>
