@@ -1,9 +1,10 @@
+
 import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Github, ArrowUp, BookOpen, Download, Star, GitFork, Eye, Copy, Check } from 'lucide-react';
+import { Github, ArrowUp, BookOpen, Download, Star, GitFork, Eye, Copy, Check, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export default function Documentation() {
@@ -19,7 +20,7 @@ export default function Documentation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['overview', 'installation', 'charts', 'customization'];
+      const sections = ['overview', 'installation', 'basic-usage', 'charts', 'line-charts', 'bar-charts', 'pie-charts', 'customization', 'styling', 'animations', 'examples'];
       const scrollPosition = window.scrollY + 100;
 
       for (const sectionId of sections) {
@@ -112,22 +113,74 @@ fun ChartExample() {
           {
             id: "overview",
             title: "Overview",
+            level: 1,
             content: "Charty is a comprehensive Android chart library that provides beautiful, interactive charts for your Android applications. Built with Jetpack Compose, it offers a modern approach to data visualization with smooth animations and extensive customization options."
           },
           {
             id: "installation",
             title: "Installation",
+            level: 1,
             content: "Add Charty to your Android project by including the dependency in your app's build.gradle file."
+          },
+          {
+            id: "basic-usage",
+            title: "Basic Usage",
+            level: 2,
+            parent: "installation",
+            content: "Get started with Charty in just a few lines of code. Here's how to create your first chart."
           },
           {
             id: "charts",
             title: "Chart Types",
+            level: 1,
             content: "Charty supports multiple chart types to visualize your data effectively."
+          },
+          {
+            id: "line-charts",
+            title: "Line Charts",
+            level: 2,
+            parent: "charts",
+            content: "Line charts are perfect for showing trends over time or continuous data."
+          },
+          {
+            id: "bar-charts",
+            title: "Bar Charts",
+            level: 2,
+            parent: "charts",
+            content: "Bar charts are ideal for comparing different categories of data."
+          },
+          {
+            id: "pie-charts",
+            title: "Pie Charts",
+            level: 2,
+            parent: "charts",
+            content: "Pie charts show proportions and percentages of a whole dataset."
           },
           {
             id: "customization",
             title: "Customization",
+            level: 1,
             content: "Customize your charts with various styling options, colors, and animations."
+          },
+          {
+            id: "styling",
+            title: "Styling Options",
+            level: 2,
+            parent: "customization",
+            content: "Learn how to style your charts with colors, fonts, and layout options."
+          },
+          {
+            id: "animations",
+            title: "Animations",
+            level: 2,
+            parent: "customization",
+            content: "Add smooth animations to make your charts more engaging and interactive."
+          },
+          {
+            id: "examples",
+            title: "Examples",
+            level: 1,
+            content: "Real-world examples and use cases for different chart types."
           }
         ],
         tags: ["Android", "Kotlin", "Charts", "Jetpack Compose", "UI"]
@@ -182,16 +235,20 @@ fun MyCalendar() {
           {
             id: "overview",
             title: "Overview",
+            level: 1,
             content: "Kalendar is a modern calendar component designed for Android applications using Jetpack Compose. It provides an intuitive interface for date selection and calendar navigation."
           },
           {
             id: "installation", 
             title: "Installation",
+            level: 1,
             content: "Add Kalendar to your Android project with a simple dependency addition."
           },
           {
-            id: "usage",
+            id: "basic-usage",
             title: "Basic Usage",
+            level: 2,
+            parent: "installation",
             content: "Get started with Kalendar in just a few lines of code."
           }
         ],
@@ -237,6 +294,41 @@ fun MyCalendar() {
       </Button>
     </div>
   );
+
+  // Helper function to render nested table of contents
+  const renderTocItem = (section: any, isNested = false) => {
+    const isActive = activeSection === section.id;
+    const hasChildren = doc.sections.some(s => s.parent === section.id);
+    
+    return (
+      <div key={section.id}>
+        <a
+          href={`#${section.id}`}
+          className={`flex items-center text-sm py-2 px-3 rounded-md transition-all group ${
+            isActive
+              ? 'bg-primary text-primary-foreground font-medium shadow-sm'
+              : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+          } ${isNested ? 'ml-4 pl-6 border-l border-border' : ''}`}
+        >
+          {hasChildren && (
+            <ChevronRight className={`h-3 w-3 mr-1 transition-transform ${
+              doc.sections.some(s => s.parent === section.id && activeSection === s.id) ? 'rotate-90' : ''
+            }`} />
+          )}
+          <span className={`${isNested ? 'text-xs' : ''}`}>{section.title}</span>
+        </a>
+        
+        {/* Render nested items */}
+        {hasChildren && (
+          <div className="ml-2">
+            {doc.sections
+              .filter(s => s.parent === section.id)
+              .map(childSection => renderTocItem(childSection, true))}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 dark:from-slate-900 dark:to-gray-900">
@@ -344,25 +436,20 @@ fun MyCalendar() {
       <section className="py-16 bg-slate-50 dark:bg-slate-800">
         <div className="container max-w-6xl">
           <div className="grid lg:grid-cols-4 gap-8">
-            {/* Table of Contents */}
+            {/* Enhanced Table of Contents */}
             <div className="lg:col-span-1">
               <div className="sticky top-8">
-                <h3 className="text-lg font-semibold mb-4">Table of Contents</h3>
-                <nav className="space-y-2">
-                  {doc.sections.map((section) => (
-                    <a
-                      key={section.id}
-                      href={`#${section.id}`}
-                      className={`block text-sm py-1 px-3 rounded-md transition-colors ${
-                        activeSection === section.id
-                          ? 'bg-primary text-primary-foreground font-medium'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                      }`}
-                    >
-                      {section.title}
-                    </a>
-                  ))}
-                </nav>
+                <Card className="p-4 shadow-lg border-0 bg-gradient-to-br from-card to-card/50">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center">
+                    <BookOpen className="h-5 w-5 mr-2" />
+                    Table of Contents
+                  </h3>
+                  <nav className="space-y-1">
+                    {doc.sections
+                      .filter(section => section.level === 1)
+                      .map(section => renderTocItem(section))}
+                  </nav>
+                </Card>
               </div>
             </div>
             
@@ -370,12 +457,24 @@ fun MyCalendar() {
             <div className="lg:col-span-3">
               <div className="prose prose-neutral dark:prose-invert max-w-none">
                 {doc.sections.map((section, index) => (
-                  <div key={section.id} id={section.id} className="mb-12">
-                    <h2 className="text-2xl font-bold mb-4">{section.title}</h2>
+                  <div key={section.id} id={section.id} className="mb-12 scroll-mt-8">
+                    <div className={`${section.level === 1 ? 'mb-6' : 'mb-4'}`}>
+                      {section.level === 1 ? (
+                        <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                          {section.title}
+                        </h2>
+                      ) : (
+                        <h3 className="text-xl font-semibold mb-3 text-primary">
+                          {section.title}
+                        </h3>
+                      )}
+                    </div>
                     <p className="text-muted-foreground text-lg leading-relaxed">
                       {section.content}
                     </p>
-                    {index < doc.sections.length - 1 && <Separator className="mt-8" />}
+                    {index < doc.sections.length - 1 && section.level === 1 && (
+                      <Separator className="mt-8" />
+                    )}
                   </div>
                 ))}
               </div>
