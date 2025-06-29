@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Download, FileText, Calendar, User, ExternalLink, Copy, Check } from 'lucide-react';
 import { FadeInView } from '@/components/FadeInView';
+import { fetchHashnodePost } from '@/services/hashnodeService';
 
 interface BlogPost {
   title: string;
@@ -26,7 +27,13 @@ export default function FetchBlog() {
 
   const fetchBlogPost = async () => {
     if (!url.trim()) {
-      setError('Please enter a valid URL');
+      setError('Please enter a valid Hashnode URL');
+      return;
+    }
+
+    // Validate Hashnode URL
+    if (!url.includes('hashnode.') && !url.includes('hashnode.com')) {
+      setError('Please enter a valid Hashnode blog post URL');
       return;
     }
 
@@ -35,109 +42,17 @@ export default function FetchBlog() {
     setBlogPost(null);
 
     try {
-      // Mock API call - in real implementation, this would call a backend service
-      // that uses services like Mercury Parser or similar to extract content
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API delay
+      const post = await fetchHashnodePost(url);
       
-      // Mock response
-      const mockBlogPost: BlogPost = {
-        title: "Building Modern Android Apps with Jetpack Compose",
-        content: `# Building Modern Android Apps with Jetpack Compose
+      if (!post) {
+        setError('Blog post not found. Please check the URL and try again.');
+        return;
+      }
 
-Jetpack Compose is Android's modern toolkit for building native UI. It simplifies and accelerates UI development on Android by providing a declarative approach to building user interfaces.
-
-## What is Jetpack Compose?
-
-Jetpack Compose is a declarative UI toolkit that allows you to build Android UIs with less code, powerful tools, and intuitive Kotlin APIs. Instead of using XML layouts, you write UI components using Kotlin functions.
-
-## Key Benefits
-
-### 1. Declarative UI
-With Compose, you describe what your UI should look like for any given state, and Compose takes care of updating the UI when the state changes.
-
-### 2. Kotlin First
-Compose is built from the ground up with Kotlin in mind, leveraging Kotlin's features like coroutines, extension functions, and more.
-
-### 3. Interoperable
-You can adopt Compose incrementally in your existing apps, alongside your existing UI toolkit.
-
-## Getting Started
-
-To start using Jetpack Compose in your project, add the following to your app's \`build.gradle\` file:
-
-\`\`\`kotlin
-android {
-    compileSdk 34
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    buildFeatures {
-        compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.4"
-    }
-}
-
-dependencies {
-    implementation "androidx.compose.ui:ui:1.5.4"
-    implementation "androidx.compose.ui:ui-tooling-preview:1.5.4"
-    implementation "androidx.compose.material3:material3:1.1.2"
-    implementation "androidx.activity:activity-compose:1.8.0"
-}
-\`\`\`
-
-## Creating Your First Composable
-
-Here's a simple example of a Composable function:
-
-\`\`\`kotlin
-@Composable
-fun Greeting(name: String) {
-    Text(
-        text = "Hello $name!",
-        style = MaterialTheme.typography.headlineMedium
-    )
-}
-\`\`\`
-
-## State Management
-
-Managing state in Compose is straightforward with the \`remember\` and \`mutableStateOf\` functions:
-
-\`\`\`kotlin
-@Composable
-fun Counter() {
-    var count by remember { mutableStateOf(0) }
-    
-    Column {
-        Text("Count: $count")
-        Button(onClick = { count++ }) {
-            Text("Increment")
-        }
-    }
-}
-\`\`\`
-
-## Conclusion
-
-Jetpack Compose represents the future of Android UI development. Its declarative approach, combined with Kotlin's expressiveness, makes building beautiful and performant UIs more enjoyable and efficient.
-
-Start experimenting with Compose today and see how it can transform your Android development experience!`,
-        publishedAt: "2024-01-15",
-        author: "Himanshu Singh",
-        tags: ["Android", "Jetpack Compose", "Kotlin", "UI", "Mobile Development"],
-        url: url
-      };
-
-      setBlogPost(mockBlogPost);
+      setBlogPost(post);
     } catch (err) {
       setError('Failed to fetch blog post. Please check the URL and try again.');
+      console.error('Fetch error:', err);
     } finally {
       setLoading(false);
     }
@@ -166,22 +81,22 @@ Start experimenting with Compose today and see how it can transform your Android
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 dark:from-slate-900 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-950 dark:to-indigo-950">
       {/* Hero Section */}
       <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-500/5 via-transparent to-gray-500/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-indigo-500/5" />
         <div className="container relative">
           <FadeInView>
             <div className="max-w-4xl mx-auto text-center">
               <div className="flex justify-center mb-6">
-                <FileText className="h-16 w-16 text-primary" />
+                <FileText className="h-16 w-16 text-blue-600" />
               </div>
               
-              <h1 className="text-5xl font-bold tracking-tight mb-6 bg-gradient-to-r from-slate-700 to-gray-700 dark:from-slate-300 dark:to-gray-300 bg-clip-text text-transparent">
-                Blog Fetcher
+              <h1 className="text-5xl font-bold tracking-tight mb-6 bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-blue-300 dark:to-indigo-300 bg-clip-text text-transparent">
+                Hashnode Blog Fetcher
               </h1>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-2xl mx-auto">
-                Extract and convert blog posts from any URL into clean markdown format. 
+                Extract and convert Hashnode blog posts into clean markdown format. 
                 Perfect for content curation and documentation.
               </p>
             </div>
@@ -190,19 +105,19 @@ Start experimenting with Compose today and see how it can transform your Android
       </section>
 
       {/* Main Content */}
-      <section className="py-12 bg-gradient-to-br from-slate-50/30 via-white to-gray-50/30 dark:from-slate-900/30 dark:via-background dark:to-gray-900/30">
+      <section className="py-12 bg-gradient-to-br from-blue-50/30 via-white to-indigo-50/30 dark:from-blue-950/30 dark:via-background dark:to-indigo-950/30">
         <div className="container max-w-6xl">
           <FadeInView>
             <Card className="mb-8 border-0 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm shadow-lg">
               <CardHeader>
-                <CardTitle className="text-2xl bg-gradient-to-r from-slate-700 to-gray-700 dark:from-slate-300 dark:to-gray-300 bg-clip-text text-transparent">
-                  Fetch Blog Post
+                <CardTitle className="text-2xl bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-blue-300 dark:to-indigo-300 bg-clip-text text-transparent">
+                  Fetch Hashnode Post
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex gap-4">
                   <Input
-                    placeholder="Enter blog post URL (e.g., https://hashnode.com/post/...)"
+                    placeholder="Enter Hashnode post URL (e.g., https://yourname.hashnode.dev/post-slug)"
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
                     className="flex-1"
@@ -212,7 +127,7 @@ Start experimenting with Compose today and see how it can transform your Android
                     onClick={fetchBlogPost} 
                     disabled={loading || !url.trim()}
                     size="lg"
-                    className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90"
+                    className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
                   >
                     {loading ? 'Fetching...' : 'Fetch'}
                   </Button>
@@ -233,7 +148,7 @@ Start experimenting with Compose today and see how it can transform your Android
                     <CardHeader>
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
-                          <CardTitle className="text-3xl mb-4 bg-gradient-to-r from-slate-700 to-gray-700 dark:from-slate-300 dark:to-gray-300 bg-clip-text text-transparent">
+                          <CardTitle className="text-3xl mb-4 bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-blue-300 dark:to-indigo-300 bg-clip-text text-transparent">
                             {blogPost.title}
                           </CardTitle>
                           <div className="flex items-center space-x-4 text-sm text-muted-foreground mb-4">
@@ -254,7 +169,7 @@ Start experimenting with Compose today and see how it can transform your Android
                           </div>
                           <div className="flex flex-wrap gap-2">
                             {blogPost.tags.map((tag) => (
-                              <Badge key={tag} variant="secondary" className="text-xs">
+                              <Badge key={tag} variant="secondary" className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300">
                                 {tag}
                               </Badge>
                             ))}
@@ -323,7 +238,7 @@ Start experimenting with Compose today and see how it can transform your Android
                   <FileText className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-xl font-semibold mb-2">No Content Yet</h3>
                   <p className="text-muted-foreground">
-                    Enter a blog post URL above to fetch and convert it to markdown format.
+                    Enter a Hashnode blog post URL above to fetch and convert it to markdown format.
                   </p>
                 </CardContent>
               </Card>

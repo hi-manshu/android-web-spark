@@ -4,19 +4,31 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { Github, ArrowUp, BookOpen, Copy, Check, ChevronRight } from 'lucide-react';
+import { Github, ArrowUp, BookOpen, Copy, Check, ChevronRight, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { FadeInView } from '@/components/FadeInView';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 export default function Documentation() {
   const { project } = useParams();
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<string>('overview');
+  const [openSections, setOpenSections] = useState<Set<string>>(new Set(['installation', 'charts', 'customization']));
 
   const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
     setCopiedCode(id);
     setTimeout(() => setCopiedCode(null), 2000);
+  };
+
+  const toggleSection = (sectionId: string) => {
+    const newOpenSections = new Set(openSections);
+    if (newOpenSections.has(sectionId)) {
+      newOpenSections.delete(sectionId);
+    } else {
+      newOpenSections.add(sectionId);
+    }
+    setOpenSections(newOpenSections);
   };
 
   useEffect(() => {
@@ -280,31 +292,58 @@ fun MyCalendar() {
   const renderTocItem = (section: any, isNested = false) => {
     const isActive = activeSection === section.id;
     const hasChildren = doc.sections.some(s => s.parent === section.id);
+    const isOpen = openSections.has(section.id);
     
     return (
       <div key={section.id}>
-        <button
-          onClick={() => scrollToSection(section.id)}
-          className={`w-full flex items-center text-sm py-3 px-4 rounded-lg transition-all group text-left ${
-            isActive
-              ? 'bg-gradient-to-r from-primary/20 to-blue-500/20 text-primary border border-primary/20 shadow-sm'
-              : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-          } ${isNested ? 'ml-4 pl-6 border-l-2 border-border' : ''}`}
-        >
-          {hasChildren && (
-            <ChevronRight className={`h-4 w-4 mr-2 transition-transform ${
-              doc.sections.some(s => s.parent === section.id && activeSection === s.id) ? 'rotate-90' : ''
-            }`} />
-          )}
-          <span className={`${isNested ? 'text-sm' : 'font-medium'}`}>{section.title}</span>
-        </button>
-        
-        {hasChildren && (
-          <div className="mt-1">
-            {doc.sections
-              .filter(s => s.parent === section.id)
-              .map(childSection => renderTocItem(childSection, true))}
-          </div>
+        {hasChildren ? (
+          <Collapsible open={isOpen} onOpenChange={() => toggleSection(section.id)}>
+            <CollapsibleTrigger asChild>
+              <button
+                className={`w-full flex items-center text-sm py-3 px-4 rounded-lg transition-all group text-left ${
+                  isActive
+                    ? 'bg-gradient-to-r from-primary/20 to-blue-500/20 text-primary border border-primary/20 shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                } ${isNested ? 'ml-4 pl-6 border-l-2 border-border' : ''}`}
+              >
+                {isOpen ? (
+                  <ChevronDown className="h-4 w-4 mr-2 transition-transform" />
+                ) : (
+                  <ChevronRight className="h-4 w-4 mr-2 transition-transform" />
+                )}
+                <span className={`${isNested ? 'text-sm' : 'font-medium'}`}>{section.title}</span>
+              </button>
+            </CollapsibleTrigger>
+            
+            <CollapsibleContent className="ml-4">
+              {doc.sections
+                .filter(s => s.parent === section.id)
+                .map(childSection => (
+                  <button
+                    key={childSection.id}
+                    onClick={() => scrollToSection(childSection.id)}
+                    className={`w-full flex items-center text-sm py-2 px-4 rounded-lg transition-all group text-left ml-4 pl-6 border-l-2 border-border ${
+                      activeSection === childSection.id
+                        ? 'bg-gradient-to-r from-primary/20 to-blue-500/20 text-primary border border-primary/20 shadow-sm'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                    }`}
+                  >
+                    <span className="text-sm">{childSection.title}</span>
+                  </button>
+                ))}
+            </CollapsibleContent>
+          </Collapsible>
+        ) : (
+          <button
+            onClick={() => scrollToSection(section.id)}
+            className={`w-full flex items-center text-sm py-3 px-4 rounded-lg transition-all group text-left ${
+              isActive
+                ? 'bg-gradient-to-r from-primary/20 to-blue-500/20 text-primary border border-primary/20 shadow-sm'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+            } ${isNested ? 'ml-4 pl-6 border-l-2 border-border' : ''}`}
+          >
+            <span className={`${isNested ? 'text-sm' : 'font-medium'}`}>{section.title}</span>
+          </button>
         )}
       </div>
     );
