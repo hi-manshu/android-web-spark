@@ -1,4 +1,3 @@
-
 import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -452,21 +451,21 @@ fun MyCalendar() {
                         </div>
                       )}
 
-                      {section.id === 'line-charts' && doc.code.lineChart && (
+                      {section.id === 'line-charts' && 'lineChart' in doc.code && (
                         <div className="mt-6">
                           <h4 className="text-lg font-semibold mb-3">Line Chart Example</h4>
                           <CodeBlock code={doc.code.lineChart} id="line-chart" />
                         </div>
                       )}
 
-                      {section.id === 'bar-charts' && doc.code.barChart && (
+                      {section.id === 'bar-charts' && 'barChart' in doc.code && (
                         <div className="mt-6">
                           <h4 className="text-lg font-semibold mb-3">Bar Chart Example</h4>
                           <CodeBlock code={doc.code.barChart} id="bar-chart" />
                         </div>
                       )}
 
-                      {section.id === 'pie-charts' && doc.code.pieChart && (
+                      {section.id === 'pie-charts' && 'pieChart' in doc.code && (
                         <div className="mt-6">
                           <h4 className="text-lg font-semibold mb-3">Pie Chart Example</h4>
                           <CodeBlock code={doc.code.pieChart} id="pie-chart" />
