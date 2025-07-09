@@ -1,0 +1,32 @@
+{
+  "projectTitle": "Charty Library",
+  "projectDescription": "Documentation for the Charty data visualization library.",
+  "projectVersion": "1.0.0",
+  "sections": [
+    {
+      "title": "Introduction",
+      "path": "introduction.md"
+    },
+    {
+      "title": "Getting Started",
+      "path": "getting-started.md"
+    },
+    {
+      "title": "Features",
+      "children": [
+        {
+          "title": "Core Features",
+          "path": "features/core-features.md"
+        },
+        {
+          "title": "Advanced Features",
+          "path": "features/advanced-features.md"
+        }
+      ]
+    },
+    {
+      "title": "API Reference",
+      "path": "api-reference.md"
+    }
+  ]
+}

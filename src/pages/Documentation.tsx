@@ -1,34 +1,77 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Copy, Check, ChevronDown, ChevronRight, Github, Heart } from 'lucide-react';
+import { Copy, Check, ChevronDown, ChevronRight, Github, Heart, FolderOpen, FileText } from 'lucide-react';
 import { FadeInView } from '@/components/FadeInView';
 import { remark } from 'remark';
 import html from 'remark-html';
-import documentationData from '@/content/documentationData.json'; // Import the JSON data
 
 // Define types for the documentation structure
-interface DocItem {
+interface DocSection {
   title: string;
-  path: string; // Path to the markdown file
-  id: string; // Unique ID for the section, can be derived from title or path
+  path?: string; // Path to the markdown file, relative to project dir. Undefined for parent-only sections.
+  id: string;    // Unique ID for the section
   htmlContent?: string; // Parsed HTML content
-  subsections?: DocItem[]; // For nested structure if needed in future
+  children?: DocSection[]; // For nested structure
 }
 
-interface ProcessedDocData {
-  title: string; // Overall title for this documentation set (e.g., "Project Alpha Docs")
-  description: string;
-  version: string;
-  sections: DocItem[];
+interface ProjectIndex {
+  projectTitle: string;
+  projectDescription: string;
+  projectVersion: string;
+  sections: DocSection[];
 }
 
-// Utility to generate a simple ID from a title
-const generateId = (title: string) => title.toLowerCase().replace(/\s+/g, '-');
+// Utility to generate a simple ID from a title, ensuring uniqueness for parents/children
+const generateId = (title: string, parentId?: string): string => {
+  const baseId = title.toLowerCase().replace(/\s+/g, '-');
+  return parentId ? `${parentId}-${baseId}` : baseId;
+};
 
-function CodeBlock({ code, id }: { code: string; id: string }) {
+// Function to recursively process sections from index.json, generate IDs, and load content
+const processSections = async (
+  sections: any[], // Sections from index.json
+  project: string,  // Current project name (e.g., "charty")
+  parentId?: string
+): Promise<DocSection[]> => {
+  return Promise.all(
+    sections.map(async (sectionData) => {
+      const currentId = generateId(sectionData.title, parentId);
+      let htmlContent: string | undefined = undefined;
+
+      if (sectionData.path) {
+        try {
+          // Path is relative to project's doc folder e.g. src/content/docs/charty/
+          const rawContentModule = await import(
+            /* @vite-ignore */ `../content/docs/${project}/${sectionData.path}?raw`
+          );
+          const parsedHtml = await remark().use(html).process(rawContentModule.default);
+          htmlContent = String(parsedHtml);
+        } catch (e) {
+          console.error(`Failed to load or parse markdown for ${project}/${sectionData.path}:`, e);
+          htmlContent = `<p>Error loading content for ${sectionData.title}. Details: ${e}</p>`;
+        }
+      }
+
+      let children: DocSection[] | undefined = undefined;
+      if (sectionData.children && sectionData.children.length > 0) {
+        children = await processSections(sectionData.children, project, currentId);
+      }
+
+      return {
+        ...sectionData,
+        id: currentId,
+        htmlContent,
+        children,
+      };
+    })
+  );
+};
+
+
+function CodeBlock({ code }: { code: string; }) {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = () => {
@@ -54,14 +97,90 @@ function CodeBlock({ code, id }: { code: string; id: string }) {
   );
 }
 
+interface TocSectionProps {
+  section: DocSection;
+  activeSectionId: string | null;
+  onSectionClick: (sectionId: string) => void;
+  expandedSections: Set<string>;
+  toggleSectionExpansion: (sectionId: string) => void;
+  level: number;
+}
+
+function TocSection({
+  section,
+  activeSectionId,
+  onSectionClick,
+  expandedSections,
+  toggleSectionExpansion,
+  level,
+}: TocSectionProps) {
+  const isExpandable = section.children && section.children.length > 0;
+  const isExpanded = expandedSections.has(section.id);
+  const isActive = activeSectionId === section.id;
+
+  const handleSectionClick = () => {
+    if (isExpandable) {
+      toggleSectionExpansion(section.id);
+    }
+    // Allow clicking on parent sections even if they are just for toggling
+    // if (section.path) { // Only navigate if it has content
+      onSectionClick(section.id);
+    // }
+  };
+
+  const Icon = isExpandable ? (isExpanded ? FolderOpen : FolderOpen) : FileText;
+
+
+  return (
+    <div>
+      <div
+        className={`flex items-center gap-2 py-2 px-${2 + level * 2} rounded-lg cursor-pointer transition-all duration-200 ${
+          isActive
+            ? 'bg-md-sys-color-primary-container text-md-sys-color-on-primary-container'
+            : 'text-md-sys-color-on-surface hover:bg-md-sys-color-surface-variant'
+        }`}
+        onClick={handleSectionClick}
+        style={{ paddingLeft: `${0.5 + level * 0.75}rem` }}
+      >
+        {isExpandable && (
+          isExpanded ? <ChevronDown className="h-4 w-4 flex-shrink-0" /> : <ChevronRight className="h-4 w-4 flex-shrink-0" />
+        )}
+        {!isExpandable && <Icon className="h-4 w-4 flex-shrink-0 mr-1 opacity-50" />}
+        <span className="md-typescale-body-large font-medium truncate">
+          {section.title}
+        </span>
+      </div>
+      {isExpandable && isExpanded && section.children && (
+        <div className="mt-1 space-y-1">
+          {section.children.map((child) => (
+            <TocSection
+              key={child.id}
+              section={child}
+              activeSectionId={activeSectionId}
+              onSectionClick={onSectionClick}
+              expandedSections={expandedSections}
+              toggleSectionExpansion={toggleSectionExpansion}
+              level={level + 1}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function TableOfContents({
   sections,
   activeSectionId,
-  onSectionClick
+  onSectionClick,
+  expandedSections,
+  toggleSectionExpansion,
 }: {
-  sections: DocItem[];
+  sections: DocSection[];
   activeSectionId: string | null;
   onSectionClick: (sectionId: string) => void;
+  expandedSections: Set<string>;
+  toggleSectionExpansion: (sectionId: string) => void;
 }) {
   return (
     <div className="bg-md-sys-color-surface border border-md-sys-color-outline-variant rounded-lg p-4 md-elevation-1">
@@ -70,83 +189,101 @@ function TableOfContents({
       </h3>
       <nav className="space-y-1">
         {sections.map((section) => (
-          <div key={section.id}>
-            <div
-              className={`flex items-center gap-2 py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                activeSectionId === section.id
-                  ? 'bg-md-sys-color-primary-container text-md-sys-color-on-primary-container'
-                  : 'text-md-sys-color-on-surface hover:bg-md-sys-color-surface-variant'
-              }`}
-              onClick={() => onSectionClick(section.id)}
-            >
-              <span className="md-typescale-body-large font-medium truncate">
-                {section.title}
-              </span>
-            </div>
-            {/* Placeholder for subsections if needed */}
-          </div>
+          <TocSection
+            key={section.id}
+            section={section}
+            activeSectionId={activeSectionId}
+            onSectionClick={onSectionClick}
+            expandedSections={expandedSections}
+            toggleSectionExpansion={toggleSectionExpansion}
+            level={0}
+          />
         ))}
       </nav>
     </div>
   );
 }
 
+
 export default function Documentation() {
-  const { project } = useParams<{ project?: string }>(); // project can be undefined
-  const [processedDocs, setProcessedDocs] = useState<ProcessedDocData | null>(null);
+  const { project = "charty" } = useParams<{ project?: string }>(); // Default to 'charty' if no param
+  const [projectData, setProjectData] = useState<ProjectIndex | null>(null);
+  const [processedSections, setProcessedSections] = useState<DocSection[]>([]);
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+
+  const toggleSectionExpansion = useCallback((sectionId: string) => {
+    setExpandedSections(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(sectionId)) {
+        newSet.delete(sectionId);
+      } else {
+        newSet.add(sectionId);
+      }
+      return newSet;
+    });
+  }, []);
 
   useEffect(() => {
     const loadDocumentation = async () => {
+      if (!project) {
+        setError("No project specified.");
+        setIsLoading(false);
+        return;
+      }
       setIsLoading(true);
       setError(null);
 
       try {
-        // For now, we'll assume 'project' parameter might select different JSON files or structures in future.
-        // Currently, we only have one documentationData.json.
-        // Let's simulate a "default" project or the first one if no project param is given.
-        const currentProjectKey = project || "default"; // Or however you want to map `project` to your data
-
-        // This is where you might fetch a different JSON if you had multiple doc sets
-        // For this task, documentationData is imported directly.
-
-        const sectionsWithIds = documentationData.map(doc => ({
-          ...doc,
-          id: generateId(doc.title),
-        }));
-
-        const sectionsWithContent: DocItem[] = await Promise.all(
-          sectionsWithIds.map(async (section) => {
-            try {
-              // Vite specific way to load raw file content
-              // Path is now relative to src/content/docs/
-              const rawContent = await import(/* @vite-ignore */ `../content/docs/${section.path}?raw`)
-              const parsedHtml = await remark().use(html).process(rawContent.default);
-              return { ...section, htmlContent: String(parsedHtml) };
-            } catch (e) {
-              console.error(`Failed to load or parse markdown for ${section.path}:`, e);
-              return { ...section, htmlContent: `<p>Error loading content for ${section.title}.</p>` };
-            }
-          })
+        // Dynamically import the project's index.json
+        const indexJsonModule = await import(
+          /* @vite-ignore */ `../content/docs/${project}/index.json`
         );
+        const projectIndexData: ProjectIndex = indexJsonModule.default;
+        setProjectData(projectIndexData);
 
-        // Simulate a main doc structure. In a real scenario, this might also come from JSON.
-        const mainDocData: ProcessedDocData = {
-            title: project ? `${project.charAt(0).toUpperCase() + project.slice(1)} Docs` : "Documentation",
-            description: "Browse through the documentation sections.",
-            version: "1.0.0", // This could also be dynamic
-            sections: sectionsWithContent,
-        };
+        const fullyProcessedSections = await processSections(projectIndexData.sections, project);
+        setProcessedSections(fullyProcessedSections);
 
-        setProcessedDocs(mainDocData);
-        if (mainDocData.sections.length > 0) {
-          setActiveSectionId(mainDocData.sections[0].id);
+        // Set initial active section and expand its parents
+        if (fullyProcessedSections.length > 0) {
+          let firstValidSection: DocSection | null = null;
+          const findFirstContentSection = (secs: DocSection[]): DocSection | null => {
+            for (const sec of secs) {
+              if (sec.path) return sec;
+              if (sec.children) {
+                const childSec = findFirstContentSection(sec.children);
+                if (childSec) return childSec;
+              }
+            }
+            return null;
+          };
+          firstValidSection = findFirstContentSection(fullyProcessedSections);
+
+          if (firstValidSection) {
+            setActiveSectionId(firstValidSection.id);
+            // Expand all parent sections of the initial active section
+            const newExpanded = new Set<string>();
+            const expandParents = (sectionId: string | undefined) => {
+                if (!sectionId) return;
+                const parts = sectionId.split('-');
+                for (let i = 1; i < parts.length; i++) {
+                    newExpanded.add(parts.slice(0, i).join('-'));
+                }
+            };
+            expandParents(firstValidSection.id.substring(0, firstValidSection.id.lastIndexOf('-')));
+            setExpandedSections(newExpanded);
+
+          } else {
+             setActiveSectionId(null); // Or set to the first section's ID even if it has no path
+          }
         }
+
       } catch (e) {
-        console.error("Failed to load documentation data:", e);
-        setError("Failed to load documentation.");
+        console.error(`Failed to load documentation for project "${project}":`, e);
+        setError(`Failed to load documentation for project "${project}". Check if an index.json exists at src/content/docs/${project}/index.json.`);
       } finally {
         setIsLoading(false);
       }
@@ -155,30 +292,44 @@ export default function Documentation() {
     loadDocumentation();
   }, [project]);
 
+  const findSectionRecursive = (sections: DocSection[], id: string | null): DocSection | null => {
+    if (!id) return null;
+    for (const section of sections) {
+      if (section.id === id) return section;
+      if (section.children) {
+        const foundInChildren = findSectionRecursive(section.children, id);
+        if (foundInChildren) return foundInChildren;
+      }
+    }
+    return null;
+  };
+
+  const currentSection = findSectionRecursive(processedSections, activeSectionId);
+
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-md-sys-color-background flex items-center justify-center">
-        <p className="text-md-sys-color-on-surface">Loading documentation...</p>
+        <p className="text-md-sys-color-on-surface">Loading documentation for {project}...</p>
       </div>
     );
   }
 
-  if (error || !processedDocs) {
+  if (error || !projectData) {
     return (
       <div className="min-h-screen bg-md-sys-color-background flex items-center justify-center">
-        <div className="text-center">
+        <div className="text-center p-4">
           <h1 className="md-typescale-display-small text-md-sys-color-on-background mb-4">
             Documentation Error
           </h1>
           <p className="text-md-sys-color-on-surface-variant">
-            {error || `The documentation for "${project || 'this project'}" could not be loaded.`}
+            {error || `The documentation for project "${project}" could not be loaded.`}
           </p>
+          <Button onClick={() => window.history.back()} className="mt-4">Go Back</Button>
         </div>
       </div>
     );
   }
-
-  const currentSection = processedDocs.sections.find(sec => sec.id === activeSectionId);
 
   return (
     <div className="min-h-screen bg-md-sys-color-background">
@@ -188,17 +339,17 @@ export default function Documentation() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <h1 className="md-typescale-display-small text-md-sys-color-on-background">
-                  {processedDocs.title}
+                  {projectData.projectTitle}
                 </h1>
                 <Badge className="bg-md-sys-color-tertiary-container text-md-sys-color-on-tertiary-container">
-                  v{processedDocs.version}
+                  v{projectData.projectVersion}
                 </Badge>
               </div>
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" asChild>
-                  <a href="https://github.com/hi-manshu/android-web-spark" target="_blank" rel="noopener noreferrer">
+                 <Button variant="outline" size="sm" asChild>
+                  <a href={`https://github.com/hi-manshu/${project}`} target="_blank" rel="noopener noreferrer">
                     <Github className="h-4 w-4 mr-2" />
-                    GitHub
+                    {project} on GitHub
                   </a>
                 </Button>
                 <Button variant="outline" size="sm" asChild>
@@ -210,7 +361,7 @@ export default function Documentation() {
               </div>
             </div>
             <p className="md-typescale-body-large text-md-sys-color-on-surface-variant">
-              {processedDocs.description}
+              {projectData.projectDescription}
             </p>
           </div>
         </FadeInView>
@@ -219,15 +370,17 @@ export default function Documentation() {
           <div className="lg:col-span-1">
             <div className="sticky top-8">
               <TableOfContents
-                sections={processedDocs.sections}
+                sections={processedSections}
                 activeSectionId={activeSectionId}
                 onSectionClick={setActiveSectionId}
+                expandedSections={expandedSections}
+                toggleSectionExpansion={toggleSectionExpansion}
               />
             </div>
           </div>
 
           <div className="lg:col-span-3">
-            {currentSection ? (
+            {currentSection && currentSection.htmlContent ? (
               <FadeInView key={currentSection.id}>
                 <Card className="bg-md-sys-color-surface border-md-sys-color-outline-variant md-elevation-1">
                   <CardHeader>
@@ -236,23 +389,32 @@ export default function Documentation() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    {/* Render parsed HTML. Ensure prose styles are applied if not default */}
                     <div
-                        className="prose dark:prose-invert max-w-none" // Apply prose for markdown styling
-                        dangerouslySetInnerHTML={{ __html: currentSection.htmlContent || "" }}
+                        className="prose dark:prose-invert max-w-none"
+                        dangerouslySetInnerHTML={{ __html: currentSection.htmlContent }}
                     />
-                    {/* Example of how you might conditionally render CodeBlock if markdown contains specific syntax */}
-                    {/* This part would require more sophisticated parsing or conventions in your .md files */}
-                    {/* For instance, if a section path implies it's about code:
-                    {currentSection.path.includes("installation.md") && (
-                        <CodeBlock code={"extracted_code_for_installation"} id={`${currentSection.id}-code`} />
-                    )}
-                    */}
                   </CardContent>
                 </Card>
               </FadeInView>
+            ) : currentSection && !currentSection.htmlContent && currentSection.children && currentSection.children.length > 0 ? (
+                 <FadeInView key={currentSection.id + "-parent"}>
+                    <Card className="bg-md-sys-color-surface border-md-sys-color-outline-variant md-elevation-1">
+                        <CardHeader>
+                            <CardTitle className="md-typescale-headline-medium text-md-sys-color-on-surface">
+                                {currentSection.title}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-md-sys-color-on-surface-variant">
+                                This is a parent section. Please select one of its sub-sections from the Table of Contents to view content.
+                            </p>
+                        </CardContent>
+                    </Card>
+                </FadeInView>
+            ) : activeSectionId ? (
+              <p className="text-md-sys-color-on-surface-variant">Select a section with content to view it, or content for "{currentSection?.title}" is missing or not loadable.</p>
             ) : (
-              <p className="text-md-sys-color-on-surface-variant">Select a section to view its content.</p>
+              <p className="text-md-sys-color-on-surface-variant">Select a section from the Table of Contents to view its content.</p>
             )}
           </div>
         </div>
