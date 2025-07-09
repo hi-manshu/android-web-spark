@@ -454,21 +454,21 @@ fun MyCalendar() {
                       {section.id === 'line-charts' && 'lineChart' in doc.code && (
                         <div className="mt-6">
                           <h4 className="text-lg font-semibold mb-3">Line Chart Example</h4>
-                          <CodeBlock code={doc.code.lineChart} id="line-chart" />
+                          <CodeBlock code={doc.code.lineChart as string} id="line-chart" />
                         </div>
                       )}
 
                       {section.id === 'bar-charts' && 'barChart' in doc.code && (
                         <div className="mt-6">
                           <h4 className="text-lg font-semibold mb-3">Bar Chart Example</h4>
-                          <CodeBlock code={doc.code.barChart} id="bar-chart" />
+                          <CodeBlock code={doc.code.barChart as string} id="bar-chart" />
                         </div>
                       )}
 
                       {section.id === 'pie-charts' && 'pieChart' in doc.code && (
                         <div className="mt-6">
                           <h4 className="text-lg font-semibold mb-3">Pie Chart Example</h4>
-                          <CodeBlock code={doc.code.pieChart} id="pie-chart" />
+                          <CodeBlock code={doc.code.pieChart as string} id="pie-chart" />
                         </div>
                       )}
 

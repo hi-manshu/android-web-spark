@@ -7,21 +7,21 @@
 
 @layer base {
   :root {
-    /* Material 3 Light Theme - More Subtle */
-    --md-sys-color-primary: 220 70% 50%;
+    /* Material 3 Light Theme - Pastel Android Green */
+    --md-sys-color-primary: 122 39% 49%;
     --md-sys-color-on-primary: 0 0% 100%;
-    --md-sys-color-primary-container: 220 100% 95%;
-    --md-sys-color-on-primary-container: 220 100% 10%;
+    --md-sys-color-primary-container: 122 60% 90%;
+    --md-sys-color-on-primary-container: 122 100% 12%;
     
-    --md-sys-color-secondary: 260 40% 60%;
+    --md-sys-color-secondary: 142 35% 65%;
     --md-sys-color-on-secondary: 0 0% 100%;
-    --md-sys-color-secondary-container: 260 100% 95%;
-    --md-sys-color-on-secondary-container: 260 100% 10%;
+    --md-sys-color-secondary-container: 142 50% 92%;
+    --md-sys-color-on-secondary-container: 142 100% 15%;
     
-    --md-sys-color-tertiary: 200 50% 55%;
+    --md-sys-color-tertiary: 162 40% 70%;
     --md-sys-color-on-tertiary: 0 0% 0%;
-    --md-sys-color-tertiary-container: 200 100% 95%;
-    --md-sys-color-on-tertiary-container: 200 100% 10%;
+    --md-sys-color-tertiary-container: 162 45% 94%;
+    --md-sys-color-on-tertiary-container: 162 100% 18%;
     
     --md-sys-color-surface: 0 0% 99%;
     --md-sys-color-on-surface: 0 0% 10%;
@@ -71,21 +71,21 @@
   }
 
   .dark {
-    /* Material 3 Dark Theme - More Subtle */
-    --md-sys-color-primary: 220 70% 70%;
-    --md-sys-color-on-primary: 220 100% 10%;
-    --md-sys-color-primary-container: 220 70% 30%;
-    --md-sys-color-on-primary-container: 220 100% 90%;
+    /* Material 3 Dark Theme - Pastel Android Green */
+    --md-sys-color-primary: 122 50% 75%;
+    --md-sys-color-on-primary: 122 100% 10%;
+    --md-sys-color-primary-container: 122 35% 25%;
+    --md-sys-color-on-primary-container: 122 60% 85%;
     
-    --md-sys-color-secondary: 260 40% 70%;
-    --md-sys-color-on-secondary: 260 100% 10%;
-    --md-sys-color-secondary-container: 260 40% 30%;
-    --md-sys-color-on-secondary-container: 260 100% 90%;
+    --md-sys-color-secondary: 142 45% 75%;
+    --md-sys-color-on-secondary: 142 100% 12%;
+    --md-sys-color-secondary-container: 142 30% 22%;
+    --md-sys-color-on-secondary-container: 142 50% 88%;
     
-    --md-sys-color-tertiary: 200 50% 65%;
-    --md-sys-color-on-tertiary: 200 100% 10%;
-    --md-sys-color-tertiary-container: 200 50% 20%;
-    --md-sys-color-on-tertiary-container: 200 100% 90%;
+    --md-sys-color-tertiary: 162 50% 80%;
+    --md-sys-color-on-tertiary: 162 100% 15%;
+    --md-sys-color-tertiary-container: 162 35% 18%;
+    --md-sys-color-on-tertiary-container: 162 45% 90%;
     
     --md-sys-color-surface: 0 0% 6%;
     --md-sys-color-on-surface: 0 0% 90%;
