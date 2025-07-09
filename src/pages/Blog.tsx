@@ -166,7 +166,9 @@ export default function Blog() {
                   </div>
                   <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {series.map((serie) => (
-                      <SeriesStepper key={serie.name} {...serie} />
+                      <div key={serie.name} className="flex flex-col">
+                        <SeriesStepper {...serie} />
+                      </div>
                     ))}
                   </div>
                 </section>
@@ -182,7 +184,9 @@ export default function Blog() {
                     {filteredPosts
                       .filter(post => !post.series)
                       .map((post) => (
-                        <BlogCard key={post.slug} {...post} />
+                        <div key={post.slug} className="flex flex-col">
+                          <BlogCard {...post} />
+                        </div>
                       ))}
                   </div>
                 </section>
@@ -193,7 +197,9 @@ export default function Blog() {
               {series.length > 0 ? (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {series.map((serie) => (
-                    <SeriesStepper key={serie.name} {...serie} />
+                    <div key={serie.name} className="flex flex-col">
+                      <SeriesStepper {...serie} />
+                    </div>
                   ))}
                 </div>
               ) : (
@@ -211,7 +217,9 @@ export default function Blog() {
               {filteredIndividualPosts.length > 0 ? (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {filteredIndividualPosts.map((post) => (
-                    <BlogCard key={post.slug} {...post} />
+                    <div key={post.slug} className="flex flex-col">
+                      <BlogCard {...post} />
+                    </div>
                   ))}
                 </div>
               ) : (

@@ -14,10 +14,10 @@ export function SeriesStepper({ name, description, posts }: SeriesStepperProps) 
   const currentPostIndex = slug ? posts.findIndex(post => post.slug === slug) : -1;
   
   return (
-    <Card className="group transition-all border-gradient h-full">
+    <Card className="group transition-all border-gradient h-full flex flex-col">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
       
-      <CardHeader className="relative">
+      <CardHeader className="relative flex-shrink-0">
         <div className="flex items-center space-x-2 mb-2">
           <BookOpen className="h-5 w-5 text-primary" />
           <Badge variant="outline" className="text-xs">
@@ -34,9 +34,9 @@ export function SeriesStepper({ name, description, posts }: SeriesStepperProps) 
         </CardDescription>
       </CardHeader>
       
-      <CardContent className="relative space-y-4">
+      <CardContent className="relative space-y-4 flex-grow flex flex-col">
         {/* Series Progress Stepper */}
-        <div className="space-y-3">
+        <div className="space-y-3 flex-grow">
           {posts.map((post, index) => {
             const isCompleted = currentPostIndex > index;
             const isCurrent = currentPostIndex === index;
