@@ -6,16 +6,16 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden py-24 lg:py-32">
       {/* Enhanced Background with better colors */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-white to-cyan-50 dark:from-gray-900 dark:via-slate-900 dark:to-indigo-900"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-800 dark:via-gray-900 dark:to-black"></div>
       
       <div className="container relative">
         <div className="mx-auto max-w-[64rem] text-center">
           <div className="mb-8 flex justify-center">
-            <div className="relative rounded-full px-6 py-3 text-sm bg-gradient-to-r from-indigo-100 to-cyan-100 dark:from-indigo-900/50 dark:to-cyan-900/50 border border-indigo-200 dark:border-indigo-800 shadow-lg backdrop-blur-sm">
-              <span className="bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent font-medium">
+            <div className="relative rounded-full px-6 py-3 text-sm bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700/50 dark:to-gray-800/50 border border-gray-300 dark:border-gray-700 shadow-lg backdrop-blur-sm">
+              <span className="bg-gradient-to-r from-black to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent font-medium">
                 Software Engineer & Open Source Enthusiast
               </span>{' '}
-              <a href="/about" className="font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors">
+              <a href="/about" className="font-semibold text-black dark:text-white hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
                 <span className="absolute inset-0" aria-hidden="true" />
                 Learn more <span aria-hidden="true">&rarr;</span>
               </a>
@@ -24,7 +24,7 @@ export function Hero() {
           
           <h1 className="text-6xl lg:text-7xl font-bold tracking-tight mb-8">
             Hi, I'm{' '}
-            <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-black via-gray-800 to-gray-600 dark:from-white dark:via-gray-300 dark:to-gray-500 bg-clip-text text-transparent">
               Himanshu Singh
             </span>
           </h1>
@@ -38,18 +38,18 @@ export function Hero() {
           
           <div className="mt-12 flex flex-col items-center gap-8">
             <div className="flex items-center justify-center gap-x-6 flex-wrap">
-              <Button variant="outline" size="lg" className="bg-white/50 hover:bg-white/80 dark:bg-gray-800/50 dark:hover:bg-gray-800/80 backdrop-blur-sm border-indigo-200 dark:border-indigo-800 text-gray-900 dark:text-gray-100" asChild>
+              <Button variant="outline" size="lg" className="bg-white/50 hover:bg-white/80 dark:bg-gray-700/50 dark:hover:bg-gray-600/80 backdrop-blur-sm border-gray-300 dark:border-gray-600 text-black dark:text-white" asChild>
                 <a href="/projects">
                   View My Projects
                 </a>
               </Button>
-              <Button variant="outline" size="lg" className="bg-white/50 hover:bg-white/80 dark:bg-gray-800/50 dark:hover:bg-gray-800/80 backdrop-blur-sm border-indigo-200 dark:border-indigo-800 text-gray-900 dark:text-gray-100" asChild>
+              <Button variant="outline" size="lg" className="bg-white/50 hover:bg-white/80 dark:bg-gray-700/50 dark:hover:bg-gray-600/80 backdrop-blur-sm border-gray-300 dark:border-gray-600 text-black dark:text-white" asChild>
                 <a href="https://github.com/hi-manshu" target="_blank" rel="noopener noreferrer">
                   <Github className="mr-2 h-4 w-4" />
                   GitHub
                 </a>
               </Button>
-              <Button size="lg" className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200" asChild>
+              <Button size="lg" className="bg-gradient-to-r from-black to-gray-800 hover:from-gray-800 hover:to-gray-700 dark:from-white dark:to-gray-300 dark:hover:from-gray-300 dark:hover:to-gray-400 text-white dark:text-black font-semibold shadow-lg hover:shadow-xl transition-all duration-200" asChild>
                 <a href="https://github.com/sponsors/hi-manshu" target="_blank" rel="noopener noreferrer">
                   <Heart className="mr-2 h-4 w-4" />
                   Sponsor
@@ -63,11 +63,11 @@ export function Hero() {
               <div className="flex gap-4">
                 <Button variant="ghost" size="sm" className="rounded-full p-3 hover:bg-pink-100 dark:hover:bg-pink-900/50 transition-colors" asChild>
                   <a href="https://www.instagram.com/hi_man_shoe/" target="_blank" rel="noopener noreferrer">
-                    <Instagram className="h-5 w-5 text-pink-600" />
+                    <Instagram className="h-5 w-5 text-pink-600" /> {/* Pink kept for branding */}
                     <span className="sr-only">Instagram</span>
                   </a>
                 </Button>
-                <Button variant="ghost" size="sm" className="rounded-full p-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" asChild>
+                <Button variant="ghost" size="sm" className="rounded-full p-3 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" asChild>
                   <a href="https://x.com/hi_man_shoe" target="_blank" rel="noopener noreferrer">
                     <X className="h-5 w-5 text-gray-700 dark:text-gray-300" />
                     <span className="sr-only">X</span>
@@ -78,18 +78,18 @@ export function Hero() {
           </div>
           
           <div className="mt-20 flex justify-center">
-            <ArrowDown className="h-6 w-6 animate-bounce text-indigo-400" />
+            <ArrowDown className="h-6 w-6 animate-bounce text-gray-500 dark:text-gray-400" />
           </div>
         </div>
       </div>
       
       {/* Enhanced Background Elements */}
       <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400" />
+        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem] bg-gradient-to-r from-gray-700 via-gray-800 to-black dark:from-gray-300 dark:via-gray-400 dark:to-white" />
       </div>
       
       <div className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
-        <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem] bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400" />
+        <div className="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 opacity-20 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem] bg-gradient-to-r from-black via-gray-800 to-gray-700 dark:from-white dark:via-gray-400 dark:to-gray-300" />
       </div>
     </section>
   );

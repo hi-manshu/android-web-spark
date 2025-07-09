@@ -1,213 +1,32 @@
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Copy, Check, ChevronDown, ChevronRight, Github, Heart } from 'lucide-react';
-import { useState } from 'react';
 import { FadeInView } from '@/components/FadeInView';
+import { remark } from 'remark';
+import html from 'remark-html';
+import documentationData from '@/content/documentationData.json'; // Import the JSON data
 
-interface Section {
-  id: string;
+// Define types for the documentation structure
+interface DocItem {
   title: string;
-  content: string;
-  subsections?: Section[];
+  path: string; // Path to the markdown file
+  id: string; // Unique ID for the section, can be derived from title or path
+  htmlContent?: string; // Parsed HTML content
+  subsections?: DocItem[]; // For nested structure if needed in future
 }
 
-interface DocData {
-  title: string;
+interface ProcessedDocData {
+  title: string; // Overall title for this documentation set (e.g., "Project Alpha Docs")
   description: string;
   version: string;
-  sections: Section[];
-  code: {
-    installation: string;
-    basicUsage: string;
-    lineChart?: string;
-    barChart?: string;
-    pieChart?: string;
-  };
+  sections: DocItem[];
 }
 
-const docsData: Record<string, DocData> = {
-  charty: {
-    title: 'Charty',
-    description: 'Beautiful React chart components with Material Design',
-    version: '2.1.0',
-    sections: [
-      {
-        id: 'getting-started',
-        title: 'Getting Started',
-        content: 'Learn how to set up and use Charty in your React application.',
-        subsections: [
-          {
-            id: 'installation',
-            title: 'Installation',
-            content: 'Install Charty using npm or yarn to get started with beautiful charts.'
-          },
-          {
-            id: 'basic-usage',
-            title: 'Basic Usage',
-            content: 'Learn the basics of creating your first chart with Charty.'
-          }
-        ]
-      },
-      {
-        id: 'chart-types',
-        title: 'Chart Types',
-        content: 'Explore the different types of charts available in Charty.',
-        subsections: [
-          {
-            id: 'line-charts',
-            title: 'Line Charts',
-            content: 'Create smooth, animated line charts for time series data.'
-          },
-          {
-            id: 'bar-charts',
-            title: 'Bar Charts',
-            content: 'Display categorical data with horizontal or vertical bars.'
-          },
-          {
-            id: 'pie-charts',
-            title: 'Pie Charts',
-            content: 'Show proportional data with interactive pie charts.'
-          }
-        ]
-      },
-      {
-        id: 'customization',
-        title: 'Customization',
-        content: 'Learn how to customize your charts to match your design system.',
-        subsections: [
-          {
-            id: 'theming',
-            title: 'Theming',
-            content: 'Apply custom themes and colors to your charts.'
-          },
-          {
-            id: 'animations',
-            title: 'Animations',
-            content: 'Configure smooth animations and transitions.'
-          }
-        ]
-      }
-    ],
-    code: {
-      installation: `npm install @yourorg/charty
-# or
-yarn add @yourorg/charty`,
-      basicUsage: `import { LineChart } from '@yourorg/charty';
-
-const data = [
-  { name: 'Jan', value: 400 },
-  { name: 'Feb', value: 300 },
-  { name: 'Mar', value: 600 },
-  { name: 'Apr', value: 800 },
-];
-
-function App() {
-  return (
-    <LineChart 
-      data={data} 
-      width={400} 
-      height={300}
-      animate={true}
-    />
-  );
-}`,
-      lineChart: `import { LineChart } from '@yourorg/charty';
-
-const lineData = [
-  { month: 'Jan', sales: 4000, profit: 2400 },
-  { month: 'Feb', sales: 3000, profit: 1398 },
-  { month: 'Mar', sales: 6000, profit: 9800 },
-  { month: 'Apr', sales: 8000, profit: 3908 },
-];
-
-<LineChart
-  data={lineData}
-  xDataKey="month"
-  lines={[
-    { dataKey: 'sales', stroke: '#8884d8' },
-    { dataKey: 'profit', stroke: '#82ca9d' }
-  ]}
-  width={600}
-  height={400}
-/>`,
-      barChart: `import { BarChart } from '@yourorg/charty';
-
-const barData = [
-  { name: 'Product A', sales: 4000 },
-  { name: 'Product B', sales: 3000 },
-  { name: 'Product C', sales: 6000 },
-  { name: 'Product D', sales: 8000 },
-];
-
-<BarChart
-  data={barData}
-  xDataKey="name"
-  yDataKey="sales"
-  fill="#8884d8"
-  width={600}
-  height={400}
-/>`,
-      pieChart: `import { PieChart } from '@yourorg/charty';
-
-const pieData = [
-  { name: 'Desktop', value: 400, fill: '#8884d8' },
-  { name: 'Mobile', value: 300, fill: '#82ca9d' },
-  { name: 'Tablet', value: 200, fill: '#ffc658' },
-];
-
-<PieChart
-  data={pieData}
-  dataKey="value"
-  nameKey="name"
-  width={400}
-  height={400}
-  showTooltip={true}
-/>`
-    }
-  },
-  kalendar: {
-    title: 'Kalendar',
-    description: 'Modern calendar component with event management',
-    version: '1.5.2',
-    sections: [
-      {
-        id: 'overview',
-        title: 'Overview',
-        content: 'Kalendar is a feature-rich calendar component for React applications.',
-        subsections: [
-          {
-            id: 'features',
-            title: 'Features',
-            content: 'Explore the powerful features of Kalendar including event management, multiple views, and more.'
-          },
-          {
-            id: 'setup',
-            title: 'Setup',
-            content: 'Get started with Kalendar by installing and configuring it in your project.'
-          }
-        ]
-      }
-    ],
-    code: {
-      installation: `npm install @yourorg/kalendar
-# or
-yarn add @yourorg/kalendar`,
-      basicUsage: `import { Calendar } from '@yourorg/kalendar';
-
-function App() {
-  return (
-    <Calendar
-      events={events}
-      onEventClick={handleEventClick}
-      onDateSelect={handleDateSelect}
-    />
-  );
-}`
-    }
-  }
-};
+// Utility to generate a simple ID from a title
+const generateId = (title: string) => title.toLowerCase().replace(/\s+/g, '-');
 
 function CodeBlock({ code, id }: { code: string; id: string }) {
   const [copied, setCopied] = useState(false);
@@ -219,7 +38,7 @@ function CodeBlock({ code, id }: { code: string; id: string }) {
   };
 
   return (
-    <div className="relative">
+    <div className="relative my-4">
       <pre className="bg-md-sys-color-surface-variant p-4 rounded-lg overflow-x-auto text-sm border border-md-sys-color-outline-variant">
         <code className="text-md-sys-color-on-surface-variant">{code}</code>
       </pre>
@@ -235,81 +54,36 @@ function CodeBlock({ code, id }: { code: string; id: string }) {
   );
 }
 
-function TableOfContents({ 
-  sections, 
-  activeSection, 
-  onSectionClick 
-}: { 
-  sections: Section[]; 
-  activeSection: string;
+function TableOfContents({
+  sections,
+  activeSectionId,
+  onSectionClick
+}: {
+  sections: DocItem[];
+  activeSectionId: string | null;
   onSectionClick: (sectionId: string) => void;
 }) {
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['getting-started']));
-
-  const toggleSection = (sectionId: string) => {
-    const newExpanded = new Set(expandedSections);
-    if (newExpanded.has(sectionId)) {
-      newExpanded.delete(sectionId);
-    } else {
-      newExpanded.add(sectionId);
-    }
-    setExpandedSections(newExpanded);
-  };
-
-  const isActive = (sectionId: string) => activeSection === sectionId;
-
   return (
     <div className="bg-md-sys-color-surface border border-md-sys-color-outline-variant rounded-lg p-4 md-elevation-1">
       <h3 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium">
         Table of Contents
       </h3>
-      
       <nav className="space-y-1">
         {sections.map((section) => (
           <div key={section.id}>
-            <div 
+            <div
               className={`flex items-center gap-2 py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                isActive(section.id) 
-                  ? 'bg-md-sys-color-primary-container text-md-sys-color-on-primary-container' 
+                activeSectionId === section.id
+                  ? 'bg-md-sys-color-primary-container text-md-sys-color-on-primary-container'
                   : 'text-md-sys-color-on-surface hover:bg-md-sys-color-surface-variant'
               }`}
-              onClick={() => {
-                if (section.subsections && section.subsections.length > 0) {
-                  toggleSection(section.id);
-                } else {
-                  onSectionClick(section.id);
-                }
-              }}
+              onClick={() => onSectionClick(section.id)}
             >
-              {section.subsections && section.subsections.length > 0 && (
-                expandedSections.has(section.id) ? 
-                  <ChevronDown className="h-4 w-4 flex-shrink-0" /> : 
-                  <ChevronRight className="h-4 w-4 flex-shrink-0" />
-              )}
               <span className="md-typescale-body-large font-medium truncate">
                 {section.title}
               </span>
             </div>
-            
-            {section.subsections && expandedSections.has(section.id) && (
-              <div className="ml-6 mt-1 space-y-1">
-                {section.subsections.map((subsection) => (
-                  <div
-                    key={subsection.id}
-                    className={`py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                      isActive(subsection.id)
-                        ? 'bg-md-sys-color-secondary-container text-md-sys-color-on-secondary-container'
-                        : 'text-md-sys-color-on-surface-variant hover:bg-md-sys-color-surface-variant'
-                    }`}
-                    onClick={() => onSectionClick(subsection.id)}
-                  >
-                    <span className="text-sm truncate">
-                      {subsection.title}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
+            {/* Placeholder for subsections if needed */}
           </div>
         ))}
       </nav>
@@ -318,38 +92,92 @@ function TableOfContents({
 }
 
 export default function Documentation() {
-  const { project } = useParams<{ project: string }>();
-  const [activeSection, setActiveSection] = useState('installation');
-  
-  const doc = project ? docsData[project] : null;
+  const { project } = useParams<{ project?: string }>(); // project can be undefined
+  const [processedDocs, setProcessedDocs] = useState<ProcessedDocData | null>(null);
+  const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!doc) {
+  useEffect(() => {
+    const loadDocumentation = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        // For now, we'll assume 'project' parameter might select different JSON files or structures in future.
+        // Currently, we only have one documentationData.json.
+        // Let's simulate a "default" project or the first one if no project param is given.
+        const currentProjectKey = project || "default"; // Or however you want to map `project` to your data
+
+        // This is where you might fetch a different JSON if you had multiple doc sets
+        // For this task, documentationData is imported directly.
+
+        const sectionsWithIds = documentationData.map(doc => ({
+          ...doc,
+          id: generateId(doc.title),
+        }));
+
+        const sectionsWithContent: DocItem[] = await Promise.all(
+          sectionsWithIds.map(async (section) => {
+            try {
+              // Vite specific way to load raw file content
+              const rawContent = await import(/* @vite-ignore */ `../../${section.path}?raw`)
+              const parsedHtml = await remark().use(html).process(rawContent.default);
+              return { ...section, htmlContent: String(parsedHtml) };
+            } catch (e) {
+              console.error(`Failed to load or parse markdown for ${section.path}:`, e);
+              return { ...section, htmlContent: `<p>Error loading content for ${section.title}.</p>` };
+            }
+          })
+        );
+
+        // Simulate a main doc structure. In a real scenario, this might also come from JSON.
+        const mainDocData: ProcessedDocData = {
+            title: project ? `${project.charAt(0).toUpperCase() + project.slice(1)} Docs` : "Documentation",
+            description: "Browse through the documentation sections.",
+            version: "1.0.0", // This could also be dynamic
+            sections: sectionsWithContent,
+        };
+
+        setProcessedDocs(mainDocData);
+        if (mainDocData.sections.length > 0) {
+          setActiveSectionId(mainDocData.sections[0].id);
+        }
+      } catch (e) {
+        console.error("Failed to load documentation data:", e);
+        setError("Failed to load documentation.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadDocumentation();
+  }, [project]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-md-sys-color-background flex items-center justify-center">
+        <p className="text-md-sys-color-on-surface">Loading documentation...</p>
+      </div>
+    );
+  }
+
+  if (error || !processedDocs) {
     return (
       <div className="min-h-screen bg-md-sys-color-background flex items-center justify-center">
         <div className="text-center">
           <h1 className="md-typescale-display-small text-md-sys-color-on-background mb-4">
-            Documentation Not Found
+            Documentation Error
           </h1>
           <p className="text-md-sys-color-on-surface-variant">
-            The documentation for "{project}" could not be found.
+            {error || `The documentation for "${project || 'this project'}" could not be loaded.`}
           </p>
         </div>
       </div>
     );
   }
 
-  const findSectionById = (sections: Section[], id: string): Section | null => {
-    for (const section of sections) {
-      if (section.id === id) return section;
-      if (section.subsections) {
-        const found = findSectionById(section.subsections, id);
-        if (found) return found;
-      }
-    }
-    return null;
-  };
-
-  const currentSection = findSectionById(doc.sections, activeSection);
+  const currentSection = processedDocs.sections.find(sec => sec.id === activeSectionId);
 
   return (
     <div className="min-h-screen bg-md-sys-color-background">
@@ -359,17 +187,15 @@ export default function Documentation() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
                 <h1 className="md-typescale-display-small text-md-sys-color-on-background">
-                  {doc.title}
+                  {processedDocs.title}
                 </h1>
                 <Badge className="bg-md-sys-color-tertiary-container text-md-sys-color-on-tertiary-container">
-                  v{doc.version}
+                  v{processedDocs.version}
                 </Badge>
               </div>
-              
-              {/* GitHub and Sponsor Links */}
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" asChild>
-                  <a href="https://github.com/hi-manshu/Charty" target="_blank" rel="noopener noreferrer">
+                  <a href="https://github.com/hi-manshu/android-web-spark" target="_blank" rel="noopener noreferrer">
                     <Github className="h-4 w-4 mr-2" />
                     GitHub
                   </a>
@@ -383,7 +209,7 @@ export default function Documentation() {
               </div>
             </div>
             <p className="md-typescale-body-large text-md-sys-color-on-surface-variant">
-              {doc.description}
+              {processedDocs.description}
             </p>
           </div>
         </FadeInView>
@@ -391,80 +217,42 @@ export default function Documentation() {
         <div className="grid lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
             <div className="sticky top-8">
-              <TableOfContents 
-                sections={doc.sections}
-                activeSection={activeSection}
-                onSectionClick={setActiveSection}
+              <TableOfContents
+                sections={processedDocs.sections}
+                activeSectionId={activeSectionId}
+                onSectionClick={setActiveSectionId}
               />
             </div>
           </div>
 
           <div className="lg:col-span-3">
-            <FadeInView key={activeSection}>
-              <Card className="bg-md-sys-color-surface border-md-sys-color-outline-variant md-elevation-1">
-                <CardHeader>
-                  <CardTitle className="md-typescale-headline-medium text-md-sys-color-on-surface">
-                    {currentSection?.title}
-                  </CardTitle>
-                  <CardDescription className="md-typescale-body-large text-md-sys-color-on-surface-variant">
-                    {currentSection?.content}
-                  </CardDescription>
-                </CardHeader>
-                
-                <CardContent className="space-y-6">
-                  {activeSection === 'installation' && (
-                    <div>
-                      <h4 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium">
-                        Installation
-                      </h4>
-                      <CodeBlock code={doc.code.installation} id="installation" />
-                    </div>
-                  )}
-
-                  {activeSection === 'basic-usage' && (
-                    <div>
-                      <h4 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium">
-                        Basic Usage
-                      </h4>
-                      <CodeBlock code={doc.code.basicUsage} id="basic-usage" />
-                    </div>
-                  )}
-
-                  {activeSection === 'line-charts' && 'lineChart' in doc.code && (
-                    <div>
-                      <h4 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium">
-                        Line Chart Example
-                      </h4>
-                      <CodeBlock code={doc.code.lineChart as string} id="line-chart" />
-                    </div>
-                  )}
-
-                  {activeSection === 'bar-charts' && 'barChart' in doc.code && (
-                    <div>
-                      <h4 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium">
-                        Bar Chart Example
-                      </h4>
-                      <CodeBlock code={doc.code.barChart as string} id="bar-chart" />
-                    </div>
-                  )}
-
-                  {activeSection === 'pie-charts' && 'pieChart' in doc.code && (
-                    <div>
-                      <h4 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium">
-                        Pie Chart Example
-                      </h4>
-                      <CodeBlock code={doc.code.pieChart as string} id="pie-chart" />
-                    </div>
-                  )}
-
-                  {!['installation', 'basic-usage', 'line-charts', 'bar-charts', 'pie-charts'].includes(activeSection) && (
-                    <div className="text-md-sys-color-on-surface-variant">
-                      <p>Content for {currentSection?.title} will be available soon.</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </FadeInView>
+            {currentSection ? (
+              <FadeInView key={currentSection.id}>
+                <Card className="bg-md-sys-color-surface border-md-sys-color-outline-variant md-elevation-1">
+                  <CardHeader>
+                    <CardTitle className="md-typescale-headline-medium text-md-sys-color-on-surface">
+                      {currentSection.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {/* Render parsed HTML. Ensure prose styles are applied if not default */}
+                    <div
+                        className="prose dark:prose-invert max-w-none" // Apply prose for markdown styling
+                        dangerouslySetInnerHTML={{ __html: currentSection.htmlContent || "" }}
+                    />
+                    {/* Example of how you might conditionally render CodeBlock if markdown contains specific syntax */}
+                    {/* This part would require more sophisticated parsing or conventions in your .md files */}
+                    {/* For instance, if a section path implies it's about code:
+                    {currentSection.path.includes("installation.md") && (
+                        <CodeBlock code={"extracted_code_for_installation"} id={`${currentSection.id}-code`} />
+                    )}
+                    */}
+                  </CardContent>
+                </Card>
+              </FadeInView>
+            ) : (
+              <p className="text-md-sys-color-on-surface-variant">Select a section to view its content.</p>
+            )}
           </div>
         </div>
       </div>
