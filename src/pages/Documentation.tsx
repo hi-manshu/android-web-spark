@@ -121,7 +121,8 @@ export default function Documentation() {
           sectionsWithIds.map(async (section) => {
             try {
               // Vite specific way to load raw file content
-              const rawContent = await import(/* @vite-ignore */ `../../${section.path}?raw`)
+              // Path is now relative to src/content/docs/
+              const rawContent = await import(/* @vite-ignore */ `../content/docs/${section.path}?raw`)
               const parsedHtml = await remark().use(html).process(rawContent.default);
               return { ...section, htmlContent: String(parsedHtml) };
             } catch (e) {

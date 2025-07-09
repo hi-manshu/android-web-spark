@@ -1,10 +1,10 @@
 [
   {
     "title": "Introduction",
-    "path": "src/content/documentation/introduction.md"
+    "path": "introduction.md"
   },
   {
     "title": "Getting Started",
-    "path": "src/content/documentation/getting-started.md"
+    "path": "getting-started.md"
   }
 ]
