@@ -25,8 +25,8 @@ export default function Home() {
     staleTime: 5 * 60 * 1000,
   });
 
-  // Get first 3 projects as featured
-  const featuredProjects = allProjects?.slice(0, 3) || [];
+  // Get first 4 projects as featured
+  const featuredProjects = allProjects?.slice(0, 4) || [];
 
   // Get recent blog posts
   const recentBlogPosts = allBlogPosts.slice(0, 3);
@@ -97,10 +97,10 @@ export default function Home() {
             </div>
           </FadeInView>
           
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {projectsLoading ? (
               // Loading skeletons with staggered animation
-              Array.from({ length: 3 }).map((_, i) => (
+              Array.from({ length: 4 }).map((_, i) => (
                 <FadeInView key={i} delay={i * 150}>
                   <ProjectCardSkeleton />
                 </FadeInView>
@@ -108,7 +108,9 @@ export default function Home() {
             ) : (
               featuredProjects.map((project, index) => (
                 <FadeInView key={project.title} delay={index * 150}>
-                  <ProjectCard {...project} />
+                  <div className="h-48">
+                    <ProjectCard {...project} />
+                  </div>
                 </FadeInView>
               ))
             )}
@@ -150,20 +152,22 @@ export default function Home() {
             </div>
           </FadeInView>
           
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {blogLoading ? (
               // Loading skeletons
               Array.from({ length: 3 }).map((_, i) => (
                 <FadeInView key={i} delay={i * 150}>
                   <div className="animate-pulse">
-                    <div className="bg-muted rounded-lg h-48"></div>
+                    <div className="bg-muted rounded-lg h-40"></div>
                   </div>
                 </FadeInView>
               ))
             ) : (
               recentBlogPosts.map((post, index) => (
                 <FadeInView key={post.slug} delay={index * 150}>
-                  <BlogCard {...post} />
+                  <div className="h-40">
+                    <BlogCard {...post} />
+                  </div>
                 </FadeInView>
               ))
             )}

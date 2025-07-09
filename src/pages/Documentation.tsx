@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Copy, Check, ChevronDown, ChevronRight } from 'lucide-react';
+import { Copy, Check, ChevronDown, ChevronRight, Github, Heart } from 'lucide-react';
 import { useState } from 'react';
 import { FadeInView } from '@/components/FadeInView';
 
@@ -356,13 +356,31 @@ export default function Documentation() {
       <div className="container mx-auto px-6 py-8">
         <FadeInView>
           <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <h1 className="md-typescale-display-small text-md-sys-color-on-background">
-                {doc.title}
-              </h1>
-              <Badge className="bg-md-sys-color-tertiary-container text-md-sys-color-on-tertiary-container">
-                v{doc.version}
-              </Badge>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <h1 className="md-typescale-display-small text-md-sys-color-on-background">
+                  {doc.title}
+                </h1>
+                <Badge className="bg-md-sys-color-tertiary-container text-md-sys-color-on-tertiary-container">
+                  v{doc.version}
+                </Badge>
+              </div>
+              
+              {/* GitHub and Sponsor Links */}
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" asChild>
+                  <a href="https://github.com/hi-manshu/Charty" target="_blank" rel="noopener noreferrer">
+                    <Github className="h-4 w-4 mr-2" />
+                    GitHub
+                  </a>
+                </Button>
+                <Button variant="outline" size="sm" asChild>
+                  <a href="https://github.com/sponsors/hi-manshu" target="_blank" rel="noopener noreferrer">
+                    <Heart className="h-4 w-4 mr-2" />
+                    Sponsor
+                  </a>
+                </Button>
+              </div>
             </div>
             <p className="md-typescale-body-large text-md-sys-color-on-surface-variant">
               {doc.description}

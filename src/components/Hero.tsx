@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { ArrowDown, Github, Heart, Linkedin, Instagram, X } from 'lucide-react';
+import { ArrowDown, Github, Heart, Instagram, X } from 'lucide-react';
 
 export function Hero() {
   return (
@@ -61,12 +61,6 @@ export function Hero() {
             <div className="flex items-center justify-center gap-6">
               <p className="text-lg font-medium text-gray-500 dark:text-gray-400">Connect with me:</p>
               <div className="flex gap-4">
-                <Button variant="ghost" size="sm" className="rounded-full p-3 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors" asChild>
-                  <a href="https://www.linkedin.com/in/himanshoe/" target="_blank" rel="noopener noreferrer">
-                    <Linkedin className="h-5 w-5 text-blue-600" />
-                    <span className="sr-only">LinkedIn</span>
-                  </a>
-                </Button>
                 <Button variant="ghost" size="sm" className="rounded-full p-3 hover:bg-pink-100 dark:hover:bg-pink-900/50 transition-colors" asChild>
                   <a href="https://www.instagram.com/hi_man_shoe/" target="_blank" rel="noopener noreferrer">
                     <Instagram className="h-5 w-5 text-pink-600" />

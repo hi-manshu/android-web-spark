@@ -41,52 +41,70 @@ export default function Projects() {
         </FadeInView>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {isLoading
-          ? Array.from({ length: 6 }).map((_, i) => (
+          ? Array.from({ length: 8 }).map((_, i) => (
               <FadeInView key={i} delay={i * 100}>
                 <ProjectCardSkeleton />
               </FadeInView>
             ))
-          : repos?.slice(0, 6).map((project, index) => (
+          : repos?.slice(0, 7).map((project, index) => (
               <FadeInView key={project.title} delay={index * 100}>
-                <ProjectCard
-                  title={project.title}
-                  description={project.description}
-                  tags={project.tags}
-                  githubUrl={project.githubUrl}
-                  stars={project.stars}
-                  language={project.language}
-                />
+                <div className="h-48">
+                  <ProjectCard
+                    title={project.title}
+                    description={project.description}
+                    tags={project.tags}
+                    githubUrl={project.githubUrl}
+                    stars={project.stars}
+                    language={project.language}
+                  />
+                </div>
               </FadeInView>
             ))}
         
         {!isLoading && (
-          <FadeInView delay={600}>
+          <FadeInView delay={700}>
             <Card 
-              className="group cursor-pointer transition-all duration-300 hover:shadow-lg border-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 h-full"
+              className="group cursor-pointer transition-all duration-300 hover:shadow-lg border border-md-sys-color-outline bg-md-sys-color-primary hover:bg-md-sys-color-primary/90 h-48"
               onClick={handleViewAllClick}
             >
-              <CardContent className="flex flex-col items-center justify-center h-full p-8 text-white text-center space-y-4">
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors duration-300">
-                  <Github className="h-8 w-8" />
+              <CardContent className="flex flex-col items-center justify-center h-full p-6 text-md-sys-color-on-primary text-center space-y-3">
+                <div className="w-12 h-12 bg-md-sys-color-on-primary/20 rounded-full flex items-center justify-center group-hover:bg-md-sys-color-on-primary/30 transition-colors duration-300">
+                  <Github className="h-6 w-6" />
                 </div>
                 
-                <div className="space-y-2">
-                  <h3 className="text-xl font-bold">View All Projects</h3>
-                  <p className="text-white/90 text-sm">
-                    Explore all my repositories on GitHub
+                <div className="space-y-1">
+                  <h3 className="text-lg font-bold">View All Projects</h3>
+                  <p className="text-md-sys-color-on-primary/90 text-xs">
+                    Explore all repositories on GitHub
                   </p>
                 </div>
                 
-                <div className="flex items-center space-x-2 text-sm font-medium group-hover:translate-x-1 transition-transform duration-300">
+                <div className="flex items-center space-x-2 text-xs font-medium group-hover:translate-x-1 transition-transform duration-300">
                   <span>Visit GitHub</span>
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-3 w-3" />
                 </div>
               </CardContent>
             </Card>
           </FadeInView>
         )}
+      </div>
+      
+      {/* Footer */}
+      <div className="text-center mt-16 pt-8 border-t border-md-sys-color-outline">
+        <p className="text-md-sys-color-on-surface-variant text-sm">
+          Built by Himanshu Singh. The source code is available on{' '}
+          <a 
+            href="https://github.com/hi-manshu" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-md-sys-color-primary hover:underline"
+          >
+            GitHub
+          </a>
+          .
+        </p>
       </div>
     </div>
   );
