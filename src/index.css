@@ -10,18 +10,18 @@
     /* Material 3 Light Theme - Pastel Android Green */
     --md-sys-color-primary: 122 39% 49%;
     --md-sys-color-on-primary: 0 0% 100%;
-    --md-sys-color-primary-container: 122 60% 90%;
+    --md-sys-color-primary-container: 122 50% 85%;
     --md-sys-color-on-primary-container: 122 100% 12%;
     
-    --md-sys-color-secondary: 142 35% 65%;
-    --md-sys-color-on-secondary: 0 0% 100%;
-    --md-sys-color-secondary-container: 142 50% 92%;
-    --md-sys-color-on-secondary-container: 142 100% 15%;
+    --md-sys-color-secondary: 54 96% 68%;
+    --md-sys-color-on-secondary: 0 0% 0%;
+    --md-sys-color-secondary-container: 54 100% 88%;
+    --md-sys-color-on-secondary-container: 54 100% 15%;
     
-    --md-sys-color-tertiary: 162 40% 70%;
+    --md-sys-color-tertiary: 45 100% 76%;
     --md-sys-color-on-tertiary: 0 0% 0%;
-    --md-sys-color-tertiary-container: 162 45% 94%;
-    --md-sys-color-on-tertiary-container: 162 100% 18%;
+    --md-sys-color-tertiary-container: 45 100% 92%;
+    --md-sys-color-on-tertiary-container: 45 100% 18%;
     
     --md-sys-color-surface: 0 0% 99%;
     --md-sys-color-on-surface: 0 0% 10%;
@@ -75,17 +75,17 @@
     --md-sys-color-primary: 122 50% 75%;
     --md-sys-color-on-primary: 122 100% 10%;
     --md-sys-color-primary-container: 122 35% 25%;
-    --md-sys-color-on-primary-container: 122 60% 85%;
+    --md-sys-color-on-primary-container: 122 50% 85%;
     
-    --md-sys-color-secondary: 142 45% 75%;
-    --md-sys-color-on-secondary: 142 100% 12%;
-    --md-sys-color-secondary-container: 142 30% 22%;
-    --md-sys-color-on-secondary-container: 142 50% 88%;
+    --md-sys-color-secondary: 54 85% 75%;
+    --md-sys-color-on-secondary: 54 100% 15%;
+    --md-sys-color-secondary-container: 54 50% 22%;
+    --md-sys-color-on-secondary-container: 54 85% 88%;
     
-    --md-sys-color-tertiary: 162 50% 80%;
-    --md-sys-color-on-tertiary: 162 100% 15%;
-    --md-sys-color-tertiary-container: 162 35% 18%;
-    --md-sys-color-on-tertiary-container: 162 45% 90%;
+    --md-sys-color-tertiary: 45 90% 80%;
+    --md-sys-color-on-tertiary: 45 100% 18%;
+    --md-sys-color-tertiary-container: 45 40% 20%;
+    --md-sys-color-on-tertiary-container: 45 90% 92%;
     
     --md-sys-color-surface: 0 0% 6%;
     --md-sys-color-on-surface: 0 0% 90%;
@@ -266,14 +266,6 @@
   }
 }
 
-.md-gradient-expressive {
-  background: linear-gradient(45deg, 
-    hsl(var(--md-sys-color-primary)), 
-    hsl(var(--md-sys-color-secondary)), 
-    hsl(var(--md-sys-color-tertiary)));
-  background-size: 400% 400%;
-  animation: md-gradient-flow 8s ease-in-out infinite;
-}
 
 /* Material 3 Interactive States */
 .md-state-hover:hover {
