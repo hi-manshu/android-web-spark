@@ -9,23 +9,22 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-md-sys-color-primary text-md-sys-color-on-primary md-elevation-2 md-state-hover md-state-pressed" +
-          " hover:bg-md-sys-color-primary/90 transition-all duration-200",
-        destructive: "bg-md-sys-color-error text-md-sys-color-on-error md-elevation-2 md-state-hover md-state-pressed" +
+        default: "bg-md-sys-color-primary text-md-sys-color-on-primary border border-md-sys-color-primary" +
+          " hover:bg-md-sys-color-on-surface hover:text-md-sys-color-surface transition-all duration-200",
+        destructive: "bg-md-sys-color-error text-md-sys-color-on-error" +
           " hover:bg-md-sys-color-error/90 transition-all duration-200",
-        outline: "border border-md-sys-color-outline bg-md-sys-color-surface text-md-sys-color-on-surface md-state-hover" +
+        outline: "border border-md-sys-color-outline bg-md-sys-color-surface text-md-sys-color-on-surface" +
           " hover:bg-md-sys-color-surface-variant transition-all duration-200",
-        secondary: "bg-md-sys-color-secondary text-md-sys-color-on-secondary md-elevation-1 md-state-hover md-state-pressed" +
-          " hover:bg-md-sys-color-secondary/90 transition-all duration-200",
-        ghost: "text-md-sys-color-on-surface md-state-hover" +
+        secondary: "bg-md-sys-color-secondary text-md-sys-color-on-secondary border border-md-sys-color-outline" +
           " hover:bg-md-sys-color-surface-variant transition-all duration-200",
+        ghost: "text-md-sys-color-on-surface hover:bg-md-sys-color-surface-variant transition-all duration-200",
         link: "text-md-sys-color-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-12 px-6 py-3",
-        sm: "h-9 rounded-lg px-4",
-        lg: "h-14 rounded-lg px-8",
-        icon: "h-12 w-12",
+        default: "h-10 px-4 py-2",
+        sm: "h-8 rounded-md px-3 text-xs",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
       },
     },
     defaultVariants: {
