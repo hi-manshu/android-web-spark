@@ -2,6 +2,7 @@
   "projectTitle": "Charty Library",
   "projectDescription": "Documentation for the Charty data visualization library.",
   "projectVersion": "1.0.0",
+  "projectRepoUrl": "https://github.com/hi-manshu/charty",
   "sections": [
     {
       "title": "Introduction",

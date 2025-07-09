@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -34,6 +34,7 @@ const generateId = (title: string, parentId?: string): string => {
 const processSections = async (
   sections: any[], // Sections from index.json
   project: string,  // Current project name (e.g., "charty")
+  // version parameter removed
   parentId?: string
 ): Promise<DocSection[]> => {
   return Promise.all(
@@ -43,21 +44,21 @@ const processSections = async (
 
       if (sectionData.path) {
         try {
-          // Path is relative to project's doc folder e.g. src/content/docs/charty/
+          // Path is relative to project's doc folder (no version) e.g. src/content/docs/charty/
           const rawContentModule = await import(
-            /* @vite-ignore */ `../content/docs/${project}/${sectionData.path}?raw`
+            /* @vite-ignore */ `../content/docs/${project}/${sectionData.path}?raw` // version removed from path
           );
           const parsedHtml = await remark().use(html).process(rawContentModule.default);
           htmlContent = String(parsedHtml);
         } catch (e) {
-          console.error(`Failed to load or parse markdown for ${project}/${sectionData.path}:`, e);
+          console.error(`Failed to load or parse markdown for ${project}/${sectionData.path}:`, e); // version removed from log
           htmlContent = `<p>Error loading content for ${sectionData.title}. Details: ${e}</p>`;
         }
       }
 
       let children: DocSection[] | undefined = undefined;
       if (sectionData.children && sectionData.children.length > 0) {
-        children = await processSections(sectionData.children, project, currentId);
+        children = await processSections(sectionData.children, project, currentId); // version not passed recursively
       }
 
       return {
@@ -206,9 +207,11 @@ function TableOfContents({
 
 
 export default function Documentation() {
-  const { project = "charty" } = useParams<{ project?: string }>(); // Default to 'charty' if no param
+  const { project = "charty" } = useParams<{ project?: string }>(); // Version removed
+  const navigate = useNavigate(); // Keep for now, might be used by other UI elements later
   const [projectData, setProjectData] = useState<ProjectIndex | null>(null);
   const [processedSections, setProcessedSections] = useState<DocSection[]>([]);
+  // availableVersions state removed
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -228,22 +231,24 @@ export default function Documentation() {
 
   useEffect(() => {
     const loadDocumentation = async () => {
-      if (!project) {
+      if (!project) { // Version check removed
         setError("No project specified.");
         setIsLoading(false);
         return;
       }
       setIsLoading(true);
       setError(null);
+      // Removed logic for availableVersions
 
       try {
-        // Dynamically import the project's index.json
+        // Dynamically import the project's index.json (no version in path)
         const indexJsonModule = await import(
-          /* @vite-ignore */ `../content/docs/${project}/index.json`
+          /* @vite-ignore */ `../content/docs/${project}/index.json` // Path reverted
         );
         const projectIndexData: ProjectIndex = indexJsonModule.default;
         setProjectData(projectIndexData);
 
+        // processSections call no longer needs version
         const fullyProcessedSections = await processSections(projectIndexData.sections, project);
         setProcessedSections(fullyProcessedSections);
 
@@ -347,7 +352,7 @@ export default function Documentation() {
               </div>
               <div className="flex items-center gap-2">
                  <Button variant="outline" size="sm" asChild>
-                  <a href={`https://github.com/hi-manshu/${project}`} target="_blank" rel="noopener noreferrer">
+                  <a href={projectData.projectRepoUrl || `https://github.com/hi-manshu/${project}`} target="_blank" rel="noopener noreferrer">
                     <Github className="h-4 w-4 mr-2" />
                     {project} on GitHub
                   </a>
