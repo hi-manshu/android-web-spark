@@ -7,32 +7,32 @@
 
 @layer base {
   :root {
-    /* Android Green & Yellow Theme */
-    --md-sys-color-primary: 122 39% 49%;
+    /* Light Theme - ColorHunt Palette: #555879, #98A1BC, #DED3C4, #F4EBD3 */
+    --md-sys-color-primary: 232 19% 41%;
     --md-sys-color-on-primary: 0 0% 100%;
-    --md-sys-color-primary-container: 122 50% 85%;
-    --md-sys-color-on-primary-container: 122 100% 12%;
+    --md-sys-color-primary-container: 232 30% 85%;
+    --md-sys-color-on-primary-container: 232 35% 15%;
     
-    --md-sys-color-secondary: 54 96% 68%;
+    --md-sys-color-secondary: 221 26% 67%;
     --md-sys-color-on-secondary: 0 0% 0%;
-    --md-sys-color-secondary-container: 54 100% 88%;
-    --md-sys-color-on-secondary-container: 54 100% 15%;
+    --md-sys-color-secondary-container: 221 35% 90%;
+    --md-sys-color-on-secondary-container: 221 35% 20%;
     
-    --md-sys-color-tertiary: 45 100% 76%;
-    --md-sys-color-on-tertiary: 0 0% 0%;
-    --md-sys-color-tertiary-container: 45 100% 92%;
-    --md-sys-color-on-tertiary-container: 45 100% 18%;
+    --md-sys-color-tertiary: 40 25% 82%;
+    --md-sys-color-on-tertiary: 40 35% 20%;
+    --md-sys-color-tertiary-container: 40 35% 95%;
+    --md-sys-color-on-tertiary-container: 40 35% 15%;
     
-    --md-sys-color-surface: 0 0% 99%;
-    --md-sys-color-on-surface: 0 0% 10%;
-    --md-sys-color-surface-variant: 220 20% 96%;
-    --md-sys-color-on-surface-variant: 220 10% 30%;
+    --md-sys-color-surface: 43 58% 96%;
+    --md-sys-color-on-surface: 232 20% 15%;
+    --md-sys-color-surface-variant: 40 25% 92%;
+    --md-sys-color-on-surface-variant: 232 15% 35%;
     
-    --md-sys-color-outline: 220 10% 50%;
-    --md-sys-color-outline-variant: 220 10% 80%;
+    --md-sys-color-outline: 232 10% 60%;
+    --md-sys-color-outline-variant: 40 20% 85%;
     
-    --md-sys-color-background: 0 0% 100%;
-    --md-sys-color-on-background: 0 0% 10%;
+    --md-sys-color-background: 43 58% 94%;
+    --md-sys-color-on-background: 232 20% 15%;
     
     --md-sys-color-error: 0 70% 60%;
     --md-sys-color-on-error: 0 0% 100%;
@@ -41,11 +41,11 @@
     
     /* Expressive Elevation and Effects */
     --md-sys-elevation-level0: 0px 0px 0px 0px rgba(0, 0, 0, 0);
-    --md-sys-elevation-level1: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
-    --md-sys-elevation-level2: 0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
-    --md-sys-elevation-level3: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
-    --md-sys-elevation-level4: 0px 6px 10px 4px rgba(0, 0, 0, 0.15), 0px 2px 3px 0px rgba(0, 0, 0, 0.3);
-    --md-sys-elevation-level5: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
+    --md-sys-elevation-level1: 0px 1px 3px 1px rgba(85, 88, 121, 0.15), 0px 1px 2px 0px rgba(85, 88, 121, 0.3);
+    --md-sys-elevation-level2: 0px 2px 6px 2px rgba(85, 88, 121, 0.15), 0px 1px 2px 0px rgba(85, 88, 121, 0.3);
+    --md-sys-elevation-level3: 0px 4px 8px 3px rgba(85, 88, 121, 0.15), 0px 1px 3px 0px rgba(85, 88, 121, 0.3);
+    --md-sys-elevation-level4: 0px 6px 10px 4px rgba(85, 88, 121, 0.15), 0px 2px 3px 0px rgba(85, 88, 121, 0.3);
+    --md-sys-elevation-level5: 0px 8px 12px 6px rgba(85, 88, 121, 0.15), 0px 4px 4px 0px rgba(85, 88, 121, 0.3);
     
     /* Legacy mappings for compatibility */
     --background: var(--md-sys-color-background);
@@ -71,36 +71,36 @@
   }
 
   .dark {
-    /* Clean Dark Theme - VSCode/GitHub Dark inspired */
-    --md-sys-color-primary: 122 50% 65%;
-    --md-sys-color-on-primary: 0 0% 100%;
-    --md-sys-color-primary-container: 122 30% 18%;
-    --md-sys-color-on-primary-container: 122 50% 85%;
+    /* Dark Theme - ColorHunt Palette: #393646, #4F4557, #6D5D6E, #F4EEE0 */
+    --md-sys-color-primary: 232 19% 65%;
+    --md-sys-color-on-primary: 258 13% 15%;
+    --md-sys-color-primary-container: 258 13% 20%;
+    --md-sys-color-on-primary-container: 232 25% 85%;
     
-    --md-sys-color-secondary: 54 70% 60%;
-    --md-sys-color-on-secondary: 0 0% 0%;
-    --md-sys-color-secondary-container: 54 30% 15%;
-    --md-sys-color-on-secondary-container: 54 70% 85%;
+    --md-sys-color-secondary: 221 26% 75%;
+    --md-sys-color-on-secondary: 265 11% 20%;
+    --md-sys-color-secondary-container: 265 11% 25%;
+    --md-sys-color-on-secondary-container: 221 30% 85%;
     
-    --md-sys-color-tertiary: 45 80% 65%;
-    --md-sys-color-on-tertiary: 0 0% 0%;
-    --md-sys-color-tertiary-container: 45 30% 15%;
-    --md-sys-color-on-tertiary-container: 45 80% 90%;
+    --md-sys-color-tertiary: 298 7% 55%;
+    --md-sys-color-on-tertiary: 43 58% 15%;
+    --md-sys-color-tertiary-container: 298 10% 25%;
+    --md-sys-color-on-tertiary-container: 43 58% 85%;
     
-    --md-sys-color-surface: 220 13% 9%;
-    --md-sys-color-on-surface: 220 9% 95%;
-    --md-sys-color-surface-variant: 220 13% 12%;
-    --md-sys-color-on-surface-variant: 220 9% 75%;
+    --md-sys-color-surface: 265 11% 31%;
+    --md-sys-color-on-surface: 43 58% 91%;
+    --md-sys-color-surface-variant: 298 7% 35%;
+    --md-sys-color-on-surface-variant: 43 30% 80%;
     
-    --md-sys-color-outline: 220 9% 35%;
-    --md-sys-color-outline-variant: 220 13% 20%;
+    --md-sys-color-outline: 298 7% 50%;
+    --md-sys-color-outline-variant: 265 11% 25%;
     
-    --md-sys-color-background: 220 13% 7%;
-    --md-sys-color-on-background: 220 9% 95%;
+    --md-sys-color-background: 258 13% 24%;
+    --md-sys-color-on-background: 43 58% 91%;
     
     --md-sys-color-error: 0 70% 65%;
     --md-sys-color-on-error: 0 0% 100%;
-    --md-sys-color-error-container: 0 70% 15%;
+    --md-sys-color-error-container: 0 70% 20%;
     --md-sys-color-on-error-container: 0 100% 90%;
   }
 }
