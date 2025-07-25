@@ -65,41 +65,41 @@ export default function Projects() {
         
         {!isLoading && (
           <FadeInView delay={700}>
-            <Card 
-              className="group cursor-pointer transition-all duration-300 hover:shadow-lg border border-md-sys-color-outline bg-md-sys-color-primary hover:bg-md-sys-color-primary/90 h-48"
-              onClick={handleViewAllClick}
-            >
-              <CardContent className="flex flex-col items-center justify-center h-full p-6 text-md-sys-color-on-primary text-center space-y-3">
-                <div className="w-12 h-12 bg-md-sys-color-on-primary/20 rounded-full flex items-center justify-center group-hover:bg-md-sys-color-on-primary/30 transition-colors duration-300">
-                  <Github className="h-6 w-6" />
-                </div>
-                
-                <div className="space-y-1">
-                  <h3 className="text-lg font-bold">View All Projects</h3>
-                  <p className="text-md-sys-color-on-primary/90 text-xs">
-                    Explore all repositories on GitHub
-                  </p>
-                </div>
-                
-                <div className="flex items-center space-x-2 text-xs font-medium group-hover:translate-x-1 transition-transform duration-300">
-                  <span>Visit GitHub</span>
-                  <ArrowRight className="h-3 w-3" />
-                </div>
-              </CardContent>
-            </Card>
+             <Card 
+               className="group cursor-pointer transition-all duration-300 hover:shadow-xl border-0 bg-gradient-to-br from-primary via-primary to-primary/80 hover:from-primary/90 hover:via-primary/90 hover:to-primary/70 shadow-lg hover:shadow-2xl hover:-translate-y-1 h-full flex flex-col"
+               onClick={handleViewAllClick}
+             >
+               <CardContent className="flex flex-col items-center justify-center h-full p-6 text-primary-foreground text-center space-y-4">
+                 <div className="w-16 h-16 bg-primary-foreground/10 rounded-full flex items-center justify-center group-hover:bg-primary-foreground/20 transition-all duration-300 group-hover:scale-110">
+                   <Github className="h-8 w-8" />
+                 </div>
+                 
+                 <div className="space-y-2">
+                   <h3 className="text-xl font-bold">View All Projects</h3>
+                   <p className="text-primary-foreground/90 text-sm leading-relaxed">
+                     Explore all repositories and contributions on GitHub
+                   </p>
+                 </div>
+                 
+                 <div className="flex items-center space-x-2 text-sm font-medium group-hover:translate-x-1 transition-transform duration-300 mt-auto">
+                   <span>Visit GitHub</span>
+                   <ArrowRight className="h-4 w-4" />
+                 </div>
+               </CardContent>
+             </Card>
           </FadeInView>
         )}
       </div>
       
       {/* Footer */}
-      <div className="text-center mt-16 pt-8 border-t border-md-sys-color-outline">
-        <p className="text-md-sys-color-on-surface-variant text-sm">
+      <div className="text-center mt-16 pt-8 border-t border-border">
+        <p className="text-muted-foreground text-sm">
           Built by Himanshu Singh. The source code is available on{' '}
           <a 
             href="https://github.com/hi-manshu" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="text-md-sys-color-primary hover:underline"
+            className="text-primary hover:underline"
           >
             GitHub
           </a>

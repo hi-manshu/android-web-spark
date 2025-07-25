@@ -107,11 +107,9 @@ export default function Home() {
               ))
             ) : (
               featuredProjects.map((project, index) => (
-                <FadeInView key={project.title} delay={index * 150}>
-                  <div className="h-48">
-                    <ProjectCard {...project} />
-                  </div>
-                </FadeInView>
+                 <FadeInView key={project.title} delay={index * 150}>
+                   <ProjectCard {...project} />
+                 </FadeInView>
               ))
             )}
           </div>
@@ -163,13 +161,11 @@ export default function Home() {
                 </FadeInView>
               ))
             ) : (
-              recentBlogPosts.map((post, index) => (
-                <FadeInView key={post.slug} delay={index * 150}>
-                  <div className="h-40">
-                    <BlogCard {...post} />
-                  </div>
-                </FadeInView>
-              ))
+               recentBlogPosts.map((post, index) => (
+                 <FadeInView key={post.slug} delay={index * 150}>
+                   <BlogCard {...post} />
+                 </FadeInView>
+               ))
             )}
           </div>
           
