@@ -27,22 +27,16 @@ export default function About() {
   const experience = [
     {
       title: "Senior Android Developer",
-      company: "Tech Company",
+      company: "NordVPN",
       period: "2022 - Present",
-      description: "Leading Android development for mobile applications with millions of users."
+      description: "Building NordVPN android app for millions of users."
     },
     {
-      title: "Android Developer",
-      company: "Startup Inc",
-      period: "2020 - 2022",
-      description: "Built scalable Android applications using modern development practices."
+      title: "Senior Android Developer",
+      company: "helloclue.com",
+      period: "2021-2022",
+      description: "Helping people to track period cycles"
     },
-    {
-      title: "Junior Android Developer",
-      company: "Mobile Solutions",
-      period: "2019 - 2020",
-      description: "Started my journey in Android development, focusing on UI/UX and performance."
-    }
   ];
 
   return (
@@ -65,7 +59,7 @@ export default function About() {
               </div>
             </div>
           </div>
-          
+
           <div className="flex items-center justify-between mb-6">
             <div className="flex-1" />
             <div className="text-center">
@@ -106,13 +100,13 @@ export default function About() {
             </CardHeader>
             <CardContent className="space-y-6 text-center">
               <p className="text-lg text-muted-foreground leading-relaxed">
-                I'm Himanshu Singh, an Android developer with a passion for creating exceptional mobile experiences. 
-                I specialize in building modern Android applications using Kotlin, Jetpack Compose, and the latest 
+                I'm Himanshu Singh, an Android developer with a passion for creating exceptional mobile experiences.
+                I specialize in building modern Android applications using Kotlin, Jetpack Compose, and the latest
                 Android development tools and practices.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                When I'm not coding, you can find me contributing to open source projects, writing technical articles, 
-                or exploring new technologies. I believe in the power of community and enjoy sharing knowledge with 
+                When I'm not coding, you can find me contributing to open source projects, writing technical articles,
+                or exploring new technologies. I believe in the power of community and enjoy sharing knowledge with
                 fellow developers.
               </p>
               <div className="flex gap-4 justify-center pt-4">
@@ -162,8 +156,8 @@ export default function About() {
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground leading-relaxed">
-                I'm passionate about open source and have contributed to several projects that help 
-                Android developers build better applications. My libraries focus on providing clean, 
+                I'm passionate about open source and have contributed to several projects that help
+                Android developers build better applications. My libraries focus on providing clean,
                 well-documented solutions for common development challenges.
               </p>
               <Button variant="outline" asChild className="gap-2">
