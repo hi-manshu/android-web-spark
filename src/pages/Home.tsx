@@ -3,12 +3,13 @@ import { Hero } from '@/components/Hero';
 import { ProjectCard } from '@/components/ProjectCard';
 import { BlogCard } from '@/components/BlogCard';
 import { Button } from '@/components/ui/button';
-import { ArrowUp, Github, Code2, Rocket } from 'lucide-react';
+import { ArrowUpRight, Github, Code2, Rocket } from 'lucide-react';
 import { getAllBlogPosts } from '@/utils/markdownUtils';
 import { useQuery } from '@tanstack/react-query';
 import { fetchGitHubRepos } from '@/services/githubService';
 import { FadeInView } from '@/components/FadeInView';
 import { ProjectCardSkeleton } from '@/components/ProjectCardSkeleton';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   // Fetch GitHub repos for featured projects
@@ -36,35 +37,29 @@ export default function Home() {
       <Hero />
       
       {/* Stats Section */}
-      <section className="py-16 bg-gradient-to-br from-slate-50/50 via-white to-gray-50/50 dark:from-slate-900/50 dark:via-background dark:to-gray-900/50">
+      <section className="py-16 border-y border-border">
         <div className="container">
           <FadeInView>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
               <div className="space-y-2">
                 <div className="flex justify-center">
-                  <Code2 className="h-12 w-12 text-primary" />
+                  <Code2 className="h-10 w-10 text-muted-foreground" />
                 </div>
-                <h3 className="text-3xl font-bold bg-gradient-to-r from-slate-700 to-gray-700 dark:from-slate-300 dark:to-gray-300 bg-clip-text text-transparent">
-                  50+
-                </h3>
+                <h3 className="text-3xl font-bold">50+</h3>
                 <p className="text-muted-foreground">Projects Created</p>
               </div>
               <div className="space-y-2">
                 <div className="flex justify-center">
-                  <Github className="h-12 w-12 text-primary" />
+                  <Github className="h-10 w-10 text-muted-foreground" />
                 </div>
-                <h3 className="text-3xl font-bold bg-gradient-to-r from-slate-700 to-gray-700 dark:from-slate-300 dark:to-gray-300 bg-clip-text text-transparent">
-                  1000+
-                </h3>
+                <h3 className="text-3xl font-bold">1000+</h3>
                 <p className="text-muted-foreground">GitHub Stars</p>
               </div>
               <div className="space-y-2">
                 <div className="flex justify-center">
-                  <Rocket className="h-12 w-12 text-primary" />
+                  <Rocket className="h-10 w-10 text-muted-foreground" />
                 </div>
-                <h3 className="text-3xl font-bold bg-gradient-to-r from-slate-700 to-gray-700 dark:from-slate-300 dark:to-gray-300 bg-clip-text text-transparent">
-                  5+
-                </h3>
+                <h3 className="text-3xl font-bold">5+</h3>
                 <p className="text-muted-foreground">Years Experience</p>
               </div>
             </div>
@@ -73,15 +68,12 @@ export default function Home() {
       </section>
       
       {/* Featured Projects Section */}
-      <section className="py-24 relative overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-500/5 via-transparent to-gray-500/5" />
-        
-        <div className="container relative">
+      <section className="py-20">
+        <div className="container">
           <FadeInView>
-            <div className="flex items-center justify-between mb-12">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-slate-700 to-gray-700 dark:from-slate-300 dark:to-gray-300 bg-clip-text text-transparent">
+            <div className="flex items-center justify-between mb-10">
+              <div className="space-y-1">
+                <h2 className="text-2xl font-semibold tracking-tight">
                   Featured Projects
                 </h2>
                 <p className="text-muted-foreground text-lg">
@@ -89,10 +81,10 @@ export default function Home() {
                 </p>
               </div>
               <Button variant="outline" size="lg" asChild className="hidden sm:flex">
-                <a href="/projects">
+                <Link to="/projects">
                   View All Projects
-                  <ArrowUp className="ml-2 h-4 w-4 rotate-45" />
-                </a>
+                  <ArrowUpRight className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
             </div>
           </FadeInView>
@@ -118,10 +110,10 @@ export default function Home() {
           <FadeInView delay={600}>
             <div className="flex justify-center mt-12 sm:hidden">
               <Button variant="outline" size="lg" asChild>
-                <a href="/projects">
+                <Link to="/projects">
                   View All Projects
-                  <ArrowUp className="ml-2 h-4 w-4 rotate-45" />
-                </a>
+                  <ArrowUpRight className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
             </div>
           </FadeInView>
@@ -129,23 +121,23 @@ export default function Home() {
       </section>
 
       {/* Recent Blog Posts Section */}
-      <section className="py-24 bg-gradient-to-br from-slate-50/30 via-white to-gray-50/30 dark:from-slate-900/30 dark:via-background dark:to-gray-900/30">
+      <section className="py-20 border-t border-border">
         <div className="container">
           <FadeInView>
-            <div className="flex items-center justify-between mb-12">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-slate-700 to-gray-700 dark:from-slate-300 dark:to-gray-300 bg-clip-text text-transparent">
+            <div className="flex items-center justify-between mb-10">
+              <div className="space-y-1">
+                <h2 className="text-2xl font-semibold tracking-tight">
                   Recent Blog Posts
                 </h2>
-                <p className="text-muted-foreground text-lg">
+                <p className="text-muted-foreground">
                   Latest articles about Android development and technology
                 </p>
               </div>
               <Button variant="outline" size="lg" asChild className="hidden sm:flex">
-                <a href="/blog">
+                <Link to="/blog">
                   View All Posts
-                  <ArrowUp className="ml-2 h-4 w-4 rotate-45" />
-                </a>
+                  <ArrowUpRight className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
             </div>
           </FadeInView>
@@ -173,10 +165,10 @@ export default function Home() {
           <FadeInView delay={600}>
             <div className="flex justify-center mt-12 sm:hidden">
               <Button variant="outline" size="lg" asChild>
-                <a href="/blog">
+                <Link to="/blog">
                   View All Posts
-                  <ArrowUp className="ml-2 h-4 w-4 rotate-45" />
-                </a>
+                  <ArrowUpRight className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
             </div>
           </FadeInView>
