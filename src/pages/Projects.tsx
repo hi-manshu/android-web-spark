@@ -50,38 +50,36 @@ export default function Projects() {
             ))
           : repos?.slice(0, 7).map((project, index) => (
               <FadeInView key={project.title} delay={index * 100}>
-                <div className="h-48">
-                  <ProjectCard
-                    title={project.title}
-                    description={project.description}
-                    tags={project.tags}
-                    githubUrl={project.githubUrl}
-                    stars={project.stars}
-                    language={project.language}
-                  />
-                </div>
+                <ProjectCard
+                  title={project.title}
+                  description={project.description}
+                  tags={project.tags}
+                  githubUrl={project.githubUrl}
+                  stars={project.stars}
+                  language={project.language}
+                />
               </FadeInView>
             ))}
         
         {!isLoading && (
           <FadeInView delay={700}>
              <Card 
-               className="group cursor-pointer transition-all duration-300 hover:shadow-xl border-0 bg-gradient-to-br from-primary via-primary to-primary/80 hover:from-primary/90 hover:via-primary/90 hover:to-primary/70 shadow-lg hover:shadow-2xl hover:-translate-y-1 h-full flex flex-col"
+               className="group cursor-pointer transition-all duration-200 hover:bg-muted/50 border border-border bg-card h-full flex flex-col"
                onClick={handleViewAllClick}
              >
-               <CardContent className="flex flex-col items-center justify-center h-full p-6 text-primary-foreground text-center space-y-4">
-                 <div className="w-16 h-16 bg-primary-foreground/10 rounded-full flex items-center justify-center group-hover:bg-primary-foreground/20 transition-all duration-300 group-hover:scale-110">
-                   <Github className="h-8 w-8" />
+               <CardContent className="flex flex-col items-center justify-center h-full p-6 text-center space-y-4 min-h-[200px]">
+                 <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
+                   <Github className="h-6 w-6 text-muted-foreground" />
                  </div>
                  
-                 <div className="space-y-2">
-                   <h3 className="text-xl font-bold">View All Projects</h3>
-                   <p className="text-primary-foreground/90 text-sm leading-relaxed">
-                     Explore all repositories and contributions on GitHub
+                 <div className="space-y-1">
+                   <h3 className="text-base font-medium group-hover:underline underline-offset-4">View All Projects</h3>
+                   <p className="text-muted-foreground text-sm">
+                     Explore all repositories on GitHub
                    </p>
                  </div>
                  
-                 <div className="flex items-center space-x-2 text-sm font-medium group-hover:translate-x-1 transition-transform duration-300 mt-auto">
+                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
                    <span>Visit GitHub</span>
                    <ArrowRight className="h-4 w-4" />
                  </div>
