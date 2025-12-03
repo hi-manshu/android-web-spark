@@ -30,7 +30,7 @@ export function ProjectCard({ title, description, tags, githubUrl, stars, langua
           </CardTitle>
           <ArrowUpRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
         </div>
-        <CardDescription className="text-sm text-muted-foreground leading-relaxed">
+        <CardDescription className="text-sm text-muted-foreground leading-relaxed line-clamp-4">
           {description}
         </CardDescription>
       </CardHeader>
