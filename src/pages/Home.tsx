@@ -120,60 +120,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Recent Blog Posts Section */}
-      <section className="py-20 border-t border-border">
-        <div className="container">
-          <FadeInView>
-            <div className="flex items-center justify-between mb-10">
-              <div className="space-y-1">
-                <h2 className="text-2xl font-semibold tracking-tight">
-                  Recent Blog Posts
-                </h2>
-                <p className="text-muted-foreground">
-                  Latest articles about Android development and technology
-                </p>
-              </div>
-              <Button variant="outline" size="lg" asChild className="hidden sm:flex">
-                <Link to="/blog">
-                  View All Posts
-                  <ArrowUpRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </FadeInView>
-          
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {blogLoading ? (
-              // Loading skeletons
-              Array.from({ length: 3 }).map((_, i) => (
-                <FadeInView key={i} delay={i * 150}>
-                  <div className="animate-pulse">
-                    <div className="bg-muted rounded-lg h-40"></div>
-                  </div>
-                </FadeInView>
-              ))
-            ) : (
-               recentBlogPosts.map((post, index) => (
-                 <FadeInView key={post.slug} delay={index * 150}>
-                   <BlogCard {...post} />
-                 </FadeInView>
-               ))
-            )}
-          </div>
-          
-          {/* Mobile button */}
-          <FadeInView delay={600}>
-            <div className="flex justify-center mt-12 sm:hidden">
-              <Button variant="outline" size="lg" asChild>
-                <Link to="/blog">
-                  View All Posts
-                  <ArrowUpRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-          </FadeInView>
-        </div>
-      </section>
+
     </div>
   );
 }
