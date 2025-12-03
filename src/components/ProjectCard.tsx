@@ -2,7 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Github, ArrowUp, Star, GitFork } from 'lucide-react';
+import { Github, ArrowUpRight, Star } from 'lucide-react';
 
 interface ProjectCardProps {
   title: string;
@@ -20,58 +20,51 @@ export function ProjectCard({ title, description, tags, githubUrl, stars, langua
 
   return (
     <Card 
-      className="group relative overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer h-full flex flex-col bg-gradient-to-br from-card via-card to-card/50 border-0 shadow-lg hover:shadow-2xl hover:-translate-y-1"
+      className="group cursor-pointer transition-all duration-200 hover:bg-muted/50 border border-border bg-card"
       onClick={handleCardClick}
     >
-      {/* Gradient overlay on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      
-      {/* Animated border */}
-      <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-primary/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
-      
-      <CardHeader className="relative flex-shrink-0 pb-3">
-        <div className="flex items-start justify-between">
-          <div className="space-y-2 flex-1">
-            <CardTitle className="text-xl group-hover:text-primary transition-colors duration-300 line-clamp-2 leading-tight">
-              {title}
-            </CardTitle>
-            <CardDescription className="line-clamp-3 text-sm leading-relaxed">
-              {description}
-            </CardDescription>
-          </div>
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between gap-2">
+          <CardTitle className="text-base font-medium group-hover:underline underline-offset-4">
+            {title}
+          </CardTitle>
+          <ArrowUpRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
         </div>
+        <CardDescription className="text-sm text-muted-foreground leading-relaxed">
+          {description}
+        </CardDescription>
       </CardHeader>
       
-      <CardContent className="relative flex flex-col flex-grow pt-0">
-        <div className="flex flex-wrap gap-1.5 mb-4">
+      <CardContent className="pt-0 space-y-4">
+        <div className="flex flex-wrap gap-1.5">
           {tags.slice(0, 4).map((tag) => (
             <Badge 
               key={tag} 
               variant="secondary" 
-              className="text-xs px-2 py-1 bg-primary/10 text-primary hover:bg-primary/20 transition-colors border-0"
+              className="text-xs px-2 py-0.5 bg-muted text-muted-foreground font-normal"
             >
               {tag}
             </Badge>
           ))}
           {tags.length > 4 && (
-            <Badge variant="outline" className="text-xs px-2 py-1">
+            <Badge variant="outline" className="text-xs px-2 py-0.5 font-normal">
               +{tags.length - 4}
             </Badge>
           )}
         </div>
         
-        <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/50">
-          <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+        <div className="flex items-center justify-between pt-3 border-t border-border">
+          <div className="flex items-center gap-4 text-xs text-muted-foreground">
             {language && (
               <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 bg-gradient-to-r from-primary to-blue-500 rounded-full" />
-                <span className="font-medium">{language}</span>
+                <span className="w-2 h-2 rounded-full bg-foreground" />
+                <span>{language}</span>
               </div>
             )}
-            {stars && (
+            {stars !== undefined && (
               <div className="flex items-center gap-1">
-                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                <span className="font-medium">{stars}</span>
+                <Star className="h-3 w-3" />
+                <span>{stars}</span>
               </div>
             )}
           </div>
@@ -79,14 +72,13 @@ export function ProjectCard({ title, description, tags, githubUrl, stars, langua
           <Button 
             variant="ghost" 
             size="sm" 
-            className="hover:bg-primary/10 hover:text-primary transition-colors gap-1.5 opacity-70 group-hover:opacity-100"
+            className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
             onClick={(e) => {
               e.stopPropagation();
               window.open(githubUrl, '_blank', 'noopener,noreferrer');
             }}
           >
-            <Github className="h-4 w-4" />
-            <ArrowUp className="h-3 w-3 rotate-45" />
+            <Github className="h-3.5 w-3.5" />
           </Button>
         </div>
       </CardContent>
