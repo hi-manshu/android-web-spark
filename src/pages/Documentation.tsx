@@ -33,7 +33,7 @@ interface DocData {
 const docsData: Record<string, DocData> = {
   charty: {
     title: 'Charty',
-    description: 'Beautiful React chart components with Material Design',
+    description: 'A sleek & lightweight charting library for Jetpack Compose, now with Kotlin & Compose Multiplatform support!',
     version: '3.0.0-beta01',
     sections: [
       {

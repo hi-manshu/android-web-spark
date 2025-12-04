@@ -2,7 +2,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Github, ArrowUpRight, Star } from 'lucide-react';
+import { Github, ArrowUpRight, Star, BookOpen } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface ProjectCardProps {
   title: string;
@@ -18,8 +19,12 @@ export function ProjectCard({ title, description, tags, githubUrl, stars, langua
     window.open(githubUrl, '_blank', 'noopener,noreferrer');
   };
 
+  // Check if this project has documentation
+  const hasDocumentation = title.toLowerCase() === 'charty' || title.toLowerCase() === 'kalendar';
+  const docPath = `/docs/${title.toLowerCase()}`;
+
   return (
-    <Card 
+    <Card
       className="group cursor-pointer transition-all duration-200 hover:bg-muted/50 border border-border bg-card"
       onClick={handleCardClick}
     >
@@ -34,13 +39,13 @@ export function ProjectCard({ title, description, tags, githubUrl, stars, langua
           {description}
         </CardDescription>
       </CardHeader>
-      
+
       <CardContent className="pt-0 space-y-4">
         <div className="flex flex-wrap gap-1.5">
           {tags.slice(0, 4).map((tag) => (
-            <Badge 
-              key={tag} 
-              variant="secondary" 
+            <Badge
+              key={tag}
+              variant="secondary"
               className="text-xs px-2 py-0.5 bg-muted text-muted-foreground font-normal"
             >
               {tag}
@@ -52,7 +57,7 @@ export function ProjectCard({ title, description, tags, githubUrl, stars, langua
             </Badge>
           )}
         </div>
-        
+
         <div className="flex items-center justify-between pt-3 border-t border-border">
           <div className="flex items-center gap-4 text-xs text-muted-foreground">
             {language && (
@@ -68,18 +73,35 @@ export function ProjectCard({ title, description, tags, githubUrl, stars, langua
               </div>
             )}
           </div>
-          
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
-            onClick={(e) => {
-              e.stopPropagation();
-              window.open(githubUrl, '_blank', 'noopener,noreferrer');
-            }}
-          >
-            <Github className="h-3.5 w-3.5" />
-          </Button>
+
+          <div className="flex items-center gap-1">
+            {hasDocumentation && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                asChild
+              >
+                <Link to={docPath}>
+                  <BookOpen className="h-3.5 w-3.5" />
+                </Link>
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+              onClick={(e) => {
+                e.stopPropagation();
+                window.open(githubUrl, '_blank', 'noopener,noreferrer');
+              }}
+            >
+              <Github className="h-3.5 w-3.5" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
