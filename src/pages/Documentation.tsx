@@ -32,7 +32,7 @@ const docsData: Record<string, DocData> = {
   charty: {
     title: 'Charty',
     description: 'Beautiful React chart components with Material Design',
-    version: '2.1.0',
+    version: '3.0.0-beta01',
     sections: [
       {
         id: 'getting-started',
@@ -44,32 +44,79 @@ const docsData: Record<string, DocData> = {
             title: 'Installation',
             content: 'charty/getting-started/installation'
           },
-          {
-            id: 'basic-usage',
-            title: 'Basic Usage',
-            content: 'charty/getting-started/basic-usage'
-          }
         ]
       },
       {
         id: 'chart-types',
-        title: 'Chart Types',
-        content: 'charty/chart-types/line-charts', // Placeholder
+        title: 'BarChart Types',
+        content: 'charty/chart-types/bar-chart',
         subsections: [
           {
-            id: 'line-charts',
-            title: 'Line Charts',
-            content: 'charty/chart-types/line-charts'
+            id: 'bar-chart',
+            title: 'Bar Chart',
+            content: 'charty/chart-types/bar-chart'
           },
           {
-            id: 'bar-charts',
-            title: 'Bar Charts',
-            content: 'charty/chart-types/bar-charts'
+            id: 'bubble-bar-chart',
+            title: 'Bubble Bar Chart',
+            content: 'charty/chart-types/bubble-bar-chart'
           },
           {
-            id: 'pie-charts',
-            title: 'Pie Charts',
-            content: 'charty/chart-types/pie-charts'
+            id: 'comparison-bar-chart',
+            title: 'Comparison Bar Chart',
+            content: 'charty/chart-types/comparison-bar-chart'
+          },
+          {
+            id: 'horizontal-bar-chart',
+            title: 'Horizontal Bar Chart',
+            content: 'charty/chart-types/horizontal-bar-chart'
+          },
+          {
+            id: 'lollipop-bar-chart',
+            title: 'Lollipop Bar Chart',
+            content: 'charty/chart-types/lollipop-bar-chart'
+          },
+          {
+            id: 'mosiac-bar-chart',
+            title: 'Mosiac Bar Chart',
+            content: 'charty/chart-types/mosiac-bar-chart'
+          },
+          {
+            id: 'span-chart',
+            title: 'Span Chart',
+            content: 'charty/chart-types/span-chart'
+          },
+          {
+            id: 'stacked-bar-chart',
+            title: 'Stacked Bar Chart',
+            content: 'charty/chart-types/stacked-bar-chart'
+          },
+          {
+            id: 'waterfall-chart',
+            title: 'Waterfall Chart',
+            content: 'charty/chart-types/waterfall-chart'
+          },
+          {
+            id: 'wavy-chart',
+            title: 'Wavy Chart',
+            content: 'charty/chart-types/wavy-chart'
+          }
+        ]
+      },
+      {
+        id: 'configurations',
+        title: 'Configurations',
+        content: 'charty/configurations/bar-chart-config', // Placeholder
+        subsections: [
+          {
+            id: 'bar-chart-config',
+            title: 'BarChartConfig',
+            content: 'charty/configurations/bar-chart-config'
+          },
+          {
+            id: 'chart-scaffold-config',
+            title: 'ChartScaffoldConfig',
+            content: 'charty/configurations/chart-scaffold-config'
           }
         ]
       },
@@ -416,9 +463,31 @@ export default function Documentation() {
                     {currentSection?.title}
                   </CardTitle>
                   <CardDescription className="md-typescale-body-large text-md-sys-color-on-surface-variant">
-                    <ReactMarkdown className="prose prose-slate dark:prose-invert max-w-none">
-                      {getContent(currentSection?.content)}
-                    </ReactMarkdown>
+                    <div className="prose prose-slate dark:prose-invert max-w-none">
+                      <ReactMarkdown
+                        components={{
+                          a: ({ node, ...props }) => {
+                            const href = props.href;
+                            if (href && href.startsWith('#')) {
+                              const sectionId = href.substring(1);
+                              return (
+                                <a
+                                  {...props}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setActiveSection(sectionId);
+                                  }}
+                                  className="text-md-sys-color-primary hover:underline cursor-pointer"
+                                />
+                              );
+                            }
+                            return <a {...props} className="text-md-sys-color-primary hover:underline" target="_blank" rel="noopener noreferrer" />;
+                          }
+                        }}
+                      >
+                        {getContent(currentSection?.content)}
+                      </ReactMarkdown>
+                    </div>
                   </CardDescription>
                 </CardHeader>
 
