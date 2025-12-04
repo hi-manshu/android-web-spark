@@ -1,4 +1,3 @@
-# Stacked Bar Chart
 
 A stacked bar chart displays multiple values stacked on top of each other within a single bar,
 showing both individual segment values and the total. It is useful for showing part-to-whole
@@ -6,7 +5,26 @@ relationships and how composition changes across categories.
 
 ## Preview
 
-<img src="../img/stacked-bar-chart.png" alt="Stacked bar chart example" width="420" />
+<img src="/charty/img/stacked-bar-chart.png" alt="Stacked bar chart example" width="420" />
+
+## Code examples
+
+```kotlin
+StackedBarChart(
+    data = {
+        listOf(
+            BarGroup("Q1", listOf(20f, 30f, 15f)),
+            BarGroup("Q2", listOf(25f, 35f, 20f)),
+            BarGroup("Q3", listOf(30f, 25f, 25f)),
+        )
+    },
+    colors = ChartyColors.DefaultGradient,
+    stackedConfig = StackedBarChartConfig(
+        barWidthFraction = 0.7f,
+        topCornerRadius = CornerRadius.Medium,
+    ),
+)
+```
 
 ## Use cases
 
@@ -29,25 +47,6 @@ See configuration references:
 
 - [Bar chart configuration](../configurations/bar-chart-config.md)
 - [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
-
-## Code examples
-
-```kotlin
-StackedBarChart(
-    data = {
-        listOf(
-            BarGroup("Q1", listOf(20f, 30f, 15f)),
-            BarGroup("Q2", listOf(25f, 35f, 20f)),
-            BarGroup("Q3", listOf(30f, 25f, 25f)),
-        )
-    },
-    colors = ChartyColors.DefaultGradient,
-    stackedConfig = StackedBarChartConfig(
-        barWidthFraction = 0.7f,
-        topCornerRadius = CornerRadius.Medium,
-    ),
-)
-```
 
 ## Tips
 

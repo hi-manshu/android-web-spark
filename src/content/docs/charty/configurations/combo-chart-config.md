@@ -1,4 +1,3 @@
-# ComboChartConfig
 
 Configuration for Combo (Combined Bar and Line) Chart appearance and behavior.
 

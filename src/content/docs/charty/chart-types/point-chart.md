@@ -1,4 +1,3 @@
-# Point Chart
 
 A point chart (also known as a scatter plot or dot plot) displays individual data points as circles or markers
 on a coordinate plane, where both X and Y axes represent continuous values. This makes it ideal for showing
@@ -6,36 +5,9 @@ relationships, correlations, distributions, and outliers between two variables.
 
 ## Preview
 
-<img src="../img/bar-chart.png" alt="Point chart example" width="420" />
+<img src="/charty/img/point-chart.png" alt="Point chart example" width="420" />
 
 _Note: A dedicated point chart image will be added in a future update._
-
-## Use cases
-
-- Analyzing correlations between two continuous variables (e.g., age vs. income, temperature vs. sales).
-- Identifying clusters, patterns, and outliers in data distributions.
-- Displaying scientific data, experimental results, or measurement data.
-- Showing relationships in bivariate analysis.
-- Visualizing data density and distribution across two dimensions.
-- Comparing multiple groups using different point colors or shapes.
-
-## Configuration
-
-Point charts use `PointChartConfig` to control marker appearance and behavior.
-
-Key options include:
-
-- `pointRadius`: Size of each data point marker.
-- `pointShape`: Shape of markers (circle, square, triangle, etc.).
-- Colors: Color-code points by category or use gradients based on a third variable.
-- `strokeWidth`: Optional outline stroke for each point.
-- Opacity: Control transparency for overlapping points.
-- Interactive: Enable tooltips showing exact coordinates on hover/tap.
-
-See also:
-
-- [Point chart configuration](../configurations/point-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Code examples
 
@@ -85,6 +57,33 @@ PointChart(
     ),
 )
 ```
+
+## Use cases
+
+- Analyzing correlations between two continuous variables (e.g., age vs. income, temperature vs. sales).
+- Identifying clusters, patterns, and outliers in data distributions.
+- Displaying scientific data, experimental results, or measurement data.
+- Showing relationships in bivariate analysis.
+- Visualizing data density and distribution across two dimensions.
+- Comparing multiple groups using different point colors or shapes.
+
+## Configuration
+
+Point charts use `PointChartConfig` to control marker appearance and behavior.
+
+Key options include:
+
+- `pointRadius`: Size of each data point marker.
+- `pointShape`: Shape of markers (circle, square, triangle, etc.).
+- Colors: Color-code points by category or use gradients based on a third variable.
+- `strokeWidth`: Optional outline stroke for each point.
+- Opacity: Control transparency for overlapping points.
+- Interactive: Enable tooltips showing exact coordinates on hover/tap.
+
+See also:
+
+- [Point chart configuration](../configurations/point-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Tips
 

@@ -1,4 +1,3 @@
-# BarChartConfig
 
 Configuration for Bar Chart appearance and behavior.
 

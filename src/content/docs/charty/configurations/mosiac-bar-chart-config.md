@@ -1,4 +1,3 @@
-# MosiacBarChartConfig
 
 Configuration for Mosiac (100% Stacked) Bar Chart appearance and behavior.
 

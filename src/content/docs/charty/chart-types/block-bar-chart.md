@@ -1,84 +1,83 @@
-# Block Bar Chart
-- [Bar Charts Overview](bar-charts.md)
-- [Mosiac Bar Chart](mosiac-bar-chart.md)
-- [Bubble Bar Chart](bubble-bar-chart.md)
-- [Bar Chart](bar-chart.md)
 
-## Related charts
-
-- Use animations to show blocks "building up" for engaging presentations.
-- Add value labels showing the exact count for precision.
-- Consider color-coding blocks by status (e.g., completed vs. in-progress).
-- Use consistent block sizes across all categories for fair comparison.
-- Keep block counts reasonable (under 30 per column) to maintain readability.
-
-## Tips
-
-```
-)
-    ),
-        blockSpacing = 2.dp,
-        blockSize = 10.dp,
-    blockConfig = BlockBarChartConfig(
-    ),
-        listOf(Color(0xFF4CAF50), Color(0xFF8BC34A), Color(0xFFCDDC39))
-    color = ChartyColor.Gradient(
-    data = { taskCompletionData },
-BlockBarChart(
-```kotlin
-
-### Multi-color blocks
-
-```
-)
-    ),
-        maxBlocks = 20,
-        blockSpacing = 4.dp,
-        blockSize = 12.dp,
-    blockConfig = BlockBarChartConfig(
-    color = ChartyColor.Solid(Color(0xFF2196F3)),
-    },
-        )
-            BarData("Team C", 9f),
-            BarData("Team B", 18f),
-            BarData("Team A", 12f),
-        listOf(
-    data = {
-BlockBarChart(
-```kotlin
-
-## Code examples
-
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
-- [Bar chart configuration](../configurations/bar-chart-config.md)
-
-See also:
-
-- Colors: Use solid colors, gradients, or per-block color variations.
-- `maxBlocks`: Limits the maximum number of blocks shown per category.
-- `blocksPerRow`: Arranges blocks in a grid pattern within each column (optional).
-- `blockSpacing`: Controls the gap between stacked blocks.
-- `blockSize`: Sets the width and height of individual blocks.
-
-Key options include:
-
-Block bar charts use configuration options specific to block size, spacing, and coloring.
-
-## Configuration
-
-- Representing quantized data where individual units are meaningful (e.g., people, devices, packages).
-- Creating playful, tactile visualizations for consumer-facing dashboards.
-- Showing progress or completion status in "units" rather than continuous bars.
-- Visualizing discrete counts such as tasks completed, units sold, or items in inventory.
-
-## Use cases
-
-<img src="../img/block-bar-chart.png" alt="Block bar chart example" width="420" />
+A block bar chart is a horizontal segmented bar where each segment's width is proportional to its value.
+It is ideal for showing the composition or progress of a whole, with each block representing a different category.
 
 ## Preview
 
-feel that's particularly effective for showing discrete quantities like completed tasks or inventory items.
-where each block represents a fixed unit or count. This provides a tangible, "building-block"
-A block bar chart visualizes data as stacked discrete blocks within vertical columns,
+<img src="/charty/img/block-bar-chart.png" alt="Block bar chart example" width="420" />
 
+## Code examples
 
+```kotlin
+BlockBarChart(
+    data = {
+        listOf(
+            BlockData(1f, ChartyColor.Solid(Color(0xFFFF6B81))),
+            BlockData(2f, ChartyColor.Solid(Color(0xFFFFE066))),
+            BlockData(5f, ChartyColor.Solid(Color(0xFF5BE37D))),
+        )
+    },
+    modifier = Modifier.fillMaxWidth()
+)
+```
+
+### With custom configuration
+
+```kotlin
+BlockBarChart(
+    data = {
+        listOf(
+            BlockData(3f, ChartyColor.Solid(Color(0xFFE91E63))),
+            BlockData(4f, ChartyColor.Solid(Color(0xFF9C27B0))),
+            BlockData(2f, ChartyColor.Solid(Color(0xFF3F51B5))),
+        )
+    },
+    blockBarConfig = BlockBarChartConfig(
+        blockHeight = 40.dp,
+        blockSpacing = 4.dp,
+        cornerRadius = 8.dp,
+    ),
+    modifier = Modifier.fillMaxWidth()
+)
+```
+
+## Use cases
+
+- Showing composition or progress of a whole with different categories.
+- Visualizing proportional data where each segment represents a part of the total.
+- Creating progress indicators with multiple stages or categories.
+- Displaying budget allocation, time distribution, or resource allocation.
+- Representing survey results or demographic breakdowns in a linear format.
+
+## Configuration
+
+Block bar charts use `BlockBarChartConfig` to control appearance and layout.
+
+Key options include:
+
+- `blockHeight`: Sets the height of the horizontal bar.
+- `blockSpacing`: Controls the gap between adjacent blocks.
+- `cornerRadius`: Rounds the corners of blocks for a softer appearance.
+- Colors: Each block can have its own color via `ChartyColor.Solid` or use gradients.
+- Non-positive values are automatically filtered out.
+
+See also:
+
+- [Bar chart configuration](../configurations/bar-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
+
+## Tips
+
+- Use distinct colors for each block to make categories easily distinguishable.
+- Keep the number of blocks reasonable (3-8) for best readability.
+- Order blocks logically (by size, chronologically, or by importance).
+- Add value labels or percentages for precision.
+- Ensure sufficient contrast between adjacent block colors.
+- Consider using the entire width of the container for better visual impact.
+
+## Related charts
+
+- [Bar Chart](bar-chart.md)
+- [Stacked Bar Chart](stacked-bar-chart.md)
+- [Mosiac Bar Chart](mosiac-bar-chart.md)
+- [Bar Charts Overview](bar-charts.md)

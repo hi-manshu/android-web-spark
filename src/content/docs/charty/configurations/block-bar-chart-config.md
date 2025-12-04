@@ -1,4 +1,3 @@
-# BlockBarChartConfig
 
 Configuration for Block Bar Chart appearance and behavior.
 

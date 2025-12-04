@@ -1,4 +1,3 @@
-# Bubble Chart
 
 A bubble chart is an extension of a scatter plot where each data point is represented as a circle (bubble)
 whose size varies based on a third variable. This allows you to visualize three dimensions of data simultaneously:
@@ -6,36 +5,9 @@ X position, Y position, and bubble size, making it ideal for rich, multi-dimensi
 
 ## Preview
 
-<img src="../img/bar-chart.png" alt="Bubble chart example" width="420" />
+<img src="/charty/img/bubble-chart.png" alt="Bubble chart example" width="420" />
 
 _Note: A dedicated bubble chart image will be added in a future update._
-
-## Use cases
-
-- Visualizing three-dimensional relationships (e.g., sales vs. profit vs. market size).
-- Comparing products or entities across multiple metrics (e.g., price vs. quality vs. popularity).
-- Displaying portfolio analysis (risk vs. return vs. investment amount).
-- Showing demographic data (age vs. income vs. population size).
-- Analyzing business metrics (growth rate vs. market share vs. company size).
-- Competitive analysis with multiple variables.
-
-## Configuration
-
-Bubble charts extend point chart configuration with variable bubble sizes.
-
-Key options include:
-
-- `minRadius`: Minimum bubble size for the smallest data value.
-- `maxRadius`: Maximum bubble size for the largest data value.
-- Colors: Color-code bubbles by category or use a gradient based on a fourth variable.
-- `strokeWidth`: Optional outline stroke for each bubble.
-- Opacity: Control transparency, especially useful when bubbles overlap.
-- Scale: Configure how bubble size scales with the data value (linear, square root, etc.).
-
-See also:
-
-- [Point chart configuration](../configurations/point-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Code examples
 
@@ -99,6 +71,33 @@ BubbleChart(
     ),
 )
 ```
+
+## Use cases
+
+- Visualizing three-dimensional relationships (e.g., sales vs. profit vs. market size).
+- Comparing products or entities across multiple metrics (e.g., price vs. quality vs. popularity).
+- Displaying portfolio analysis (risk vs. return vs. investment amount).
+- Showing demographic data (age vs. income vs. population size).
+- Analyzing business metrics (growth rate vs. market share vs. company size).
+- Competitive analysis with multiple variables.
+
+## Configuration
+
+Bubble charts extend point chart configuration with variable bubble sizes.
+
+Key options include:
+
+- `minRadius`: Minimum bubble size for the smallest data value.
+- `maxRadius`: Maximum bubble size for the largest data value.
+- Colors: Color-code bubbles by category or use a gradient based on a fourth variable.
+- `strokeWidth`: Optional outline stroke for each bubble.
+- Opacity: Control transparency, especially useful when bubbles overlap.
+- Scale: Configure how bubble size scales with the data value (linear, square root, etc.).
+
+See also:
+
+- [Point chart configuration](../configurations/point-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Tips
 

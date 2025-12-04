@@ -1,4 +1,3 @@
-# PointChartConfig
 
 Configuration for Point (Scatter Plot) Chart appearance and behavior.
 

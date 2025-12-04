@@ -1,4 +1,3 @@
-# Bubble Bar Chart
 
 A bubble bar chart represents data as stacked bubbles in vertical columns,
 where the number and size of bubbles are proportional to the value they represent.
@@ -6,32 +5,7 @@ This playful, visually distinct style is ideal for dashboards and presentations 
 
 ## Preview
 
-<img src="../img/bubble-bar-chart.png" alt="Bubble bar chart example" width="420" />
-
-## Use cases
-
-- Creating engaging, playful visualizations for dashboards and infographics.
-- Showing discrete counts or magnitudes in a more interesting way than plain bars.
-- Emphasizing data in consumer-facing apps where visual appeal matters.
-- Drawing attention to specific metrics in presentations.
-
-## Configuration
-
-Bubble bar charts use `BubbleBarChartConfig` to control bubble appearance and animation.
-
-Key options include:
-
-- `barWidthFraction`: Controls the width of the column containing bubbles.
-- `bubbleRadius`: Sets the size of individual bubbles.
-- `bubbleSpacing`: Controls spacing between stacked bubbles.
-- `maxBubbles`: Limits the number of bubbles shown per column (useful for large values).
-- Animation: Configure entrance and transition animations.
-
-See also:
-
-- [Bar chart configuration](../configurations/bar-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
-- [Animation customization](../customization/animations.md)
+<img src="/charty/img/bubble-bar-chart.png" alt="Bubble bar chart example" width="420" />
 
 ## Code examples
 
@@ -66,6 +40,31 @@ BubbleBarChart(
     ),
 )
 ```
+
+## Use cases
+
+- Creating engaging, playful visualizations for dashboards and infographics.
+- Showing discrete counts or magnitudes in a more interesting way than plain bars.
+- Emphasizing data in consumer-facing apps where visual appeal matters.
+- Drawing attention to specific metrics in presentations.
+
+## Configuration
+
+Bubble bar charts use `BubbleBarChartConfig` to control bubble appearance and animation.
+
+Key options include:
+
+- `barWidthFraction`: Controls the width of the column containing bubbles.
+- `bubbleRadius`: Sets the size of individual bubbles.
+- `bubbleSpacing`: Controls spacing between stacked bubbles.
+- `maxBubbles`: Limits the number of bubbles shown per column (useful for large values).
+- Animation: Configure entrance and transition animations.
+
+See also:
+
+- [Bar chart configuration](../configurations/bar-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
+- [Animation customization](../customization/animations.md)
 
 ## Tips
 

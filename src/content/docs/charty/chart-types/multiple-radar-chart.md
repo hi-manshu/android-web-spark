@@ -1,4 +1,3 @@
-# Multiple Radar Chart
 
 A multiple radar chart displays two or more data series on the same radar axes,
 allowing you to compare multiple entities across the same set of variables. Each entity is represented
@@ -6,37 +5,12 @@ by a different colored polygon, making it easy to identify strengths, weaknesses
 
 ## Preview
 
-<img src="../img/bar-chart.png" alt="Multiple radar chart example" width="420" />
+<div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+  <img src="/charty/img/multi-radar-chart.png" alt="Multiple radar chart example" width="400" />
+
+</div>
 
 _Note: A dedicated multiple radar chart image will be added in a future update._
-
-## Use cases
-
-- Comparing multiple competitors across various business metrics.
-- Evaluating different products on the same set of features or criteria.
-- Comparing player or team statistics in sports and gaming.
-- Benchmarking multiple employees, departments, or projects on performance dimensions.
-- Comparing treatment options in healthcare across multiple factors.
-- Analyzing multiple countries or regions on economic or social indicators.
-
-## Configuration
-
-Multiple radar charts extend single radar chart configuration with multi-series support.
-
-Key options include:
-
-- `numberOfAxes`: Number of variables/dimensions (same for all series).
-- `showAxisLabels`: Display labels at the end of each axis.
-- `showScaleLines`: Show concentric value scale guides.
-- Colors: Provide a color palette with one color per series/entity.
-- `fillOpacity`: Control transparency of each polygon (important for overlapping visibility).
-- `strokeWidth`: Thickness of polygon outlines.
-- Legend: Enable to identify which color represents which entity.
-
-See also:
-
-- [Radar chart configuration](../configurations/radar-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Code examples
 
@@ -97,6 +71,34 @@ MultipleRadarChart(
     ),
 )
 ```
+
+## Use cases
+
+- Comparing multiple competitors across various business metrics.
+- Evaluating different products on the same set of features or criteria.
+- Comparing player or team statistics in sports and gaming.
+- Benchmarking multiple employees, departments, or projects on performance dimensions.
+- Comparing treatment options in healthcare across multiple factors.
+- Analyzing multiple countries or regions on economic or social indicators.
+
+## Configuration
+
+Multiple radar charts extend single radar chart configuration with multi-series support.
+
+Key options include:
+
+- `numberOfAxes`: Number of variables/dimensions (same for all series).
+- `showAxisLabels`: Display labels at the end of each axis.
+- `showScaleLines`: Show concentric value scale guides.
+- Colors: Provide a color palette with one color per series/entity.
+- `fillOpacity`: Control transparency of each polygon (important for overlapping visibility).
+- `strokeWidth`: Thickness of polygon outlines.
+- Legend: Enable to identify which color represents which entity.
+
+See also:
+
+- [Radar chart configuration](../configurations/radar-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Tips
 

@@ -1,4 +1,3 @@
-# WavyChartConfig
 
 Configuration for Wavy Chart appearance and behavior.
 

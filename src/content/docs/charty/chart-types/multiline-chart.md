@@ -1,4 +1,3 @@
-# Multiline Chart
 
 A multiline chart displays multiple data series as separate lines on the same axes,
 allowing you to compare trends, patterns, and relationships between different datasets.
@@ -6,36 +5,9 @@ This is ideal for comparing performance metrics, tracking multiple categories ov
 
 ## Preview
 
-<img src="../img/bar-chart.png" alt="Multiline chart example" width="420" />
+<img src="/charty/img/multi-line-chart.png" alt="Multiline chart example" width="420" />
 
 _Note: A dedicated multiline chart image will be added in a future update._
-
-## Use cases
-
-- Comparing sales performance across multiple products or regions over time.
-- Tracking website traffic from different sources simultaneously.
-- Analyzing temperature trends in multiple cities.
-- Comparing actual vs. projected values over time.
-- Displaying multiple KPIs or metrics on the same timeline.
-- Showing correlations and divergences between related datasets.
-
-## Configuration
-
-Multiline charts use `LineChartConfig` for shared line properties and individual color configuration per series.
-
-Key options include:
-
-- `lineThickness`: Stroke width for all lines (can be overridden per line).
-- `smoothCurve`: Enable curved lines for all series.
-- `showPoints`: Display markers at data points for all lines.
-- Colors: Provide a color palette or gradient to distinguish lines.
-- Legend: Enable to identify which line represents which series.
-- Line style: Optionally use dashed or dotted lines for differentiation.
-
-See also:
-
-- [Line chart configuration](../configurations/line-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Code examples
 
@@ -83,6 +55,33 @@ MultilineChart(
     ),
 )
 ```
+
+## Use cases
+
+- Comparing sales performance across multiple products or regions over time.
+- Tracking website traffic from different sources simultaneously.
+- Analyzing temperature trends in multiple cities.
+- Comparing actual vs. projected values over time.
+- Displaying multiple KPIs or metrics on the same timeline.
+- Showing correlations and divergences between related datasets.
+
+## Configuration
+
+Multiline charts use `LineChartConfig` for shared line properties and individual color configuration per series.
+
+Key options include:
+
+- `lineThickness`: Stroke width for all lines (can be overridden per line).
+- `smoothCurve`: Enable curved lines for all series.
+- `showPoints`: Display markers at data points for all lines.
+- Colors: Provide a color palette or gradient to distinguish lines.
+- Legend: Enable to identify which line represents which series.
+- Line style: Optionally use dashed or dotted lines for differentiation.
+
+See also:
+
+- [Line chart configuration](../configurations/line-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Tips
 

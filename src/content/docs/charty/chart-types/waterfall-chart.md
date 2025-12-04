@@ -1,4 +1,3 @@
-# Waterfall Chart
 
 A waterfall chart visualizes the cumulative effect of sequential positive and negative values,
 showing how an initial value is affected by a series of intermediate changes to reach a final value.
@@ -6,30 +5,7 @@ It's ideal for understanding how different factors contribute to a total result.
 
 ## Preview
 
-<img src="../img/waterfall-chart.png" alt="Waterfall chart example" width="420" />
-
-## Use cases
-
-- Showing profit and loss statements with revenue increases and expense decreases.
-- Analyzing how a starting budget is adjusted by various additions and subtractions.
-- Displaying sales funnel conversions and drop-offs at each stage.
-- Breaking down changes in inventory, cash flow, or other cumulative metrics over time.
-
-## Configuration
-
-Waterfall charts use configuration options to distinguish positive, negative, and total bars.
-
-Key options include:
-
-- `barWidthFraction`: Controls bar width and spacing.
-- Corner radius: Smooth bar corners for a modern look.
-- Colors: Use distinct colors for positive (green), negative (red), and total (neutral) bars.
-- Data structure: Each entry typically includes a value (positive or negative) and an optional flag for totals.
-
-See also:
-
-- [Bar chart configuration](../configurations/bar-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
+<img src="/charty/img/waterfall-chart.png" alt="Waterfall chart example" width="420" />
 
 ## Code examples
 
@@ -53,6 +29,29 @@ WaterfallChart(
     ),
 )
 ```
+
+## Use cases
+
+- Showing profit and loss statements with revenue increases and expense decreases.
+- Analyzing how a starting budget is adjusted by various additions and subtractions.
+- Displaying sales funnel conversions and drop-offs at each stage.
+- Breaking down changes in inventory, cash flow, or other cumulative metrics over time.
+
+## Configuration
+
+Waterfall charts use configuration options to distinguish positive, negative, and total bars.
+
+Key options include:
+
+- `barWidthFraction`: Controls bar width and spacing.
+- Corner radius: Smooth bar corners for a modern look.
+- Colors: Use distinct colors for positive (green), negative (red), and total (neutral) bars.
+- Data structure: Each entry typically includes a value (positive or negative) and an optional flag for totals.
+
+See also:
+
+- [Bar chart configuration](../configurations/bar-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Tips
 

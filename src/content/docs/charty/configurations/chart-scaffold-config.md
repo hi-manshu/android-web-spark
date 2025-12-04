@@ -1,4 +1,3 @@
-# ChartScaffoldConfig
 
 A data class that holds the configuration for the styling of a chart's scaffold.
 The scaffold includes elements like axis lines, grid lines, and labels.

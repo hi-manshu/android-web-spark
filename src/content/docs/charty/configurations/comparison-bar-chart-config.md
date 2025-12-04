@@ -1,4 +1,3 @@
-# ComparisonBarChartConfig
 
 Configuration for Comparison (Grouped) Bar Chart appearance and behavior.
 

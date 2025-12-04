@@ -1,4 +1,3 @@
-# PieChartConfig
 
 Configuration for Pie and Donut Chart appearance and behavior.
 

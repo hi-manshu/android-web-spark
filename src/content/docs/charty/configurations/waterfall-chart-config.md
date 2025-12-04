@@ -1,4 +1,3 @@
-# WaterfallChartConfig
 
 Configuration for Waterfall Chart appearance and behavior.
 

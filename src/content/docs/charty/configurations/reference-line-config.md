@@ -1,4 +1,3 @@
-# ReferenceLineConfig
 
 Configuration for reference lines displayed on charts.
 

@@ -1,4 +1,3 @@
-# MultipleRadarChartConfig
 - [RadarChartConfig](radar-chart-config.md)
 - [Radar Chart](../chart-types/radar-chart.md)
 - [Multiple Radar Chart](../chart-types/multiple-radar-chart.md)

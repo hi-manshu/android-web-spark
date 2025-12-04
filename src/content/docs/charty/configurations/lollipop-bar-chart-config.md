@@ -1,4 +1,3 @@
-# LollipopBarChartConfig
 
 Configuration for Lollipop Bar Chart appearance and behavior.
 

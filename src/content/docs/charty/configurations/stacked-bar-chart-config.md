@@ -1,4 +1,3 @@
-# StackedBarChartConfig
 - [BarChartConfig](bar-chart-config.md)
 - [Mosiac Bar Chart](../chart-types/mosiac-bar-chart.md)
 - [Stacked Bar Chart](../chart-types/stacked-bar-chart.md)

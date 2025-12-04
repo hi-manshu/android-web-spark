@@ -1,4 +1,3 @@
-# Span Chart
 
 A span chart (also known as a range chart or Gantt-style chart) displays horizontal bars
 that show ranges or time periods for different categories. Each span has a start and end value,
@@ -6,30 +5,7 @@ making it ideal for visualizing schedules, timelines, or value ranges across cat
 
 ## Preview
 
-<img src="../img/span-chart.png" alt="Span chart example" width="420" />
-
-## Use cases
-
-- Displaying project timelines, schedules, and task durations (lightweight Gantt-style).
-- Showing value ranges, such as min/max temperatures or price ranges over time.
-- Visualizing availability windows or operating hours for different services.
-- Comparing overlapping time periods or intervals across categories.
-
-## Configuration
-
-Span charts use configuration similar to horizontal bar charts but with start and end values for each span.
-
-Key options include:
-
-- `barWidthFraction`: Controls the thickness of each span bar.
-- Corner radius: Configure `cornerRadius` for rounded ends.
-- Colors: Use distinct colors per category or a gradient.
-- Data structure: Each `SpanData` includes a category label, start value, and end value.
-
-See also:
-
-- [Bar chart configuration](../configurations/bar-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
+<img src="/charty/img/span-chart.png" alt="Span chart example" width="420" />
 
 ## Code examples
 
@@ -69,6 +45,29 @@ SpanChart(
     ),
 )
 ```
+
+## Use cases
+
+- Displaying project timelines, schedules, and task durations (lightweight Gantt-style).
+- Showing value ranges, such as min/max temperatures or price ranges over time.
+- Visualizing availability windows or operating hours for different services.
+- Comparing overlapping time periods or intervals across categories.
+
+## Configuration
+
+Span charts use configuration similar to horizontal bar charts but with start and end values for each span.
+
+Key options include:
+
+- `barWidthFraction`: Controls the thickness of each span bar.
+- Corner radius: Configure `cornerRadius` for rounded ends.
+- Colors: Use distinct colors per category or a gradient.
+- Data structure: Each `SpanData` includes a category label, start value, and end value.
+
+See also:
+
+- [Bar chart configuration](../configurations/bar-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Tips
 

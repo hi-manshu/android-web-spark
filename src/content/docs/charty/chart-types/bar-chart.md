@@ -1,32 +1,13 @@
-# Bar Chart
 
 A bar chart is a graphical representation of data that uses rectangular bars to show comparisons between categories.
 This composable allows for customization of the bar chart's appearance and behavior.
 
 ## Preview
 
-<img src="../img/bar-chart.png" alt="Vertical bar chart example" width="420" />
-
-## Use cases
-
-- Comparing discrete categories such as products, regions, or segments.
-- Highlighting top/bottom performers in dashboards.
-- Showing changes between periods when exact time continuity is not required.
-- Replacing tables of numeric values with a more scannable visual.
-
-## Configuration
-
-Bar charts in Charty are configured primarily through `BarChartConfig` and `ChartScaffoldConfig`.
-
-- `barWidthFraction`: Controls how wide each bar is within its allotted slot (e.g. `0.6f` for some spacing between bars).
-- Corner radius: Configure `roundedTopCorners`, `topCornerRadius`, or `cornerRadius` for softer shapes.
-- Animation: Enable or disable initial and value-change animations.
-- Colors: Use `ChartyColor.Solid`, gradients, or custom palettes for multiple series.
-
-See the configuration guides for more details:
-
-- [Bar chart configuration](../configurations/bar-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
+<div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+  <img src="/charty/img/bar-chart.png" alt="Bar chart example" width="400" />
+  <img src="/charty/img/bar-chart-02.png" alt="Bar chart example variant" width="400" />
+</div>
 
 ## Code examples
 
@@ -49,19 +30,26 @@ BarChart(
 )
 ```
 
-### Dark theme example
+## Use cases
 
-```kotlin
-BarChart(
-    data = { myBarData },
-    color = ChartyColor.Solid(ChartyColors.Purple),
-    barConfig = BarChartConfig(
-        barWidthFraction = 0.7f,
-        roundedTopCorners = true,
-    ),
-    // Often used inside a ChartScaffold with axes and labels
-)
-```
+- Comparing discrete categories such as products, regions, or segments.
+- Highlighting top/bottom performers in dashboards.
+- Showing changes between periods when exact time continuity is not required.
+- Replacing tables of numeric values with a more scannable visual.
+
+## Configuration
+
+Bar charts in Charty are configured primarily through `BarChartConfig` and `ChartScaffoldConfig`.
+
+- `barWidthFraction`: Controls how wide each bar is within its allotted slot (e.g. `0.6f` for some spacing between bars).
+- Corner radius: Configure `roundedTopCorners`, `topCornerRadius`, or `cornerRadius` for softer shapes.
+- Animation: Enable or disable initial and value-change animations.
+- Colors: Use `ChartyColor.Solid`, gradients, or custom palettes for multiple series.
+
+See the configuration guides for more details:
+
+- [Bar chart configuration](../configurations/bar-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Tips
 

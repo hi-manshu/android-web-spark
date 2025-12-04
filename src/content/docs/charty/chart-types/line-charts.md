@@ -1,4 +1,3 @@
-# Line Charts Overview
 
 Line charts display data as a series of points connected by straight or curved lines,
 making them ideal for visualizing trends, patterns, and changes over continuous intervals such as time.
@@ -6,9 +5,7 @@ Charty provides several line chart variants for different data visualization nee
 
 ## Preview
 
-<img src="../img/bar-chart.png" alt="Line chart family overview" width="420" />
-
-_Note: Dedicated line chart images will be added in a future update._
+<img src="/charty/img/line-chart-one.png" alt="Line chart family overview" width="420" />
 
 ## When to use line charts
 

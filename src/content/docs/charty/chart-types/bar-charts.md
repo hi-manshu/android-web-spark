@@ -1,11 +1,10 @@
-# Bar Charts Overview
 
 Bar charts are one of the most common ways to compare categorical data using the length of rectangular bars.
 Charty provides several bar-chart variants for different comparison and composition needs.
 
 ## Preview
 
-<img src="../img/bar-chart-02.png" alt="Bar chart family overview" width="420" />
+<img src="/charty/img/bar-chart-02.png" alt="Bar chart family overview" width="420" />
 
 ## When to use bar charts
 

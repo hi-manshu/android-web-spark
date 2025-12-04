@@ -1,34 +1,10 @@
-# Lollipop Bar Chart
 
 A lollipop bar chart is a variation of a traditional bar chart that uses a vertical line (stem) and a circular head to represent each value.
 This design provides a visually lighter, more modern way to compare categories while reducing visual clutter compared to full bars.
 
 ## Preview
 
-<img src="../img/lolipop-chart.png" alt="Lollipop bar chart example" width="420" />
-
-## Use cases
-
-- Showing rankings or comparisons when full bars feel visually heavy.
-- Creating a modern, minimalist look for dashboards and reports.
-- Emphasizing the endpoint value rather than the full bar area.
-- Comparing many categories without overwhelming the viewer with solid bars.
-
-## Configuration
-
-Lollipop bar charts use `LollipopBarChartConfig` to control stem and circle appearance.
-
-Key options include:
-
-- `stemThickness`: Controls the width of the vertical line.
-- `circleRadius`: Sets the size of the circular head.
-- `barWidthFraction`: Controls spacing between lollipops.
-- Colors: Apply solid colors or gradients to circles and stems.
-
-See also:
-
-- [Bar chart configuration](../configurations/bar-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
+<img src="/charty/img/lolipop-chart.png" alt="Lollipop bar chart example" width="420" />
 
 ## Code examples
 
@@ -63,6 +39,29 @@ LollipopBarChart(
     ),
 )
 ```
+
+## Use cases
+
+- Showing rankings or comparisons when full bars feel visually heavy.
+- Creating a modern, minimalist look for dashboards and reports.
+- Emphasizing the endpoint value rather than the full bar area.
+- Comparing many categories without overwhelming the viewer with solid bars.
+
+## Configuration
+
+Lollipop bar charts use `LollipopBarChartConfig` to control stem and circle appearance.
+
+Key options include:
+
+- `stemThickness`: Controls the width of the vertical line.
+- `circleRadius`: Sets the size of the circular head.
+- `barWidthFraction`: Controls spacing between lollipops.
+- Colors: Apply solid colors or gradients to circles and stems.
+
+See also:
+
+- [Bar chart configuration](../configurations/bar-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Tips
 

@@ -1,4 +1,3 @@
-# Stacked Area Chart
 
 A stacked area chart displays multiple data series as filled areas stacked on top of each other,
 showing both individual series trends and the cumulative total. This is ideal for visualizing how different
@@ -6,35 +5,9 @@ components contribute to a whole over time while maintaining the ability to see 
 
 ## Preview
 
-<img src="../img/bar-chart.png" alt="Stacked area chart example" width="420" />
+<img src="/charty/img/stacked-area-chart.png" alt="Stacked area chart example" width="420" />
 
 _Note: A dedicated stacked area chart image will be added in a future update._
-
-## Use cases
-
-- Showing how multiple categories contribute to a total over time (e.g., revenue by product line).
-- Displaying resource allocation or usage across different departments or projects.
-- Tracking market share evolution with multiple competitors.
-- Visualizing budget breakdowns by category over multiple periods.
-- Analyzing traffic sources or user segments over time.
-
-## Configuration
-
-Stacked area charts use configuration for multiple series with distinct colors.
-
-Key options include:
-
-- `lineThickness`: Stroke width for lines between areas.
-- `smoothCurve`: Enable curved transitions for smoother appearance.
-- Colors: Provide a color palette with one color per series (stacked from bottom to top).
-- `fillOpacity`: Control transparency of each filled area.
-- Legend: Display to identify which area represents which series.
-- Ordering: Series order affects visual impact (typically most important series at bottom).
-
-See also:
-
-- [Line chart configuration](../configurations/line-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Code examples
 
@@ -85,6 +58,32 @@ StackedAreaChart(
     ),
 )
 ```
+
+## Use cases
+
+- Showing how multiple categories contribute to a total over time (e.g., revenue by product line).
+- Displaying resource allocation or usage across different departments or projects.
+- Tracking market share evolution with multiple competitors.
+- Visualizing budget breakdowns by category over multiple periods.
+- Analyzing traffic sources or user segments over time.
+
+## Configuration
+
+Stacked area charts use configuration for multiple series with distinct colors.
+
+Key options include:
+
+- `lineThickness`: Stroke width for lines between areas.
+- `smoothCurve`: Enable curved transitions for smoother appearance.
+- Colors: Provide a color palette with one color per series (stacked from bottom to top).
+- `fillOpacity`: Control transparency of each filled area.
+- Legend: Display to identify which area represents which series.
+- Ordering: Series order affects visual impact (typically most important series at bottom).
+
+See also:
+
+- [Line chart configuration](../configurations/line-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Tips
 

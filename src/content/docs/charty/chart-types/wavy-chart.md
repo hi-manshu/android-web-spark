@@ -1,4 +1,3 @@
-# Wavy Chart
 
 A wavy chart renders each data entry as a vertical "bar" whose outline is a continuously animating sine wave,
 creating a fluid, dynamic appearance instead of solid rectangles. All bars animate in sync or with optional
@@ -6,32 +5,7 @@ per-bar phase offsets, producing a rhythmic wave motion that adds personality to
 
 ## Preview
 
-<img src="../img/wavy-chart.png" alt="Wavy chart example" width="420" />
-
-## Use cases
-
-- Creating eye-catching, playful dashboards for consumer-facing apps.
-- Visualizing audio levels, sound waves, or rhythmic data.
-- Adding dynamic, animated elements to presentations and demos.
-- Displaying data in creative or artistic contexts where standard charts feel too rigid.
-
-## Configuration
-
-Wavy charts use configuration options for wave animation and appearance.
-
-Key options include:
-
-- `amplitude`: Controls how much the wave oscillates from the bar centerline.
-- `frequency`: Sets how many wave cycles appear along the bar height.
-- `animationSpeed`: Adjusts how fast the wave animates.
-- `barWidthFraction`: Controls the width of each wavy bar.
-- Colors: Use solid colors or gradients for the wave fill.
-
-See also:
-
-- [Bar chart configuration](../configurations/bar-chart-config.md)
-- [Animation customization](../customization/animations.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
+<img src="/charty/img/wavy-chart.png" alt="Wavy chart example" width="420" />
 
 ## Code examples
 
@@ -68,6 +42,31 @@ WavyChart(
     ),
 )
 ```
+
+## Use cases
+
+- Creating eye-catching, playful dashboards for consumer-facing apps.
+- Visualizing audio levels, sound waves, or rhythmic data.
+- Adding dynamic, animated elements to presentations and demos.
+- Displaying data in creative or artistic contexts where standard charts feel too rigid.
+
+## Configuration
+
+Wavy charts use configuration options for wave animation and appearance.
+
+Key options include:
+
+- `amplitude`: Controls how much the wave oscillates from the bar centerline.
+- `frequency`: Sets how many wave cycles appear along the bar height.
+- `animationSpeed`: Adjusts how fast the wave animates.
+- `barWidthFraction`: Controls the width of each wavy bar.
+- Colors: Use solid colors or gradients for the wave fill.
+
+See also:
+
+- [Bar chart configuration](../configurations/bar-chart-config.md)
+- [Animation customization](../customization/animations.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Tips
 

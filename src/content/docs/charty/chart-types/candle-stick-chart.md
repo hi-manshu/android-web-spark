@@ -1,4 +1,3 @@
-# Candlestick Chart
 
 A candlestick chart displays financial data showing the open, high, low, and close (OHLC) values for each time period.
 Each "candle" consists of a body (showing open and close) and wicks (showing high and low),
@@ -6,31 +5,7 @@ making it essential for financial analysis, stock trading, and cryptocurrency tr
 
 ## Preview
 
-<img src="../img/candle-stick-chart.png" alt="Candlestick chart example" width="420" />
-
-## Use cases
-
-- Displaying stock prices, cryptocurrency values, or other financial instruments over time.
-- Analyzing intraday or multi-day price movements and volatility.
-- Identifying trading patterns such as bullish/bearish trends, reversals, and consolidations.
-- Showing opening and closing prices along with the trading range for each period.
-
-## Configuration
-
-Candlestick charts use configuration options for candle appearance and color-coding.
-
-Key options include:
-
-- `bodyWidth`: Controls the width of the candle body.
-- `wickThickness`: Sets the thickness of the high/low wicks.
-- Colors: Typically use green/blue for "up" candles (close > open) and red for "down" candles (close < open).
-- Time scale: Configure the X-axis for time-based intervals (minutes, hours, days).
-- Hollow vs. filled: Optionally use hollow candles for additional visual distinction.
-
-See also:
-
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
-- [Theming customization](../customization/theming.md)
+<img src="/charty/img/candle-stick-chart.png" alt="Candlestick chart example" width="420" />
 
 ## Code examples
 
@@ -67,6 +42,30 @@ CandlestickChart(
     ),
 )
 ```
+
+## Use cases
+
+- Displaying stock prices, cryptocurrency values, or other financial instruments over time.
+- Analyzing intraday or multi-day price movements and volatility.
+- Identifying trading patterns such as bullish/bearish trends, reversals, and consolidations.
+- Showing opening and closing prices along with the trading range for each period.
+
+## Configuration
+
+Candlestick charts use configuration options for candle appearance and color-coding.
+
+Key options include:
+
+- `bodyWidth`: Controls the width of the candle body.
+- `wickThickness`: Sets the thickness of the high/low wicks.
+- Colors: Typically use green/blue for "up" candles (close > open) and red for "down" candles (close < open).
+- Time scale: Configure the X-axis for time-based intervals (minutes, hours, days).
+- Hollow vs. filled: Optionally use hollow candles for additional visual distinction.
+
+See also:
+
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
+- [Theming customization](../customization/theming.md)
 
 ## Tips
 

@@ -1,4 +1,3 @@
-# Area Chart
 
 An area chart is similar to a line chart but with the area under the line filled with color or gradient,
 emphasizing the magnitude of values over time. This makes trends and cumulative totals more visually prominent
@@ -6,36 +5,9 @@ and helps viewers understand the "volume" of data, not just the trend.
 
 ## Preview
 
-<img src="../img/bar-chart.png" alt="Area chart example" width="420" />
+<img src="/charty/img/area-chart.png" alt="Area chart example" width="420" />
 
 _Note: A dedicated area chart image will be added in a future update._
-
-## Use cases
-
-- Emphasizing the magnitude or volume of data over time (e.g., total sales, cumulative revenue).
-- Showing how a single metric accumulates or fluctuates across periods.
-- Creating more visually impactful dashboards compared to plain line charts.
-- Displaying environmental data like rainfall, pollution levels, or resource usage.
-- Highlighting the "area under the curve" in scientific or statistical visualizations.
-
-## Configuration
-
-Area charts extend line chart configuration with fill options.
-
-Key options include:
-
-- `lineThickness`: Stroke width for the top line.
-- `smoothCurve`: Enable curved lines for smoother transitions.
-- `showPoints`: Display markers at data points along the line.
-- `fillOpacity`: Control transparency of the filled area (0.0 to 1.0).
-- Colors: Use gradients for visually appealing fills (e.g., darker at bottom, lighter at top).
-- `showLine`: Optionally hide the stroke line and show only the filled area.
-
-See also:
-
-- [Line chart configuration](../configurations/line-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
-- [Theming customization](../customization/theming.md)
 
 ## Code examples
 
@@ -80,6 +52,33 @@ AreaChart(
     ),
 )
 ```
+
+## Use cases
+
+- Emphasizing the magnitude or volume of data over time (e.g., total sales, cumulative revenue).
+- Showing how a single metric accumulates or fluctuates across periods.
+- Creating more visually impactful dashboards compared to plain line charts.
+- Displaying environmental data like rainfall, pollution levels, or resource usage.
+- Highlighting the "area under the curve" in scientific or statistical visualizations.
+
+## Configuration
+
+Area charts extend line chart configuration with fill options.
+
+Key options include:
+
+- `lineThickness`: Stroke width for the top line.
+- `smoothCurve`: Enable curved lines for smoother transitions.
+- `showPoints`: Display markers at data points along the line.
+- `fillOpacity`: Control transparency of the filled area (0.0 to 1.0).
+- Colors: Use gradients for visually appealing fills (e.g., darker at bottom, lighter at top).
+- `showLine`: Optionally hide the stroke line and show only the filled area.
+
+See also:
+
+- [Line chart configuration](../configurations/line-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
+- [Theming customization](../customization/theming.md)
 
 ## Tips
 

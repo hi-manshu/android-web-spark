@@ -1,11 +1,29 @@
-# Horizontal Bar Chart
 
 A horizontal bar chart presents categorical data with horizontal rectangular bars, where the length of each bar is proportional to the value it represents.
 This type of chart is particularly useful for comparing categories with long labels or when there are many categories to display.
 
 ## Preview
 
-<img src="../img/horizontal-bar-chart.png" alt="Horizontal bar chart example" width="420" />
+<img src="/charty/img/horizontal-bar-chart.png" alt="Horizontal bar chart example" width="420" />
+
+## Code examples
+
+```kotlin
+HorizontalBarChart(
+    data = {
+        listOf(
+            BarData("Category A", 100f),
+            BarData("Category B", 150f),
+            BarData("Category C", 120f),
+        )
+    },
+    color = ChartyColor.Solid(Color(0xFF2196F3)),
+    barConfig = BarChartConfig(
+        barWidthFraction = 0.6f,
+        cornerRadius = CornerRadius.Large,
+    ),
+)
+```
 
 ## Use cases
 
@@ -28,25 +46,6 @@ See also:
 
 - [Bar chart configuration](../configurations/bar-chart-config.md)
 - [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
-
-## Code examples
-
-```kotlin
-HorizontalBarChart(
-    data = {
-        listOf(
-            BarData("Category A", 100f),
-            BarData("Category B", 150f),
-            BarData("Category C", 120f),
-        )
-    },
-    color = ChartyColor.Solid(Color(0xFF2196F3)),
-    barConfig = BarChartConfig(
-        barWidthFraction = 0.6f,
-        cornerRadius = CornerRadius.Large,
-    ),
-)
-```
 
 ## Tips
 

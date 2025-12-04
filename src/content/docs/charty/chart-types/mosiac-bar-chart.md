@@ -1,4 +1,3 @@
-# Mosaic Bar Chart
 
 A mosaic bar chart (also called a 100% stacked bar chart) displays multiple data series stacked within each bar,
 where all bars are normalized to 100% height. This emphasizes the proportional composition of each category
@@ -6,7 +5,28 @@ rather than absolute values, making it ideal for comparing part-to-whole relatio
 
 ## Preview
 
-<img src="../img/mosiac-bar-chart.png" alt="Mosaic bar chart example" width="420" />
+<img src="/charty/img/mosiac-bar-chart.png" alt="Mosaic bar chart example" width="420" />
+
+## Code examples
+
+```kotlin
+MosiacBarChart(
+    data = {
+        listOf(
+            BarGroup("Region A", listOf(30f, 45f, 25f)),
+            BarGroup("Region B", listOf(40f, 30f, 30f)),
+            BarGroup("Region C", listOf(25f, 50f, 25f)),
+        )
+    },
+    colors = ChartyColor.Gradient(
+        listOf(Color(0xFFE91E63), Color(0xFF2196F3), Color(0xFF4CAF50))
+    ),
+    barConfig = BarChartConfig(
+        barWidthFraction = 0.7f,
+        topCornerRadius = CornerRadius.Medium,
+    ),
+)
+```
 
 ## Use cases
 
@@ -30,27 +50,6 @@ See configuration references:
 
 - [Bar chart configuration](../configurations/bar-chart-config.md)
 - [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
-
-## Code examples
-
-```kotlin
-MosiacBarChart(
-    data = {
-        listOf(
-            BarGroup("Region A", listOf(30f, 45f, 25f)),
-            BarGroup("Region B", listOf(40f, 30f, 30f)),
-            BarGroup("Region C", listOf(25f, 50f, 25f)),
-        )
-    },
-    colors = ChartyColor.Gradient(
-        listOf(Color(0xFFE91E63), Color(0xFF2196F3), Color(0xFF4CAF50))
-    ),
-    barConfig = BarChartConfig(
-        barWidthFraction = 0.7f,
-        topCornerRadius = CornerRadius.Medium,
-    ),
-)
-```
 
 ## Tips
 

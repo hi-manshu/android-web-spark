@@ -1,4 +1,3 @@
-# Comparison Bar Chart
 
 A comparison bar chart (also known as a grouped bar chart) displays multiple data series side-by-side for each category.
 This layout is ideal for comparing sub-categories, different metrics, or multiple time periods within each main category,
@@ -6,30 +5,7 @@ making it easy to spot patterns and differences across groups.
 
 ## Preview
 
-<img src="../img/comparison-bar-chart.png" alt="Comparison bar chart example" width="420" />
-
-## Use cases
-
-- Comparing multiple products, regions, or segments across the same categories.
-- Showing before/after comparisons or year-over-year changes.
-- Benchmarking actual vs. target values for multiple categories.
-- Displaying survey responses from different demographic groups.
-
-## Configuration
-
-Comparison bar charts use `BarChartConfig` with additional grouping settings.
-
-Key options include:
-
-- `barWidthFraction`: Controls the width of individual bars and spacing between groups.
-- `groupSpacing`: Adjusts space between grouped bar sets.
-- Colors: Provide one color per series; use consistent colors to help users track series across categories.
-- Animation: Animate bars entering or updating.
-
-See also:
-
-- [Bar chart configuration](../configurations/bar-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
+<img src="/charty/img/comparison-bar-chart.png" alt="Comparison bar chart example" width="420" />
 
 ## Code examples
 
@@ -68,6 +44,29 @@ ComparisonBarChart(
     ),
 )
 ```
+
+## Use cases
+
+- Comparing multiple products, regions, or segments across the same categories.
+- Showing before/after comparisons or year-over-year changes.
+- Benchmarking actual vs. target values for multiple categories.
+- Displaying survey responses from different demographic groups.
+
+## Configuration
+
+Comparison bar charts use `BarChartConfig` with additional grouping settings.
+
+Key options include:
+
+- `barWidthFraction`: Controls the width of individual bars and spacing between groups.
+- `groupSpacing`: Adjusts space between grouped bar sets.
+- Colors: Provide one color per series; use consistent colors to help users track series across categories.
+- Animation: Animate bars entering or updating.
+
+See also:
+
+- [Bar chart configuration](../configurations/bar-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Tips
 

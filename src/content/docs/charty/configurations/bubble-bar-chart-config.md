@@ -1,4 +1,3 @@
-# BubbleBarChartConfig
 
 Configuration for Bubble Bar Chart appearance and behavior.
 

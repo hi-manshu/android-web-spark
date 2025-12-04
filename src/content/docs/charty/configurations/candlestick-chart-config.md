@@ -1,4 +1,3 @@
-# CandlestickChartConfig
 
 Configuration for Candlestick (OHLC) Chart appearance and behavior.
 

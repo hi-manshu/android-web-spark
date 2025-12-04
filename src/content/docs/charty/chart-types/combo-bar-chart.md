@@ -1,4 +1,3 @@
-# Combo Bar Chart
 
 A combo bar chart (also called a combination or mixed chart) displays bars and lines together on the same chart,
 allowing you to compare different types of data or show relationships between volume and trends.
@@ -6,31 +5,7 @@ This is ideal when you need to show both categorical comparisons (bars) and cont
 
 ## Preview
 
-<img src="../img/combo-bar-chart.png" alt="Combo bar chart example" width="420" />
-
-## Use cases
-
-- Displaying bars for actual values and a line for targets or benchmarks.
-- Showing volume (bars) alongside trends or moving averages (line).
-- Comparing absolute values (bars) with percentages or rates (line).
-- Presenting sales figures (bars) with cumulative totals (line).
-
-## Configuration
-
-Combo bar charts require configuration for both bar and line components, often using dual axes.
-
-Key options include:
-
-- Bar configuration: `barWidthFraction`, corner radius, colors for bars.
-- Line configuration: Line thickness, point markers, smoothing for the line series.
-- Dual axes: Optionally use separate Y-axes for bars and lines if scales differ significantly.
-- Colors: Use distinct colors to differentiate bars from lines.
-- Legends: Clearly label which series is which.
-
-See also:
-
-- [Bar chart configuration](../configurations/bar-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
+<img src="/charty/img/combo-bar-chart.png" alt="Combo bar chart example" width="420" />
 
 ## Code examples
 
@@ -78,6 +53,30 @@ ComboBarChart(
     ),
 )
 ```
+
+## Use cases
+
+- Displaying bars for actual values and a line for targets or benchmarks.
+- Showing volume (bars) alongside trends or moving averages (line).
+- Comparing absolute values (bars) with percentages or rates (line).
+- Presenting sales figures (bars) with cumulative totals (line).
+
+## Configuration
+
+Combo bar charts require configuration for both bar and line components, often using dual axes.
+
+Key options include:
+
+- Bar configuration: `barWidthFraction`, corner radius, colors for bars.
+- Line configuration: Line thickness, point markers, smoothing for the line series.
+- Dual axes: Optionally use separate Y-axes for bars and lines if scales differ significantly.
+- Colors: Use distinct colors to differentiate bars from lines.
+- Legends: Clearly label which series is which.
+
+See also:
+
+- [Bar chart configuration](../configurations/bar-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Tips
 

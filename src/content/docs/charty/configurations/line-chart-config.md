@@ -1,4 +1,3 @@
-# LineChartConfig
 - [ReferenceLineConfig](reference-line-config.md)
 - [ChartScaffoldConfig](chart-scaffold-config.md)
 - [Area Chart](../chart-types/area-chart.md)

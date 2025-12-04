@@ -6,6 +6,8 @@ import { Copy, Check, ChevronDown, ChevronRight, Github, Heart } from 'lucide-re
 import { useState, useEffect } from 'react';
 import { FadeInView } from '@/components/FadeInView';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
 
 interface Section {
   id: string;
@@ -37,7 +39,7 @@ const docsData: Record<string, DocData> = {
       {
         id: 'getting-started',
         title: 'Getting Started',
-        content: 'charty/getting-started/installation', // Placeholder, will be resolved
+        content: 'charty/getting-started/installation',
         subsections: [
           {
             id: 'installation',
@@ -47,255 +49,272 @@ const docsData: Record<string, DocData> = {
         ]
       },
       {
-        "id": "chart-types",
-        "title": "Chart Types",
-        "content": "charty/chart-types/bar-charts",
-        "subsections": [
+        id: 'bar-charts',
+        title: 'Bar Charts',
+        content: 'charty/chart-types/bar-charts',
+        subsections: [
           {
-            "id": "bar-charts",
-            "title": "Bar Charts",
-            "content": "charty/chart-types/bar-charts",
-            "children": [
-              {
-                "id": "bar-chart",
-                "title": "Bar Chart",
-                "content": "charty/chart-types/bar-chart"
-              },
-              {
-                "id": "horizontal-bar-chart",
-                "title": "Horizontal Bar Chart",
-                "content": "charty/chart-types/horizontal-bar-chart"
-              },
-              {
-                "id": "stacked-bar-chart",
-                "title": "Stacked Bar Chart",
-                "content": "charty/chart-types/stacked-bar-chart"
-              },
-              {
-                "id": "mosiac-bar-chart",
-                "title": "Mosaic Bar Chart",
-                "content": "charty/chart-types/mosiac-bar-chart"
-              },
-              {
-                "id": "comparison-bar-chart",
-                "title": "Comparison Bar Chart",
-                "content": "charty/chart-types/comparison-bar-chart"
-              },
-              {
-                "id": "bubble-bar-chart",
-                "title": "Bubble Bar Chart",
-                "content": "charty/chart-types/bubble-bar-chart"
-              },
-              {
-                "id": "lollipop-bar-chart",
-                "title": "Lollipop Bar Chart",
-                "content": "charty/chart-types/lollipop-bar-chart"
-              },
-              {
-                "id": "span-chart",
-                "title": "Span Chart",
-                "content": "charty/chart-types/span-chart"
-              },
-              {
-                "id": "waterfall-chart",
-                "title": "Waterfall Chart",
-                "content": "charty/chart-types/waterfall-chart"
-              },
-              {
-                "id": "wavy-chart",
-                "title": "Wavy Chart",
-                "content": "charty/chart-types/wavy-chart"
-              },
-              {
-                "id": "block-bar-chart",
-                "title": "Block Bar Chart",
-                "content": "charty/chart-types/block-bar-chart"
-              },
-              {
-                "id": "combo-bar-chart",
-                "title": "Combo Bar Chart",
-                "content": "charty/chart-types/combo-bar-chart"
-              }
-            ]
+            id: 'bar-chart',
+            title: 'Bar Chart',
+            content: 'charty/chart-types/bar-chart'
           },
           {
-            "id": "line-charts",
-            "title": "Line Charts",
-            "content": "charty/chart-types/line-charts",
-            "children": [
-              {
-                "id": "line-chart",
-                "title": "Line Chart",
-                "content": "charty/chart-types/line-chart"
-              },
-              {
-                "id": "multiline-chart",
-                "title": "Multiline Chart",
-                "content": "charty/chart-types/multiline-chart"
-              },
-              {
-                "id": "area-chart",
-                "title": "Area Chart",
-                "content": "charty/chart-types/area-chart"
-              },
-              {
-                "id": "stacked-area-chart",
-                "title": "Stacked Area Chart",
-                "content": "charty/chart-types/stacked-area-chart"
-              }
-            ]
+            id: 'horizontal-bar-chart',
+            title: 'Horizontal Bar Chart',
+            content: 'charty/chart-types/horizontal-bar-chart'
           },
           {
-            "id": "point-charts",
-            "title": "Point & Bubble Charts",
-            "content": "charty/chart-types/point-chart",
-            "children": [
-              {
-                "id": "point-chart",
-                "title": "Point Chart",
-                "content": "charty/chart-types/point-chart"
-              },
-              {
-                "id": "bubble-chart",
-                "title": "Bubble Chart",
-                "content": "charty/chart-types/bubble-chart"
-              }
-            ]
+            id: 'stacked-bar-chart',
+            title: 'Stacked Bar Chart',
+            content: 'charty/chart-types/stacked-bar-chart'
           },
           {
-            "id": "radar-charts",
-            "title": "Radar Charts",
-            "content": "charty/chart-types/radar-chart",
-            "children": [
-              {
-                "id": "radar-chart",
-                "title": "Radar Chart",
-                "content": "charty/chart-types/radar-chart"
-              },
-              {
-                "id": "multiple-radar-chart",
-                "title": "Multiple Radar Chart",
-                "content": "charty/chart-types/multiple-radar-chart"
-              }
-            ]
+            id: 'mosiac-bar-chart',
+            title: 'Mosaic Bar Chart',
+            content: 'charty/chart-types/mosiac-bar-chart'
           },
           {
-            "id": "other-charts",
-            "title": "Other Charts",
-            "content": "charty/chart-types/pie-charts",
-            "children": [
-              {
-                "id": "pie-charts",
-                "title": "Pie Charts",
-                "content": "charty/chart-types/pie-charts"
-              },
-              {
-                "id": "candle-stick-chart",
-                "title": "Candlestick Chart",
-                "content": "charty/chart-types/candle-stick-chart"
-              }
-            ]
+            id: 'comparison-bar-chart',
+            title: 'Comparison Bar Chart',
+            content: 'charty/chart-types/comparison-bar-chart'
+          },
+          {
+            id: 'bubble-bar-chart',
+            title: 'Bubble Bar Chart',
+            content: 'charty/chart-types/bubble-bar-chart'
+          },
+          {
+            id: 'lollipop-bar-chart',
+            title: 'Lollipop Bar Chart',
+            content: 'charty/chart-types/lollipop-bar-chart'
+          },
+          {
+            id: 'span-chart',
+            title: 'Span Chart',
+            content: 'charty/chart-types/span-chart'
+          },
+          {
+            id: 'waterfall-chart',
+            title: 'Waterfall Chart',
+            content: 'charty/chart-types/waterfall-chart'
+          },
+          {
+            id: 'wavy-chart',
+            title: 'Wavy Chart',
+            content: 'charty/chart-types/wavy-chart'
+          },
+          {
+            id: 'block-bar-chart',
+            title: 'Block Bar Chart',
+            content: 'charty/chart-types/block-bar-chart'
+          },
+          {
+            id: 'combo-bar-chart',
+            title: 'Combo Bar Chart',
+            content: 'charty/chart-types/combo-bar-chart'
           }
         ]
       },
       {
-        "id": "configurations",
-        "title": "Configurations",
-        "content": "charty/configurations/chart-scaffold-config",
-        "subsections": [
+        id: 'line-charts',
+        title: 'Line Charts',
+        content: 'charty/chart-types/line-charts',
+        subsections: [
           {
-            "id": "chart-scaffold-config",
-            "title": "ChartScaffoldConfig",
-            "content": "charty/configurations/chart-scaffold-config"
+            id: 'line-chart',
+            title: 'Line Chart',
+            content: 'charty/chart-types/line-chart'
           },
           {
-            "id": "bar-chart-config",
-            "title": "BarChartConfig",
-            "content": "charty/configurations/bar-chart-config"
+            id: 'multiline-chart',
+            title: 'Multiline Chart',
+            content: 'charty/chart-types/multiline-chart'
           },
           {
-            "id": "line-chart-config",
-            "title": "LineChartConfig",
-            "content": "charty/configurations/line-chart-config"
+            id: 'area-chart',
+            title: 'Area Chart',
+            content: 'charty/chart-types/area-chart'
           },
           {
-            "id": "pie-chart-config",
-            "title": "PieChartConfig",
-            "content": "charty/configurations/pie-chart-config"
-          },
-          {
-            "id": "radar-chart-config",
-            "title": "RadarChartConfig",
-            "content": "charty/configurations/radar-chart-config"
-          },
-          {
-            "id": "multiple-radar-chart-config",
-            "title": "MultipleRadarChartConfig",
-            "content": "charty/configurations/multiple-radar-chart-config"
-          },
-          {
-            "id": "point-chart-config",
-            "title": "PointChartConfig",
-            "content": "charty/configurations/point-chart-config"
-          },
-          {
-            "id": "candlestick-chart-config",
-            "title": "CandlestickChartConfig",
-            "content": "charty/configurations/candlestick-chart-config"
-          },
-          {
-            "id": "combo-chart-config",
-            "title": "ComboChartConfig",
-            "content": "charty/configurations/combo-chart-config"
-          },
-          {
-            "id": "stacked-bar-chart-config",
-            "title": "StackedBarChartConfig",
-            "content": "charty/configurations/stacked-bar-chart-config"
-          },
-          {
-            "id": "comparison-bar-chart-config",
-            "title": "ComparisonBarChartConfig",
-            "content": "charty/configurations/comparison-bar-chart-config"
-          },
-          {
-            "id": "bubble-bar-chart-config",
-            "title": "BubbleBarChartConfig",
-            "content": "charty/configurations/bubble-bar-chart-config"
-          },
-          {
-            "id": "lollipop-bar-chart-config",
-            "title": "LollipopBarChartConfig",
-            "content": "charty/configurations/lollipop-bar-chart-config"
-          },
-          {
-            "id": "mosiac-bar-chart-config",
-            "title": "MosiacBarChartConfig",
-            "content": "charty/configurations/mosiac-bar-chart-config"
-          },
-          {
-            "id": "waterfall-chart-config",
-            "title": "WaterfallChartConfig",
-            "content": "charty/configurations/waterfall-chart-config"
-          },
-          {
-            "id": "wavy-chart-config",
-            "title": "WavyChartConfig",
-            "content": "charty/configurations/wavy-chart-config"
-          },
-          {
-            "id": "block-bar-chart-config",
-            "title": "BlockBarChartConfig",
-            "content": "charty/configurations/block-bar-chart-config"
-          },
-          {
-            "id": "reference-line-config",
-            "title": "ReferenceLineConfig",
-            "content": "charty/configurations/reference-line-config"
+            id: 'stacked-area-chart',
+            title: 'Stacked Area Chart',
+            content: 'charty/chart-types/stacked-area-chart'
           }
         ]
       },
+      {
+        id: 'point-charts',
+        title: 'Point & Bubble Charts',
+        content: 'charty/chart-types/point-chart',
+        subsections: [
+          {
+            id: 'point-chart',
+            title: 'Point Chart',
+            content: 'charty/chart-types/point-chart'
+          },
+          {
+            id: 'bubble-chart',
+            title: 'Bubble Chart',
+            content: 'charty/chart-types/bubble-chart'
+          }
+        ]
+      },
+      {
+        id: 'radar-charts',
+        title: 'Radar Charts',
+        content: 'charty/chart-types/radar-chart',
+        subsections: [
+          {
+            id: 'radar-chart',
+            title: 'Radar Chart',
+            content: 'charty/chart-types/radar-chart'
+          },
+          {
+            id: 'multiple-radar-chart',
+            title: 'Multiple Radar Chart',
+            content: 'charty/chart-types/multiple-radar-chart'
+          }
+        ]
+      },
+      {
+        id: 'other-charts',
+        title: 'Other Charts',
+        content: 'charty/chart-types/pie-charts',
+        subsections: [
+          {
+            id: 'pie-charts',
+            title: 'Pie Charts',
+            content: 'charty/chart-types/pie-charts'
+          },
+          {
+            id: 'candle-stick-chart',
+            title: 'Candlestick Chart',
+            content: 'charty/chart-types/candle-stick-chart'
+          }
+        ]
+      },
+      {
+        id: 'configurations',
+        title: 'Configurations',
+        content: 'charty/configurations/chart-scaffold-config',
+        subsections: [
+          {
+            id: 'chart-scaffold-config',
+            title: 'ChartScaffoldConfig',
+            content: 'charty/configurations/chart-scaffold-config'
+          },
+          {
+            id: 'bar-chart-config',
+            title: 'BarChartConfig',
+            content: 'charty/configurations/bar-chart-config'
+          },
+          {
+            id: 'line-chart-config',
+            title: 'LineChartConfig',
+            content: 'charty/configurations/line-chart-config'
+          },
+          {
+            id: 'pie-chart-config',
+            title: 'PieChartConfig',
+            content: 'charty/configurations/pie-chart-config'
+          },
+          {
+            id: 'radar-chart-config',
+            title: 'RadarChartConfig',
+            content: 'charty/configurations/radar-chart-config'
+          },
+          {
+            id: 'multiple-radar-chart-config',
+            title: 'MultipleRadarChartConfig',
+            content: 'charty/configurations/multiple-radar-chart-config'
+          },
+          {
+            id: 'point-chart-config',
+            title: 'PointChartConfig',
+            content: 'charty/configurations/point-chart-config'
+          },
+          {
+            id: 'candlestick-chart-config',
+            title: 'CandlestickChartConfig',
+            content: 'charty/configurations/candlestick-chart-config'
+          },
+          {
+            id: 'combo-chart-config',
+            title: 'ComboChartConfig',
+            content: 'charty/configurations/combo-chart-config'
+          },
+          {
+            id: 'stacked-bar-chart-config',
+            title: 'StackedBarChartConfig',
+            content: 'charty/configurations/stacked-bar-chart-config'
+          },
+          {
+            id: 'comparison-bar-chart-config',
+            title: 'ComparisonBarChartConfig',
+            content: 'charty/configurations/comparison-bar-chart-config'
+          },
+          {
+            id: 'bubble-bar-chart-config',
+            title: 'BubbleBarChartConfig',
+            content: 'charty/configurations/bubble-bar-chart-config'
+          },
+          {
+            id: 'lollipop-bar-chart-config',
+            title: 'LollipopBarChartConfig',
+            content: 'charty/configurations/lollipop-bar-chart-config'
+          },
+          {
+            id: 'mosiac-bar-chart-config',
+            title: 'MosiacBarChartConfig',
+            content: 'charty/configurations/mosiac-bar-chart-config'
+          },
+          {
+            id: 'waterfall-chart-config',
+            title: 'WaterfallChartConfig',
+            content: 'charty/configurations/waterfall-chart-config'
+          },
+          {
+            id: 'wavy-chart-config',
+            title: 'WavyChartConfig',
+            content: 'charty/configurations/wavy-chart-config'
+          },
+          {
+            id: 'block-bar-chart-config',
+            title: 'BlockBarChartConfig',
+            content: 'charty/configurations/block-bar-chart-config'
+          },
+          {
+            id: 'reference-line-config',
+            title: 'ReferenceLineConfig',
+            content: 'charty/configurations/reference-line-config'
+          }
+        ]
+      }
     ],
+    code: {
+      installation: `npm install @yourorg/charty
+# or
+yarn add @yourorg/charty`,
+      basicUsage: `import { LineChart } from '@yourorg/charty';
+
+const data = [
+  { name: 'Jan', value: 400 },
+  { name: 'Feb', value: 300 },
+  { name: 'Mar', value: 600 },
+  { name: 'Apr', value: 800 },
+];
+
+function App() {
+  return (
+    <LineChart 
+      data={data} 
+      width={400} 
+      height={300}
+      animate={true}
+    />
+  );
+}`
+    }
   },
   kalendar: {
     title: 'Kalendar',
@@ -547,6 +566,8 @@ export default function Documentation() {
                   <CardDescription className="md-typescale-body-large text-md-sys-color-on-surface-variant">
                     <div className="prose prose-slate dark:prose-invert max-w-none">
                       <ReactMarkdown
+                        rehypePlugins={[rehypeRaw]}
+                        remarkPlugins={[remarkGfm]}
                         components={{
                           a: ({ node, ...props }) => {
                             const href = props.href;

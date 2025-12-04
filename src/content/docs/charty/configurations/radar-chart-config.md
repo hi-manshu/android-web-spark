@@ -1,4 +1,3 @@
-# RadarChartConfig
 
 Configuration for Radar (Spider) Chart appearance and behavior.
 

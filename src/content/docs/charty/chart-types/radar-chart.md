@@ -1,4 +1,3 @@
-# Radar Chart
 
 A radar chart (also called a spider chart or star chart) displays multivariate data on axes radiating from a central point,
 with each axis representing a different variable. Data values are plotted along each axis and connected to form a polygon,
@@ -6,37 +5,7 @@ making it ideal for comparing multiple attributes of a single entity or showing 
 
 ## Preview
 
-<img src="../img/bar-chart.png" alt="Radar chart example" width="420" />
-
-_Note: A dedicated radar chart image will be added in a future update._
-
-## Use cases
-
-- Comparing multiple attributes or skills of a single entity (e.g., player stats in sports or games).
-- Visualizing performance across different dimensions (e.g., product features, KPI scorecards).
-- Showing personality profiles, skill assessments, or competency matrices.
-- Displaying survey results across multiple questions or categories.
-- Analyzing competitive positioning across various factors.
-- Comparing before/after assessments on multiple criteria.
-
-## Configuration
-
-Radar charts use `RadarChartConfig` to control the polygon, axes, and labels.
-
-Key options include:
-
-- `numberOfAxes`: Number of variables/dimensions to display (typically 3-8).
-- `showAxisLabels`: Display labels at the end of each axis.
-- `showScaleLines`: Show concentric circles or polygons representing value scales.
-- `fillOpacity`: Control transparency of the filled polygon.
-- Colors: Use solid colors or gradients for the data polygon.
-- `strokeWidth`: Thickness of the polygon outline.
-- Point markers: Optionally show dots at each data point.
-
-See also:
-
-- [Radar chart configuration](../configurations/radar-chart-config.md)
-- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
+<img src="/charty/img/radar-chart.png" alt="Radar chart example" width="420" />
 
 ## Code examples
 
@@ -86,6 +55,34 @@ RadarChart(
     ),
 )
 ```
+
+## Use cases
+
+- Comparing multiple attributes or skills of a single entity (e.g., player stats in sports or games).
+- Visualizing performance across different dimensions (e.g., product features, KPI scorecards).
+- Showing personality profiles, skill assessments, or competency matrices.
+- Displaying survey results across multiple questions or categories.
+- Analyzing competitive positioning across various factors.
+- Comparing before/after assessments on multiple criteria.
+
+## Configuration
+
+Radar charts use `RadarChartConfig` to control the polygon, axes, and labels.
+
+Key options include:
+
+- `numberOfAxes`: Number of variables/dimensions to display (typically 3-8).
+- `showAxisLabels`: Display labels at the end of each axis.
+- `showScaleLines`: Show concentric circles or polygons representing value scales.
+- `fillOpacity`: Control transparency of the filled polygon.
+- Colors: Use solid colors or gradients for the data polygon.
+- `strokeWidth`: Thickness of the polygon outline.
+- Point markers: Optionally show dots at each data point.
+
+See also:
+
+- [Radar chart configuration](../configurations/radar-chart-config.md)
+- [Chart scaffold configuration](../configurations/chart-scaffold-config.md)
 
 ## Tips
 
