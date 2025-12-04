@@ -3,13 +3,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Copy, Check, ChevronDown, ChevronRight, Github, Heart } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FadeInView } from '@/components/FadeInView';
+import ReactMarkdown from 'react-markdown';
 
 interface Section {
   id: string;
   title: string;
-  content: string;
+  content: string; // Now a path to the markdown file
   subsections?: Section[];
 }
 
@@ -36,56 +37,56 @@ const docsData: Record<string, DocData> = {
       {
         id: 'getting-started',
         title: 'Getting Started',
-        content: 'Learn how to set up and use Charty in your React application.',
+        content: 'charty/getting-started/installation', // Placeholder, will be resolved
         subsections: [
           {
             id: 'installation',
             title: 'Installation',
-            content: 'Install Charty using npm or yarn to get started with beautiful charts.'
+            content: 'charty/getting-started/installation'
           },
           {
             id: 'basic-usage',
             title: 'Basic Usage',
-            content: 'Learn the basics of creating your first chart with Charty.'
+            content: 'charty/getting-started/basic-usage'
           }
         ]
       },
       {
         id: 'chart-types',
         title: 'Chart Types',
-        content: 'Explore the different types of charts available in Charty.',
+        content: 'charty/chart-types/line-charts', // Placeholder
         subsections: [
           {
             id: 'line-charts',
             title: 'Line Charts',
-            content: 'Create smooth, animated line charts for time series data.'
+            content: 'charty/chart-types/line-charts'
           },
           {
             id: 'bar-charts',
             title: 'Bar Charts',
-            content: 'Display categorical data with horizontal or vertical bars.'
+            content: 'charty/chart-types/bar-charts'
           },
           {
             id: 'pie-charts',
             title: 'Pie Charts',
-            content: 'Show proportional data with interactive pie charts.'
+            content: 'charty/chart-types/pie-charts'
           }
         ]
       },
       {
         id: 'customization',
         title: 'Customization',
-        content: 'Learn how to customize your charts to match your design system.',
+        content: 'charty/customization/theming', // Placeholder
         subsections: [
           {
             id: 'theming',
             title: 'Theming',
-            content: 'Apply custom themes and colors to your charts.'
+            content: 'charty/customization/theming'
           },
           {
             id: 'animations',
             title: 'Animations',
-            content: 'Configure smooth animations and transitions.'
+            content: 'charty/customization/animations'
           }
         ]
       }
@@ -175,17 +176,17 @@ const pieData = [
       {
         id: 'overview',
         title: 'Overview',
-        content: 'Kalendar is a feature-rich calendar component for React applications.',
+        content: 'kalendar/overview/features', // Placeholder
         subsections: [
           {
             id: 'features',
             title: 'Features',
-            content: 'Explore the powerful features of Kalendar including event management, multiple views, and more.'
+            content: 'kalendar/overview/features'
           },
           {
             id: 'setup',
             title: 'Setup',
-            content: 'Get started with Kalendar by installing and configuring it in your project.'
+            content: 'kalendar/overview/setup'
           }
         ]
       }
@@ -235,12 +236,12 @@ function CodeBlock({ code, id }: { code: string; id: string }) {
   );
 }
 
-function TableOfContents({ 
-  sections, 
-  activeSection, 
-  onSectionClick 
-}: { 
-  sections: Section[]; 
+function TableOfContents({
+  sections,
+  activeSection,
+  onSectionClick
+}: {
+  sections: Section[];
   activeSection: string;
   onSectionClick: (sectionId: string) => void;
 }) {
@@ -263,16 +264,15 @@ function TableOfContents({
       <h3 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium">
         Table of Contents
       </h3>
-      
+
       <nav className="space-y-1">
         {sections.map((section) => (
           <div key={section.id}>
-            <div 
-              className={`flex items-center gap-2 py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                isActive(section.id) 
-                  ? 'bg-md-sys-color-primary-container text-md-sys-color-on-primary-container' 
+            <div
+              className={`flex items-center gap-2 py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 ${isActive(section.id)
+                  ? 'bg-md-sys-color-primary-container text-md-sys-color-on-primary-container'
                   : 'text-md-sys-color-on-surface hover:bg-md-sys-color-surface-variant'
-              }`}
+                }`}
               onClick={() => {
                 if (section.subsections && section.subsections.length > 0) {
                   toggleSection(section.id);
@@ -282,25 +282,24 @@ function TableOfContents({
               }}
             >
               {section.subsections && section.subsections.length > 0 && (
-                expandedSections.has(section.id) ? 
-                  <ChevronDown className="h-4 w-4 flex-shrink-0" /> : 
+                expandedSections.has(section.id) ?
+                  <ChevronDown className="h-4 w-4 flex-shrink-0" /> :
                   <ChevronRight className="h-4 w-4 flex-shrink-0" />
               )}
               <span className="md-typescale-body-large font-medium truncate">
                 {section.title}
               </span>
             </div>
-            
+
             {section.subsections && expandedSections.has(section.id) && (
               <div className="ml-6 mt-1 space-y-1">
                 {section.subsections.map((subsection) => (
                   <div
                     key={subsection.id}
-                    className={`py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                      isActive(subsection.id)
+                    className={`py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 ${isActive(subsection.id)
                         ? 'bg-md-sys-color-secondary-container text-md-sys-color-on-secondary-container'
                         : 'text-md-sys-color-on-surface-variant hover:bg-md-sys-color-surface-variant'
-                    }`}
+                      }`}
                     onClick={() => onSectionClick(subsection.id)}
                   >
                     <span className="text-sm truncate">
@@ -317,10 +316,13 @@ function TableOfContents({
   );
 }
 
+// Load all markdown files
+const modules = import.meta.glob('/src/content/docs/**/*.md', { as: 'raw', eager: true });
+
 export default function Documentation() {
   const { project } = useParams<{ project: string }>();
   const [activeSection, setActiveSection] = useState('installation');
-  
+
   const doc = project ? docsData[project] : null;
 
   if (!doc) {
@@ -351,6 +353,13 @@ export default function Documentation() {
 
   const currentSection = findSectionById(doc.sections, activeSection);
 
+  // Helper to get content from modules
+  const getContent = (path: string | undefined) => {
+    if (!path) return '';
+    const fullPath = `/src/content/docs/${path}.md`;
+    return modules[fullPath] || 'Content not found';
+  };
+
   return (
     <div className="min-h-screen bg-md-sys-color-background">
       <div className="container mx-auto px-6 py-8">
@@ -365,7 +374,7 @@ export default function Documentation() {
                   v{doc.version}
                 </Badge>
               </div>
-              
+
               {/* GitHub and Sponsor Links */}
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm" asChild>
@@ -391,7 +400,7 @@ export default function Documentation() {
         <div className="grid lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
             <div className="sticky top-8">
-              <TableOfContents 
+              <TableOfContents
                 sections={doc.sections}
                 activeSection={activeSection}
                 onSectionClick={setActiveSection}
@@ -407,10 +416,12 @@ export default function Documentation() {
                     {currentSection?.title}
                   </CardTitle>
                   <CardDescription className="md-typescale-body-large text-md-sys-color-on-surface-variant">
-                    {currentSection?.content}
+                    <ReactMarkdown className="prose prose-slate dark:prose-invert max-w-none">
+                      {getContent(currentSection?.content)}
+                    </ReactMarkdown>
                   </CardDescription>
                 </CardHeader>
-                
+
                 <CardContent className="space-y-6">
                   {activeSection === 'installation' && (
                     <div>
@@ -454,12 +465,6 @@ export default function Documentation() {
                         Pie Chart Example
                       </h4>
                       <CodeBlock code={doc.code.pieChart as string} id="pie-chart" />
-                    </div>
-                  )}
-
-                  {!['installation', 'basic-usage', 'line-charts', 'bar-charts', 'pie-charts'].includes(activeSection) && (
-                    <div className="text-md-sys-color-on-surface-variant">
-                      <p>Content for {currentSection?.title} will be available soon.</p>
                     </div>
                   )}
                 </CardContent>
