@@ -270,8 +270,8 @@ function TableOfContents({
           <div key={section.id}>
             <div
               className={`flex items-center gap-2 py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 ${isActive(section.id)
-                  ? 'bg-md-sys-color-primary-container text-md-sys-color-on-primary-container'
-                  : 'text-md-sys-color-on-surface hover:bg-md-sys-color-surface-variant'
+                ? 'bg-md-sys-color-primary-container text-md-sys-color-on-primary-container'
+                : 'text-md-sys-color-on-surface hover:bg-md-sys-color-surface-variant'
                 }`}
               onClick={() => {
                 if (section.subsections && section.subsections.length > 0) {
@@ -297,8 +297,8 @@ function TableOfContents({
                   <div
                     key={subsection.id}
                     className={`py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 ${isActive(subsection.id)
-                        ? 'bg-md-sys-color-secondary-container text-md-sys-color-on-secondary-container'
-                        : 'text-md-sys-color-on-surface-variant hover:bg-md-sys-color-surface-variant'
+                      ? 'bg-md-sys-color-secondary-container text-md-sys-color-on-secondary-container'
+                      : 'text-md-sys-color-on-surface-variant hover:bg-md-sys-color-surface-variant'
                       }`}
                     onClick={() => onSectionClick(subsection.id)}
                   >
