@@ -1,4 +1,5 @@
-<img src="../img/bar-chart.png" alt="Bar Chart" width="30%">
+![Bar Chart](../img/bar-chart.png)
+<img src="../img/bar-chart.png" width="200">
 
 # Bar Chart
 
