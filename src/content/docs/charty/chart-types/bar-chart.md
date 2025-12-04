@@ -1,4 +1,4 @@
-![Bar Chart](/charty/img/bar-chart.png)
+![Bar Chart](../img/bar-chart.png{width=30%})
 
 # Bar Chart
 
