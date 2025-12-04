@@ -1,4 +1,4 @@
-![Stacked Bar Chart](/charty/img/stacked-bar-chart.png)
+![Stacked Bar Chart](../img/stacked-bar-chart.png)
 
 # Stacked Bar Chart
 

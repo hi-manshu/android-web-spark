@@ -1,4 +1,4 @@
-![Comparison Bar Chart](/charty/img/comparison-bar-chart.png)
+![Comparison Bar Chart](../img/comparison-bar-chart.png)
 
 # Comparison Bar Chart
 

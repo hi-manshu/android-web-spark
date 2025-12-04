@@ -1,4 +1,4 @@
-![Waterfall Chart](/charty/img/waterfall-chart.png)
+![Waterfall Chart](../img/waterfall-chart.png)
 
 # Waterfall Chart
 

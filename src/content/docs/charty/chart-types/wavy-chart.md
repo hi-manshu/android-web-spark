@@ -1,4 +1,4 @@
-![Wavy Chart](/charty/img/wavy-chart.png)
+![Wavy Chart](../img/wavy-chart.png)
 
 # Wavy Chart
 

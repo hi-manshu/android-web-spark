@@ -1,4 +1,4 @@
-![Span Chart](/charty/img/span-chart.png)
+![Span Chart](../img/span-chart.png)
 
 # Span Chart
 

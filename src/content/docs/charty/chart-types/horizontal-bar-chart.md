@@ -1,4 +1,4 @@
-![Horizontal Bar Chart](/charty/img/horizontal-bar-chart.png)
+![Horizontal Bar Chart](../img/horizontal-bar-chart.png)
 
 # Horizontal Bar Chart
 

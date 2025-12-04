@@ -1,4 +1,4 @@
-![Mosiac Bar Chart](/charty/img/mosiac-bar-chart.png)
+![Mosiac Bar Chart](../img/mosiac-bar-chart.png)
 
 # Mosiac Bar Chart
 
