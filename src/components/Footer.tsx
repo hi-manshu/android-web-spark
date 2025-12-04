@@ -16,16 +16,6 @@ export function Footer() {
             >
               Himanshu Singh
             </a>
-            . The source code is available on{' '}
-            <a
-              href="https://github.com/hi-manshu"
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
-            >
-              GitHub
-            </a>
-            .
           </p>
         </div>
         <div className="flex items-center space-x-1">
