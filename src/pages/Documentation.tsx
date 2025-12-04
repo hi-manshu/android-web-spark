@@ -1,9 +1,10 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Copy, Check, ChevronDown, ChevronRight, ChevronLeft, Github, Heart } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Input } from '@/components/ui/input';
+import { Copy, Check, ChevronDown, ChevronRight, ChevronLeft, Github, Heart, ArrowUp, Search, Home, BookOpen, Hash } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
 import { FadeInView } from '@/components/FadeInView';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
@@ -358,6 +359,105 @@ function App() {
   }
 };
 
+// Reading Progress Bar
+function ReadingProgressBar() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const updateProgress = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      setProgress(scrollPercent);
+    };
+
+    window.addEventListener('scroll', updateProgress);
+    return () => window.removeEventListener('scroll', updateProgress);
+  }, []);
+
+  return (
+    <div className="fixed top-0 left-0 right-0 h-1 bg-border z-50">
+      <div 
+        className="h-full bg-foreground transition-all duration-150 ease-out"
+        style={{ width: `${progress}%` }}
+      />
+    </div>
+  );
+}
+
+// Scroll to Top Button
+function ScrollToTopButton() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      setIsVisible(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  if (!isVisible) return null;
+
+  return (
+    <Button
+      variant="outline"
+      size="icon"
+      className="fixed bottom-20 right-6 z-50 h-10 w-10 rounded-full shadow-lg animate-fade-in"
+      onClick={scrollToTop}
+    >
+      <ArrowUp className="h-4 w-4" />
+    </Button>
+  );
+}
+
+// Breadcrumbs
+function Breadcrumbs({ project, currentSection }: { project: string; currentSection: string }) {
+  return (
+    <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+      <Link to="/" className="hover:text-foreground transition-colors flex items-center gap-1">
+        <Home className="h-3.5 w-3.5" />
+      </Link>
+      <ChevronRight className="h-3.5 w-3.5" />
+      <Link to="/docs" className="hover:text-foreground transition-colors flex items-center gap-1">
+        <BookOpen className="h-3.5 w-3.5" />
+        Docs
+      </Link>
+      <ChevronRight className="h-3.5 w-3.5" />
+      <span className="capitalize">{project}</span>
+      <ChevronRight className="h-3.5 w-3.5" />
+      <span className="text-foreground font-medium truncate max-w-[150px]">{currentSection}</span>
+    </nav>
+  );
+}
+
+// Copy Code Button for Markdown
+function CopyCodeButton({ code }: { code: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      className="absolute top-2 right-2 h-7 w-7 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+      onClick={copyToClipboard}
+    >
+      {copied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
+    </Button>
+  );
+}
+
 function CodeBlock({ code, id }: { code: string; id: string }) {
   const [copied, setCopied] = useState(false);
 
@@ -368,14 +468,14 @@ function CodeBlock({ code, id }: { code: string; id: string }) {
   };
 
   return (
-    <div className="relative">
+    <div className="relative group">
       <pre className="bg-md-sys-color-surface-variant p-4 rounded-lg overflow-x-auto text-sm border border-md-sys-color-outline-variant">
         <code className="text-md-sys-color-on-surface-variant">{code}</code>
       </pre>
       <Button
         variant="outline"
         size="sm"
-        className="absolute top-2 right-2 h-8 w-8 p-0"
+        className="absolute top-2 right-2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
         onClick={copyToClipboard}
       >
         {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
@@ -394,6 +494,7 @@ function TableOfContents({
   onSectionClick: (sectionId: string) => void;
 }) {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['getting-started']));
+  const [searchQuery, setSearchQuery] = useState('');
 
   const toggleSection = (sectionId: string) => {
     const newExpanded = new Set(expandedSections);
@@ -407,58 +508,101 @@ function TableOfContents({
 
   const isActive = (sectionId: string) => activeSection === sectionId;
 
+  // Filter sections based on search query
+  const filterSections = (sections: Section[]): Section[] => {
+    if (!searchQuery.trim()) return sections;
+    
+    return sections.reduce<Section[]>((acc, section) => {
+      const matchesSearch = section.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const filteredSubsections = section.subsections ? filterSections(section.subsections) : [];
+      
+      if (matchesSearch || filteredSubsections.length > 0) {
+        acc.push({
+          ...section,
+          subsections: filteredSubsections.length > 0 ? filteredSubsections : section.subsections
+        });
+      }
+      return acc;
+    }, []);
+  };
+
+  const filteredSections = filterSections(sections);
+
+  // Auto-expand sections when searching
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const allSectionIds = new Set(sections.map(s => s.id));
+      setExpandedSections(allSectionIds);
+    }
+  }, [searchQuery, sections]);
+
   return (
     <div className="bg-md-sys-color-surface border border-md-sys-color-outline-variant rounded-lg p-4 md-elevation-1 flex flex-col max-h-[calc(100vh-8rem)]">
-      <h3 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium flex-shrink-0">
+      <h3 className="md-typescale-title-large text-md-sys-color-on-surface mb-3 font-medium flex-shrink-0">
         Table of Contents
       </h3>
 
-      <nav className="space-y-1 overflow-y-auto flex-1">
-        {sections.map((section) => (
-          <div key={section.id}>
-            <div
-              className={`flex items-center gap-2 py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 ${isActive(section.id)
-                ? 'bg-md-sys-color-primary-container text-md-sys-color-on-primary-container'
-                : 'text-md-sys-color-on-surface hover:bg-md-sys-color-surface-variant'
-                }`}
-              onClick={() => {
-                if (section.subsections && section.subsections.length > 0) {
-                  toggleSection(section.id);
-                } else {
-                  onSectionClick(section.id);
-                }
-              }}
-            >
-              {section.subsections && section.subsections.length > 0 && (
-                expandedSections.has(section.id) ?
-                  <ChevronDown className="h-4 w-4 flex-shrink-0" /> :
-                  <ChevronRight className="h-4 w-4 flex-shrink-0" />
-              )}
-              <span className="md-typescale-body-large font-medium truncate">
-                {section.title}
-              </span>
-            </div>
+      {/* Search Input */}
+      <div className="relative mb-3 flex-shrink-0">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Search docs..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-9 h-9 text-sm"
+        />
+      </div>
 
-            {section.subsections && expandedSections.has(section.id) && (
-              <div className="ml-6 mt-1 space-y-1">
-                {section.subsections.map((subsection) => (
-                  <div
-                    key={subsection.id}
-                    className={`py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 ${isActive(subsection.id)
-                      ? 'bg-md-sys-color-secondary-container text-md-sys-color-on-secondary-container'
-                      : 'text-md-sys-color-on-surface-variant hover:bg-md-sys-color-surface-variant'
-                      }`}
-                    onClick={() => onSectionClick(subsection.id)}
-                  >
-                    <span className="text-sm truncate">
-                      {subsection.title}
-                    </span>
-                  </div>
-                ))}
+      <nav className="space-y-1 overflow-y-auto flex-1">
+        {filteredSections.length === 0 ? (
+          <p className="text-sm text-muted-foreground px-3 py-2">No results found</p>
+        ) : (
+          filteredSections.map((section) => (
+            <div key={section.id}>
+              <div
+                className={`flex items-center gap-2 py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 ${isActive(section.id)
+                  ? 'bg-md-sys-color-primary-container text-md-sys-color-on-primary-container'
+                  : 'text-md-sys-color-on-surface hover:bg-md-sys-color-surface-variant'
+                  }`}
+                onClick={() => {
+                  if (section.subsections && section.subsections.length > 0) {
+                    toggleSection(section.id);
+                  } else {
+                    onSectionClick(section.id);
+                  }
+                }}
+              >
+                {section.subsections && section.subsections.length > 0 && (
+                  expandedSections.has(section.id) ?
+                    <ChevronDown className="h-4 w-4 flex-shrink-0" /> :
+                    <ChevronRight className="h-4 w-4 flex-shrink-0" />
+                )}
+                <span className="md-typescale-body-large font-medium truncate">
+                  {section.title}
+                </span>
               </div>
-            )}
-          </div>
-        ))}
+
+              {section.subsections && expandedSections.has(section.id) && (
+                <div className="ml-6 mt-1 space-y-1">
+                  {section.subsections.map((subsection) => (
+                    <div
+                      key={subsection.id}
+                      className={`py-2 px-3 rounded-lg cursor-pointer transition-all duration-200 ${isActive(subsection.id)
+                        ? 'bg-md-sys-color-secondary-container text-md-sys-color-on-secondary-container'
+                        : 'text-md-sys-color-on-surface-variant hover:bg-md-sys-color-surface-variant'
+                        }`}
+                      onClick={() => onSectionClick(subsection.id)}
+                    >
+                      <span className="text-sm truncate">
+                        {subsection.title}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))
+        )}
       </nav>
     </div>
   );
@@ -547,8 +691,14 @@ export default function Documentation() {
 
   return (
     <div className="min-h-screen bg-md-sys-color-background">
+      <ReadingProgressBar />
+      <ScrollToTopButton />
+      
       <div className="container mx-auto px-6 py-8">
         <FadeInView>
+          {/* Breadcrumbs */}
+          <Breadcrumbs project={project || ''} currentSection={currentSection?.title || ''} />
+          
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
@@ -597,9 +747,12 @@ export default function Documentation() {
             <FadeInView key={activeSection}>
               <Card className="bg-md-sys-color-surface border-md-sys-color-outline-variant md-elevation-1">
                 <CardHeader>
-                  <CardTitle className="md-typescale-headline-medium text-md-sys-color-on-surface">
-                    {currentSection?.title}
-                  </CardTitle>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Hash className="h-5 w-5 text-muted-foreground" />
+                    <CardTitle className="md-typescale-headline-medium text-md-sys-color-on-surface">
+                      {currentSection?.title}
+                    </CardTitle>
+                  </div>
                   <CardDescription className="md-typescale-body-large text-md-sys-color-on-surface-variant">
                     <div className="prose prose-slate dark:prose-invert max-w-none">
                       <ReactMarkdown
@@ -622,7 +775,72 @@ export default function Documentation() {
                               );
                             }
                             return <a {...props} className="text-md-sys-color-primary hover:underline" target="_blank" rel="noopener noreferrer" />;
-                          }
+                          },
+                          pre: ({ node, children, ...props }) => {
+                            const codeElement = (children as any)?.[0];
+                            const codeContent = codeElement?.props?.children || '';
+                            return (
+                              <div className="relative group">
+                                <pre {...props} className="bg-muted p-4 rounded-lg overflow-x-auto text-sm border">
+                                  {children}
+                                </pre>
+                                <CopyCodeButton code={String(codeContent)} />
+                              </div>
+                            );
+                          },
+                          code: ({ node, className, children, ...props }) => {
+                            const isInline = !className;
+                            if (isInline) {
+                              return (
+                                <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
+                                  {children}
+                                </code>
+                              );
+                            }
+                            return <code className={className} {...props}>{children}</code>;
+                          },
+                          h2: ({ children }) => (
+                            <h2 className="text-xl font-semibold mt-6 mb-3 flex items-center gap-2 border-b pb-2">
+                              {children}
+                            </h2>
+                          ),
+                          h3: ({ children }) => (
+                            <h3 className="text-lg font-medium mt-4 mb-2">
+                              {children}
+                            </h3>
+                          ),
+                          table: ({ children }) => (
+                            <div className="overflow-x-auto my-4">
+                              <table className="w-full border-collapse border border-border rounded-lg">
+                                {children}
+                              </table>
+                            </div>
+                          ),
+                          th: ({ children }) => (
+                            <th className="border border-border bg-muted px-4 py-2 text-left font-semibold">
+                              {children}
+                            </th>
+                          ),
+                          td: ({ children }) => (
+                            <td className="border border-border px-4 py-2">
+                              {children}
+                            </td>
+                          ),
+                          blockquote: ({ children }) => (
+                            <blockquote className="border-l-4 border-foreground/20 pl-4 italic my-4 text-muted-foreground">
+                              {children}
+                            </blockquote>
+                          ),
+                          ul: ({ children }) => (
+                            <ul className="list-disc list-inside space-y-1 my-4">
+                              {children}
+                            </ul>
+                          ),
+                          ol: ({ children }) => (
+                            <ol className="list-decimal list-inside space-y-1 my-4">
+                              {children}
+                            </ol>
+                          )
                         }}
                       >
                         {getContent(currentSection?.content)}
