@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Copy, Check, ChevronDown, ChevronRight, Github, Heart } from 'lucide-react';
+import { Copy, Check, ChevronDown, ChevronRight, ChevronLeft, Github, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { FadeInView } from '@/components/FadeInView';
 import ReactMarkdown from 'react-markdown';
@@ -408,12 +408,12 @@ function TableOfContents({
   const isActive = (sectionId: string) => activeSection === sectionId;
 
   return (
-    <div className="bg-md-sys-color-surface border border-md-sys-color-outline-variant rounded-lg p-4 md-elevation-1">
-      <h3 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium">
+    <div className="bg-md-sys-color-surface border border-md-sys-color-outline-variant rounded-lg p-4 md-elevation-1 flex flex-col max-h-[calc(100vh-8rem)]">
+      <h3 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium flex-shrink-0">
         Table of Contents
       </h3>
 
-      <nav className="space-y-1">
+      <nav className="space-y-1 overflow-y-auto flex-1">
         {sections.map((section) => (
           <div key={section.id}>
             <div
@@ -470,8 +470,22 @@ const modules = import.meta.glob('/src/content/docs/**/*.md', { as: 'raw', eager
 export default function Documentation() {
   const { project } = useParams<{ project: string }>();
   const [activeSection, setActiveSection] = useState('installation');
+  const [isAtBottom, setIsAtBottom] = useState(false);
 
   const doc = project ? docsData[project] : null;
+
+  // Track scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight;
+      setIsAtBottom(scrollTop + windowHeight >= docHeight - 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (!doc) {
     return (
@@ -487,6 +501,24 @@ export default function Documentation() {
       </div>
     );
   }
+
+  // Flatten all sections into a single array for navigation
+  const flattenSections = (sections: Section[]): Section[] => {
+    const result: Section[] = [];
+    for (const section of sections) {
+      if (section.subsections && section.subsections.length > 0) {
+        result.push(...flattenSections(section.subsections));
+      } else {
+        result.push(section);
+      }
+    }
+    return result;
+  };
+
+  const allSections = flattenSections(doc.sections);
+  const currentIndex = allSections.findIndex(s => s.id === activeSection);
+  const prevSection = currentIndex > 0 ? allSections[currentIndex - 1] : null;
+  const nextSection = currentIndex < allSections.length - 1 ? allSections[currentIndex + 1] : null;
 
   const findSectionById = (sections: Section[], id: string): Section | null => {
     for (const section of sections) {
@@ -506,6 +538,11 @@ export default function Documentation() {
     if (!path) return '';
     const fullPath = `/src/content/docs/${path}.md`;
     return modules[fullPath] || 'Content not found';
+  };
+
+  const handleNavigate = (sectionId: string) => {
+    setActiveSection(sectionId);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -595,53 +632,37 @@ export default function Documentation() {
                 </CardHeader>
 
                 <CardContent className="space-y-6">
-                  {activeSection === 'installation' && (
-                    <div>
-                      <h4 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium">
-                        Installation
-                      </h4>
-                      <CodeBlock code={doc.code.installation} id="installation" />
-                    </div>
-                  )}
-
-                  {activeSection === 'basic-usage' && (
-                    <div>
-                      <h4 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium">
-                        Basic Usage
-                      </h4>
-                      <CodeBlock code={doc.code.basicUsage} id="basic-usage" />
-                    </div>
-                  )}
-
-                  {activeSection === 'line-charts' && 'lineChart' in doc.code && (
-                    <div>
-                      <h4 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium">
-                        Line Chart Example
-                      </h4>
-                      <CodeBlock code={doc.code.lineChart as string} id="line-chart" />
-                    </div>
-                  )}
-
-                  {activeSection === 'bar-charts' && 'barChart' in doc.code && (
-                    <div>
-                      <h4 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium">
-                        Bar Chart Example
-                      </h4>
-                      <CodeBlock code={doc.code.barChart as string} id="bar-chart" />
-                    </div>
-                  )}
-
-                  {activeSection === 'pie-charts' && 'pieChart' in doc.code && (
-                    <div>
-                      <h4 className="md-typescale-title-large text-md-sys-color-on-surface mb-4 font-medium">
-                        Pie Chart Example
-                      </h4>
-                      <CodeBlock code={doc.code.pieChart as string} id="pie-chart" />
-                    </div>
-                  )}
                 </CardContent>
               </Card>
             </FadeInView>
+
+            {/* Navigation Buttons */}
+            <div className={`flex justify-between items-center gap-4 mt-6 py-4 ${isAtBottom ? '' : 'lg:fixed lg:bottom-6 lg:right-6 lg:left-auto lg:w-auto lg:bg-md-sys-color-surface lg:border lg:border-md-sys-color-outline-variant lg:rounded-lg lg:px-4 lg:shadow-lg lg:z-50'}`}>
+              {prevSection ? (
+                <Button
+                  variant="outline"
+                  onClick={() => handleNavigate(prevSection.id)}
+                  className="flex items-center gap-2"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  <span className="hidden sm:inline">{prevSection.title}</span>
+                  <span className="sm:hidden">Previous</span>
+                </Button>
+              ) : (
+                <div />
+              )}
+              {nextSection && (
+                <Button
+                  variant="outline"
+                  onClick={() => handleNavigate(nextSection.id)}
+                  className="flex items-center gap-2"
+                >
+                  <span className="hidden sm:inline">{nextSection.title}</span>
+                  <span className="sm:hidden">Next</span>
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
