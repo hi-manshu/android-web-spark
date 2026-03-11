@@ -20,34 +20,6 @@ export default {
 		},
 		extend: {
 			colors: {
-				// Material 3 System Colors
-				'md-sys-color': {
-					primary: 'hsl(var(--md-sys-color-primary))',
-					'on-primary': 'hsl(var(--md-sys-color-on-primary))',
-					'primary-container': 'hsl(var(--md-sys-color-primary-container))',
-					'on-primary-container': 'hsl(var(--md-sys-color-on-primary-container))',
-					secondary: 'hsl(var(--md-sys-color-secondary))',
-					'on-secondary': 'hsl(var(--md-sys-color-on-secondary))',
-					'secondary-container': 'hsl(var(--md-sys-color-secondary-container))',
-					'on-secondary-container': 'hsl(var(--md-sys-color-on-secondary-container))',
-					tertiary: 'hsl(var(--md-sys-color-tertiary))',
-					'on-tertiary': 'hsl(var(--md-sys-color-on-tertiary))',
-					'tertiary-container': 'hsl(var(--md-sys-color-tertiary-container))',
-					'on-tertiary-container': 'hsl(var(--md-sys-color-on-tertiary-container))',
-					surface: 'hsl(var(--md-sys-color-surface))',
-					'on-surface': 'hsl(var(--md-sys-color-on-surface))',
-					'surface-variant': 'hsl(var(--md-sys-color-surface-variant))',
-					'on-surface-variant': 'hsl(var(--md-sys-color-on-surface-variant))',
-					outline: 'hsl(var(--md-sys-color-outline))',
-					'outline-variant': 'hsl(var(--md-sys-color-outline-variant))',
-					background: 'hsl(var(--md-sys-color-background))',
-					'on-background': 'hsl(var(--md-sys-color-on-background))',
-					error: 'hsl(var(--md-sys-color-error))',
-					'on-error': 'hsl(var(--md-sys-color-on-error))',
-					'error-container': 'hsl(var(--md-sys-color-error-container))',
-					'on-error-container': 'hsl(var(--md-sys-color-on-error-container))',
-				},
-				// Legacy colors for compatibility
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -87,39 +59,42 @@ export default {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
-			boxShadow: {
-				'md-elevation-1': 'var(--md-sys-elevation-level1)',
-				'md-elevation-2': 'var(--md-sys-elevation-level2)',
-				'md-elevation-3': 'var(--md-sys-elevation-level3)',
-				'md-elevation-4': 'var(--md-sys-elevation-level4)',
-				'md-elevation-5': 'var(--md-sys-elevation-level5)',
-			},
 			animation: {
-				'md-emphasized-accelerate': 'md-emphasized-accelerate 0.3s ease-out',
-				'md-emphasized-decelerate': 'md-emphasized-decelerate 0.3s ease-out',
-				'md-standard': 'md-standard 0.2s ease-in-out',
-				'md-gradient-flow': 'md-gradient-flow 8s ease-in-out infinite',
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'spin-slow': 'spin 3s linear infinite'
+				'spin-slow': 'spin 3s linear infinite',
+				'fade-in-up': 'fadeInUp 0.4s cubic-bezier(0.4,0,0.2,1) forwards',
+				'fade-in': 'fadeIn 0.35s ease-out forwards',
+				'float': 'float 22s ease-in-out infinite',
+				'gradient': 'gradient-shift 14s ease infinite',
+				'ping-slow': 'ping 2s cubic-bezier(0,0,0.2,1) infinite',
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to:   { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
-				}
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to:   { height: '0' }
+				},
+				fadeInUp: {
+					from: { opacity: '0', transform: 'translateY(14px)' },
+					to:   { opacity: '1', transform: 'translateY(0)' },
+				},
+				fadeIn: {
+					from: { opacity: '0' },
+					to:   { opacity: '1' },
+				},
+				float: {
+					'0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+					'33%':      { transform: 'translateY(-18px) rotate(4deg)' },
+					'66%':      { transform: 'translateY(-8px) rotate(-3deg)' },
+				},
+				'gradient-shift': {
+					'0%, 100%': { backgroundPosition: '0% 50%' },
+					'50%':      { backgroundPosition: '100% 50%' },
+				},
 			}
 		}
 	},

@@ -1,6 +1,4 @@
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -15,64 +13,63 @@ interface BlogCardProps {
 }
 
 export function BlogCard({ title, description, date, readTime, tags, slug, author }: BlogCardProps) {
+  const formattedDate = new Date(date).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
   return (
-    <Card className="group cursor-pointer transition-all duration-200 hover:bg-muted/50 border border-border bg-card">
-      <Link to={`/blog/${slug}`} className="block">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1">
-                <Calendar className="h-3 w-3" />
-                <time dateTime={date}>{new Date(date).toLocaleDateString('en-US', { 
-                  month: 'short', 
-                  day: 'numeric',
-                  year: 'numeric'
-                })}</time>
-              </div>
-              <div className="flex items-center gap-1">
-                <Clock className="h-3 w-3" />
-                <span>{readTime}</span>
-              </div>
-            </div>
-            <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+    <Link to={`/blog/${slug}`} className="block group">
+      <div className="glass-card rounded-2xl p-5 flex flex-col h-full overflow-hidden">
+        {/* Meta row */}
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-3 text-xs text-foreground/40">
+            <span className="flex items-center gap-1">
+              <Calendar className="h-3 w-3" />
+              <time dateTime={date}>{formattedDate}</time>
+            </span>
+            <span className="flex items-center gap-1">
+              <Clock className="h-3 w-3" />
+              {readTime}
+            </span>
           </div>
+          <ArrowUpRight className="h-3.5 w-3.5 text-foreground/25 group-hover:text-emerald-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
+        </div>
 
-          <div className="flex items-start justify-between gap-2">
-            <CardTitle className="text-base font-medium group-hover:underline underline-offset-4">
-              {title}
-            </CardTitle>
-          </div>
+        {/* Title */}
+        <h3 className="font-semibold text-base text-foreground/85 group-hover:text-foreground transition-colors leading-snug mb-2 line-clamp-2">
+          {title}
+        </h3>
 
-          <CardDescription className="text-sm text-muted-foreground leading-relaxed line-clamp-4">
-            {description}
-          </CardDescription>
-        </CardHeader>
-        
-        <CardContent className="pt-0 space-y-4">
-          <div className="flex flex-wrap gap-1.5">
-            {tags.slice(0, 3).map((tag) => (
-              <Badge 
-                key={tag} 
-                variant="secondary" 
-                className="text-xs px-2 py-0.5 bg-muted text-muted-foreground font-normal"
-              >
-                {tag}
-              </Badge>
-            ))}
-            {tags.length > 3 && (
-              <Badge variant="outline" className="text-xs px-2 py-0.5 font-normal">
-                +{tags.length - 3}
-              </Badge>
-            )}
-          </div>
+        {/* Description */}
+        <p className="text-xs text-foreground/50 leading-relaxed line-clamp-3 mb-4 flex-1">
+          {description}
+        </p>
 
-          {author && (
-            <div className="pt-3 border-t border-border">
-              <span className="text-xs text-muted-foreground">By {author}</span>
-            </div>
+        {/* Tags */}
+        <div className="flex flex-wrap gap-1.5">
+          {tags.slice(0, 3).map((tag) => (
+            <span
+              key={tag}
+              className="text-[10px] px-2 py-0.5 rounded-full bg-foreground/[0.05] text-foreground/45 border border-foreground/[0.06] font-medium"
+            >
+              {tag}
+            </span>
+          ))}
+          {tags.length > 3 && (
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-foreground/[0.04] text-foreground/35 border border-foreground/[0.05]">
+              +{tags.length - 3}
+            </span>
           )}
-        </CardContent>
-      </Link>
-    </Card>
+        </div>
+
+        {author && (
+          <div className="mt-3 pt-3 border-t border-foreground/[0.06]">
+            <span className="text-xs text-foreground/35">By {author}</span>
+          </div>
+        )}
+      </div>
+    </Link>
   );
 }

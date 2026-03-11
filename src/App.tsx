@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { SearchProvider } from "@/contexts/SearchContext";
 import { Header } from "@/components/Header";
@@ -16,6 +16,7 @@ import Projects from "./pages/Projects";
 import About from "./pages/About";
 import Documentation from "./pages/Documentation";
 import DocumentationHome from "./pages/DocumentationHome";
+import KrateLanding from "./pages/KrateLanding";
 import FetchBlog from "./pages/FetchBlog";
 import NotFound from "./pages/NotFound";
 
@@ -38,6 +39,14 @@ const App = () => (
                   <Route path="/blog/:slug" element={<BlogPost />} />
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/about" element={<About />} />
+                  <Route
+                    path="/krate"
+                    element={
+                      window.location.hostname === 'docs.himanshoe.com'
+                        ? <Navigate to="/docs/krate" replace />
+                        : <KrateLanding />
+                    }
+                  />
                   <Route path="/docs" element={<DocumentationHome />} />
                   <Route path="/docs/:project" element={<Documentation />} />
                   <Route path="/fetch-blog" element={<FetchBlog />} />
