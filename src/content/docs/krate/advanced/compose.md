@@ -1,6 +1,7 @@
 # Compose Integration
 
-The `krate-compose` module provides Jetpack Compose helpers for collecting `Store` flows with lifecycle awareness.
+The `krate-compose` module provides Jetpack Compose helpers for collecting `Store` flows with
+lifecycle awareness.
 
 ## Add the Dependency
 
@@ -15,7 +16,8 @@ dependencies {
 
 ## Collecting Store Flows in Compose
 
-`krate-compose` exports `collectAsStateWithLifecycle` extensions tuned for Krate's `Flow<List<T>>` and `Flow<T?>` return types.
+`krate-compose` exports `collectAsStateWithLifecycle` extensions tuned for Krate's `Flow<List<T>>`
+and `Flow<T?>` return types.
 
 ### Observe all items
 
@@ -120,5 +122,7 @@ fun NotesScreen(vm: NotesViewModel = viewModel()) {
 ## Notes
 
 - Always collect inside a lifecycle-scoped coroutine to avoid leaks.
-- Use `WhileSubscribed(5_000)` in `stateIn` to survive configuration changes without leaking the database connection.
-- `krate-compose` is architecture-agnostic — use it with ViewModel, plain state, or any other pattern.
+- Use `WhileSubscribed(5_000)` in `stateIn` to survive configuration changes without leaking the
+  database connection.
+- `krate-compose` is architecture-agnostic — use it with ViewModel, plain state, or any other
+  pattern.

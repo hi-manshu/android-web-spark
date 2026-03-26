@@ -1,6 +1,7 @@
 # Aggregate Queries
 
 Krate provides two aggregate APIs:
+
 - `aggregate()` — one-shot suspend functions
 - `aggregateFlow()` — reactive `Flow`-based variants that re-emit when data changes
 
@@ -75,7 +76,8 @@ val byPinAndStatus: Map<List<Any?>, Int> = notes
 
 ## Reactive Aggregates
 
-`aggregateFlow()` returns terminal operators that emit `Flow` values — they re-compute automatically whenever the store changes.
+`aggregateFlow()` returns terminal operators that emit `Flow` values — they re-compute automatically
+whenever the store changes.
 
 ```kotlin
 // Live count — re-emits on every add/delete

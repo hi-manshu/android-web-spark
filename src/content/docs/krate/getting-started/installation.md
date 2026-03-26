@@ -1,15 +1,16 @@
 # Installation
 
-Krate is a **Kotlin Multiplatform** type-safe reactive database library backed by Room and SQLite. It supports **Android** and **iOS** (iosX64, iosArm64, iosSimulatorArm64).
+Krate is a **Kotlin Multiplatform** type-safe reactive database library backed by Room and SQLite.
+It supports **Android** and **iOS** (iosX64, iosArm64, iosSimulatorArm64).
 
 ## Requirements
 
-| Tool | Minimum Version |
-|------|----------------|
-| Kotlin | 2.0+ |
-| Android minSdk | 24 |
-| KSP | 2.0+ |
-| Room | 2.7+ |
+| Tool           | Minimum Version |
+|----------------|-----------------|
+| Kotlin         | 2.0+            |
+| Android minSdk | 24              |
+| KSP            | 2.0+            |
+| Room           | 2.7+            |
 
 ## Add Dependencies
 
@@ -83,4 +84,5 @@ room {
 }
 ```
 
-> After syncing, KSP will generate the full database wiring for every `@Storable` class. You're ready to go!
+> After syncing, KSP will generate the full database wiring for every `@Storable` class. You're
+> ready to go!

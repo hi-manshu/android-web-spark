@@ -1,6 +1,7 @@
 # @KrateName
 
-`@KrateName` customises the SQLite column name and metadata for a property inside a `@Storable` class.
+`@KrateName` customises the SQLite column name and metadata for a property inside a `@Storable`
+class.
 
 ## Signature
 
@@ -19,7 +20,8 @@ All three parameters are optional — use whichever you need.
 
 ## Custom Column Name
 
-By default, Krate uses the Kotlin property name as the SQL column name. Use `@KrateName("custom_name")` to override it.
+By default, Krate uses the Kotlin property name as the SQL column name. Use
+`@KrateName("custom_name")` to override it.
 
 ```kotlin
 @Storable
@@ -31,6 +33,7 @@ data class Note(
 ```
 
 Generated SQL:
+
 ```sql
 CREATE TABLE note (
     id TEXT PRIMARY KEY NOT NULL,
@@ -89,4 +92,5 @@ data class Note(
 
 - `@KrateName` has no effect without `@Storable` on the enclosing class.
 - The property name in Kotlin is unchanged — only the underlying SQL column is affected.
-- The custom column name propagates to all generated DAO queries, the `columnExtractors` map, and the `find { }` proxy.
+- The custom column name propagates to all generated DAO queries, the `columnExtractors` map, and
+  the `find { }` proxy.

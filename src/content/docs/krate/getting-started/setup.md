@@ -25,6 +25,7 @@ data class Note(
 ```
 
 Rules:
+
 - Must be a `data class`
 - Exactly one property must be annotated with `@Key`
 - `@Key` type must be `String`, `Int`, or `Long`
@@ -33,22 +34,45 @@ Rules:
 
 ## Step 2 — Open the database
 
-KSP generates a top-level `krate()` function. Call it once — in your `Application` class or DI setup.
+KSP generates a top-level `krate()` function. Call it once — in your `Application` class or DI
+setup.
+The Android version requires an explicit `Context`; the iOS version does not.
 
 ```kotlin
-// The generated krate() function wires everything together
-val db: Krate = krate("my_app_db") {
+// Android — pass applicationContext to avoid leaking an Activity
+val db: Krate = krate(context, "my_app_db") {
     store<Note>()    // register every @Storable type you want to use
+}
+
+// iOS
+val db: Krate = krate("my_app_db") {
+    store<Note>()
 }
 ```
 
 ### With multiple types
 
 ```kotlin
-val db: Krate = krate("my_app_db") {
+// Android
+val db: Krate = krate(context, "my_app_db") {
     store<Note>()
     store<User>()
     store<Tag>()
+}
+```
+
+### With a DI framework (Hilt example)
+
+```kotlin
+@Module
+@InstallIn(SingletonComponent::class)
+object AppKrateModule {
+    @Provides
+    @Singleton
+    fun provideKrate(@ApplicationContext context: Context): Krate =
+        krate(context, "my_app_db") {
+            store<Note>()
+        }
 }
 ```
 
@@ -57,7 +81,8 @@ val db: Krate = krate("my_app_db") {
 ```kotlin
 val appModule = module {
     single<Krate> {
-        krate("my_app_db") {
+        // Android: inject androidContext() via Koin; iOS: omit context
+        krate(androidContext(), "my_app_db") {
             store<Note>()
         }
     }
@@ -91,13 +116,13 @@ notes.delete("n1")
 
 For each `@Storable` class, KSP generates:
 
-| Generated artifact | Description |
-|---|---|
-| `{Class}Entity` | Room `@Entity` |
-| `{Class}Dao` | Room `@Dao` with typed queries |
-| `{Class}TypeConverter` | JSON converters for `@Embeddable` / collections |
-| `{Class}Mapper` | Entity → domain mapper |
-| `KrateDatabase` | The Room `@Database` (shared across all types) |
-| `krate(name) { }` | Top-level builder function |
+| Generated artifact                             | Description                                     |
+|------------------------------------------------|-------------------------------------------------|
+| `{Class}Entity`                                | Room `@Entity`                                  |
+| `{Class}Dao`                                   | Room `@Dao` with typed queries                  |
+| `{Class}TypeConverter`                         | JSON converters for `@Embeddable` / collections |
+| `{Class}Mapper`                                | Entity → domain mapper                          |
+| `KrateDatabase`                                | The Room `@Database` (shared across all types)  |
+| `krate(context, name) { }` / `krate(name) { }` | Top-level builder function (Android / iOS)      |
 
 You never write Room boilerplate manually.
