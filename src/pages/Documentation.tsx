@@ -34,6 +34,8 @@ interface DocData {
   githubUrl?: string;
   /** Wordmark shown on the library's landing section; per-theme variants. */
   logo?: { light: string; dark: string };
+  /** Feature highlights rendered on the landing section instead of markdown. */
+  highlights?: { icon: React.ElementType; title: string; description: string }[];
   code: Record<string, string>;
 }
 
@@ -56,6 +58,28 @@ const docsData: Record<string, DocData> = {
     title: 'Krate',
     githubUrl: 'https://github.com/hi-manshu/Krate',
     logo: { light: '/krate-logo.svg', dark: '/krate-logo-dark.svg' },
+    highlights: [
+      {
+        icon: Zap,
+        title: 'Zero boilerplate',
+        description: 'Annotate a data class — KSP generates the Store, DAO, and database wiring for you.',
+      },
+      {
+        icon: ArrowRight,
+        title: 'Reactive by default',
+        description: 'Every read is a Flow. Your UI updates automatically whenever data changes.',
+      },
+      {
+        icon: Search,
+        title: 'Type-safe queries',
+        description: 'Predicates, aggregates, relations, and joins — checked at compile time, no raw SQL.',
+      },
+      {
+        icon: Database,
+        title: 'Room under the hood',
+        description: 'Battle-tested SQLite persistence on Android and iOS via Room KMP.',
+      },
+    ],
     description: 'Type-safe reactive database for Kotlin Multiplatform — zero boilerplate, Flow-based reactivity, KSP-generated Store<T> backed by Room.',
     version: '0.1.0',
     code: {
@@ -793,6 +817,11 @@ export default function Documentation() {
   const nextSection = currentIdx < allSections.length - 1 ? allSections[currentIdx + 1] : null;
   const currentSection = findSection(sections, activeSection);
 
+  // Landing mode: the library's first page is an index/overview → render a
+  // marketing-style landing (logo, pitch, highlights, section cards) instead
+  // of dumping markdown. The docs proper start at "Get Started".
+  const isLanding = currentIdx === 0 && currentSection?.title === 'Overview';
+
   // Find which top-level section is parent of activeSection
   const parentSection = sections.find(
     (s) => s.id === activeSection || s.subsections?.some((sub) => sub.id === activeSection)
@@ -840,39 +869,127 @@ export default function Documentation() {
                 <img
                   src={doc.logo.light}
                   alt={`${doc.title} logo`}
-                  className="h-16 sm:h-20 w-auto mb-6 dark:hidden"
+                  className={`${isLanding ? 'h-20 sm:h-28' : 'h-16 sm:h-20'} w-auto mb-6 dark:hidden`}
                 />
                 <img
                   src={doc.logo.dark}
                   alt={`${doc.title} logo`}
-                  className="h-16 sm:h-20 w-auto mb-6 hidden dark:block"
+                  className={`${isLanding ? 'h-20 sm:h-28' : 'h-16 sm:h-20'} w-auto mb-6 hidden dark:block`}
                 />
               </>
             )}
-            <h1
-              className={`${
-                isFeatureEnabled('showcase') ? 'font-serif ' : ''
-              }text-3xl md:text-4xl font-bold tracking-tight leading-tight mb-3`}
-            >
-              <span className="text-foreground">{doc.title} </span>
-              <span className="text-gradient">{currentSection?.title}</span>
-            </h1>
+            {/* On the landing page the wordmark is the title */}
+            {!(isLanding && doc.logo) && (
+              <h1
+                className={`${
+                  isFeatureEnabled('showcase') ? 'font-serif ' : ''
+                }text-3xl md:text-4xl font-bold tracking-tight leading-tight mb-3`}
+              >
+                <span className="text-foreground">{doc.title} </span>
+                {!isLanding && <span className="text-gradient">{currentSection?.title}</span>}
+              </h1>
+            )}
             {/* The library tagline only belongs on the landing section —
                 everywhere else it just pushes content down */}
             {currentIdx === 0 && (
-              <p className="text-sm text-foreground/55 leading-relaxed max-w-xl">
-                {doc.description}
-              </p>
+              <>
+                <p className={`${isLanding ? 'text-base sm:text-lg' : 'text-sm'} text-foreground/55 leading-relaxed max-w-xl`}>
+                  {doc.description}
+                </p>
+                <div className="flex flex-wrap items-center gap-3 mt-5">
+                  {nextSection && (
+                    <button
+                      onClick={() => handleNavigate(nextSection.id)}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-foreground text-background text-xs font-semibold hover:opacity-90 transition-opacity"
+                    >
+                      Get Started
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                  {doc.githubUrl && (
+                    <a
+                      href={doc.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl glass border border-foreground/10 text-xs font-medium text-foreground/60 hover:text-foreground hover:border-foreground/20 transition-all"
+                    >
+                      <Github className="h-3.5 w-3.5" />
+                      Star on GitHub
+                    </a>
+                  )}
+                  <span className="text-[11px] font-mono px-2.5 py-1 rounded-full border border-foreground/10 text-foreground/45">
+                    v{doc.version}
+                  </span>
+                </div>
+              </>
             )}
           </div>
 
-          {/* Content */}
-          <div ref={contentRef}>
-            <DocContent markdown={markdown} onSectionLink={handleNavigate} />
-          </div>
+          {/* Content — the landing page shows highlights instead of markdown */}
+          {isLanding ? (
+            doc.highlights && (
+              <div className="grid sm:grid-cols-2 gap-4 mt-10">
+                {doc.highlights.map((h) => {
+                  const HIcon = h.icon;
+                  return (
+                    <div key={h.title} className="glass-card rounded-2xl p-5">
+                      <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3 relative z-10">
+                        <HIcon className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                      </div>
+                      <p className="text-sm font-semibold text-foreground/85 mb-1.5 relative z-10">{h.title}</p>
+                      <p className="text-xs text-foreground/50 leading-relaxed relative z-10">{h.description}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            )
+          ) : (
+            <div ref={contentRef}>
+              <DocContent markdown={markdown} onSectionLink={handleNavigate} />
+            </div>
+          )}
+
+          {/* Explore grid — landing section only, driven by the sidebar structure */}
+          {currentIdx === 0 && sections.length > 1 && (
+            <div className="mt-12">
+              <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-foreground/35 mb-4">
+                Explore the docs
+              </p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {sections.map((s) => {
+                  const Icon = s.icon ?? BookOpen;
+                  // Skip the page currently on screen (the landing itself)
+                  const subs = (s.subsections ?? []).filter((x) => x.id !== activeSection);
+                  if (subs.length === 0 && s.id === activeSection) return null;
+                  const first = subs[0]?.id ?? s.id;
+                  const count = subs.length || 1;
+                  return (
+                    <button
+                      key={s.id}
+                      onClick={() => handleNavigate(first)}
+                      className="glass-card rounded-xl px-4 py-3.5 flex items-center gap-3 text-left group hover:border-emerald-500/20 transition-all"
+                    >
+                      <div className="w-9 h-9 rounded-lg bg-foreground/[0.05] flex items-center justify-center flex-shrink-0">
+                        <Icon className="h-4 w-4 text-foreground/50 group-hover:text-emerald-500 transition-colors" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs font-semibold text-foreground/80 group-hover:text-foreground transition-colors truncate">
+                          {s.title}
+                        </div>
+                        <div className="text-[10px] text-foreground/35">
+                          {count} {count === 1 ? 'page' : 'pages'}
+                        </div>
+                      </div>
+                      <ChevronRight className="h-3.5 w-3.5 text-foreground/25 group-hover:text-emerald-500 transition-colors flex-shrink-0" />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Edit on GitHub */}
-          {doc.githubUrl && currentSection && (
+          {!isLanding && doc.githubUrl && currentSection && (
             <div className="flex justify-end mt-8">
               <a
                 href={`${doc.githubUrl}/edit/main/docs/${currentSection.content.slice((project?.length ?? 0) + 1)}.md`}
@@ -923,7 +1040,7 @@ export default function Documentation() {
 
         {/* ── Right Sidebar ── */}
         <div className="hidden xl:block w-[200px] 2xl:w-[220px] flex-shrink-0 sticky top-14 h-[calc(100vh-56px)] overflow-y-auto border-l border-foreground/[0.06] bg-background/80 backdrop-blur-sm px-4 py-6">
-          <RightSidebar headings={headings} activeHeading={activeHeading} githubUrl={doc.githubUrl} />
+          <RightSidebar headings={isLanding ? [] : headings} activeHeading={activeHeading} githubUrl={doc.githubUrl} />
         </div>
       </div>
     </div>
