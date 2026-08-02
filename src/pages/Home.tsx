@@ -1,5 +1,7 @@
 
 import { Hero } from '@/components/Hero';
+import { HeroShowcase } from '@/components/HeroShowcase';
+import { isFeatureEnabled } from '@/lib/features';
 import { ProjectCard } from '@/components/ProjectCard';
 import { BlogCard } from '@/components/BlogCard';
 import { ArrowUpRight, Github, Code2, Rocket, BookOpen, Package, BarChart2, CalendarDays } from 'lucide-react';
@@ -82,7 +84,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Hero />
+      {isFeatureEnabled('showcase') ? <HeroShowcase /> : <Hero />}
 
       {/* Stats */}
       <section className="py-16 border-y border-white/[0.06]">
