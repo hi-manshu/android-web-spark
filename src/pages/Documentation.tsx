@@ -13,6 +13,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
+import { isFeatureEnabled } from '@/lib/features';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Types
@@ -738,7 +739,10 @@ export default function Documentation() {
     setActiveHeading('');
   }, [project]);
 
-  const markdown = doc ? getContent(findSection(sections, activeSection)?.content) : '';
+  // Strip a leading H1 — the page header already renders the section title,
+  // so the markdown's own "# Setup" would appear twice.
+  const rawMarkdown = doc ? getContent(findSection(sections, activeSection)?.content) : '';
+  const markdown = rawMarkdown.replace(/^\s*#\s[^\n]*\n+/, '');
   const headings = extractHeadings(markdown);
 
   // Auto-highlight headings on scroll
@@ -828,19 +832,43 @@ export default function Documentation() {
 
           {/* Page title — split color like reference */}
           <div className="mb-6">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight leading-tight mb-3">
+            <h1
+              className={`${
+                isFeatureEnabled('showcase') ? 'font-serif ' : ''
+              }text-3xl md:text-4xl font-bold tracking-tight leading-tight mb-3`}
+            >
               <span className="text-foreground">{doc.title} </span>
               <span className="text-gradient">{currentSection?.title}</span>
             </h1>
-            <p className="text-sm text-foreground/55 leading-relaxed max-w-xl">
-              {doc.description}
-            </p>
+            {/* The library tagline only belongs on the landing section —
+                everywhere else it just pushes content down */}
+            {currentIdx === 0 && (
+              <p className="text-sm text-foreground/55 leading-relaxed max-w-xl">
+                {doc.description}
+              </p>
+            )}
           </div>
 
           {/* Content */}
           <div ref={contentRef}>
             <DocContent markdown={markdown} onSectionLink={handleNavigate} />
           </div>
+
+          {/* Edit on GitHub */}
+          {doc.githubUrl && currentSection && (
+            <div className="flex justify-end mt-8">
+              <a
+                href={`${doc.githubUrl}/edit/main/docs/${currentSection.content.slice((project?.length ?? 0) + 1)}.md`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-foreground/40 hover:text-foreground transition-colors"
+              >
+                <Github className="h-3 w-3" />
+                Edit this page on GitHub
+                <ExternalLink className="h-2.5 w-2.5 opacity-50" />
+              </a>
+            </div>
+          )}
 
           {/* Prev / Next */}
           <div className="flex justify-between items-stretch gap-4 mt-10 pt-6 border-t border-foreground/[0.07]">
