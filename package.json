@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "fetch-docs": "node --experimental-strip-types scripts/fetch-docs.ts",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",

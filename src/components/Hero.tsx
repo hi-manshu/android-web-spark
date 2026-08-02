@@ -34,7 +34,7 @@ export function Hero() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
             </span>
-            <span className="text-white/60">Engineer with a motivation</span>
+            <span className="text-white/60">Building open source for Android &amp; KMP</span>
             <a
               href="/about"
               className="text-white font-semibold transition-colors hover:text-white/80"

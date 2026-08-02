@@ -1,0 +1,30 @@
+name: Sync Docs
+
+on:
+  workflow_dispatch: # trigger manually from GitHub Actions tab
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Fetch docs from source repos
+        run: node --experimental-strip-types scripts/fetch-docs.ts
+        env:
+          GITHUB_TOKEN: ${{ secrets.DOCS_GITHUB_TOKEN }}
+
+      - name: Commit changes if any
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/content/docs/
+          git diff --cached --quiet || git commit -m "chore: sync docs from source repos"
+          git push

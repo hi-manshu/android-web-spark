@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { SearchProvider } from "@/contexts/SearchContext";
 import { Header } from "@/components/Header";
@@ -13,10 +13,11 @@ import Home from "./pages/Home";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Projects from "./pages/Projects";
+import ProjectsShowcase from "./pages/ProjectsShowcase";
+import { isFeatureEnabled } from "@/lib/features";
 import About from "./pages/About";
 import Documentation from "./pages/Documentation";
 import DocumentationHome from "./pages/DocumentationHome";
-import KrateLanding from "./pages/KrateLanding";
 import FetchBlog from "./pages/FetchBlog";
 import NotFound from "./pages/NotFound";
 
@@ -37,16 +38,11 @@ const App = () => (
                   <Route path="/" element={<Home />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />
-                  <Route path="/projects" element={<Projects />} />
-                  <Route path="/about" element={<About />} />
                   <Route
-                    path="/krate"
-                    element={
-                      window.location.hostname === 'docs.himanshoe.com'
-                        ? <Navigate to="/docs/krate" replace />
-                        : <KrateLanding />
-                    }
+                    path="/projects"
+                    element={isFeatureEnabled('showcase') ? <ProjectsShowcase /> : <Projects />}
                   />
+                  <Route path="/about" element={<About />} />
                   <Route path="/docs" element={<DocumentationHome />} />
                   <Route path="/docs/:project" element={<Documentation />} />
                   <Route path="/fetch-blog" element={<FetchBlog />} />

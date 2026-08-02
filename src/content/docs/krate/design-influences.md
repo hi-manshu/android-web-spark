@@ -207,7 +207,7 @@ points without the data changing under you:
 
 ```kotlin
 notes.withSnapshot { snap ->
-    val pinned   = snap.filter { it.isPinned }
+    val pinned  = snap.filter { it.isPinned }
     val unpinned = snap.filter { !it.isPinned }
     // snap is immutable for the duration of this block
 }

@@ -6,7 +6,8 @@ import {
   Github, Heart, MessageCircle, Search,
   Zap, Package, BarChart2, Layout, Terminal,
   Settings, HelpCircle, ExternalLink, ArrowRight,
-  BookOpen, Layers, Database, Calendar as CalendarIcon,
+  BookOpen, Layers, Database, GitMerge, Workflow,
+  Puzzle, FileText, LineChart, PieChart,
 } from 'lucide-react';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -30,7 +31,6 @@ interface DocData {
   description: string;
   version: string;
   githubUrl?: string;
-  sections: Section[];
   code: Record<string, string>;
 }
 
@@ -44,84 +44,6 @@ const docsData: Record<string, DocData> = {
     description: 'A sleek & lightweight charting library for Jetpack Compose, now with Kotlin & Compose Multiplatform support!',
     version: '3.0.0-beta01',
     githubUrl: 'https://github.com/hi-manshu/Charty',
-    sections: [
-      {
-        id: 'getting-started', title: 'Getting Started', content: 'charty/getting-started/installation', icon: Zap,
-        subsections: [
-          { id: 'installation', title: 'Installation', content: 'charty/getting-started/installation' },
-        ],
-      },
-      {
-        id: 'bar-charts', title: 'Bar Charts', content: 'charty/chart-types/bar-charts', icon: BarChart2,
-        subsections: [
-          { id: 'bar-chart', title: 'Bar Chart', content: 'charty/chart-types/bar-chart' },
-          { id: 'horizontal-bar-chart', title: 'Horizontal Bar Chart', content: 'charty/chart-types/horizontal-bar-chart' },
-          { id: 'stacked-bar-chart', title: 'Stacked Bar Chart', content: 'charty/chart-types/stacked-bar-chart' },
-          { id: 'mosiac-bar-chart', title: 'Mosaic Bar Chart', content: 'charty/chart-types/mosiac-bar-chart' },
-          { id: 'comparison-bar-chart', title: 'Comparison Bar Chart', content: 'charty/chart-types/comparison-bar-chart' },
-          { id: 'bubble-bar-chart', title: 'Bubble Bar Chart', content: 'charty/chart-types/bubble-bar-chart' },
-          { id: 'lollipop-bar-chart', title: 'Lollipop Bar Chart', content: 'charty/chart-types/lollipop-bar-chart' },
-          { id: 'span-chart', title: 'Span Chart', content: 'charty/chart-types/span-chart' },
-          { id: 'waterfall-chart', title: 'Waterfall Chart', content: 'charty/chart-types/waterfall-chart' },
-          { id: 'wavy-chart', title: 'Wavy Chart', content: 'charty/chart-types/wavy-chart' },
-          { id: 'block-bar-chart', title: 'Block Bar Chart', content: 'charty/chart-types/block-bar-chart' },
-          { id: 'combo-bar-chart', title: 'Combo Bar Chart', content: 'charty/chart-types/combo-bar-chart' },
-        ],
-      },
-      {
-        id: 'line-charts', title: 'Line Charts', content: 'charty/chart-types/line-charts', icon: Layout,
-        subsections: [
-          { id: 'line-chart', title: 'Line Chart', content: 'charty/chart-types/line-chart' },
-          { id: 'multiline-chart', title: 'Multiline Chart', content: 'charty/chart-types/multiline-chart' },
-          { id: 'area-chart', title: 'Area Chart', content: 'charty/chart-types/area-chart' },
-          { id: 'stacked-area-chart', title: 'Stacked Area Chart', content: 'charty/chart-types/stacked-area-chart' },
-        ],
-      },
-      {
-        id: 'point-charts', title: 'Point & Bubble', content: 'charty/chart-types/point-chart', icon: Package,
-        subsections: [
-          { id: 'point-chart', title: 'Point Chart', content: 'charty/chart-types/point-chart' },
-          { id: 'bubble-chart', title: 'Bubble Chart', content: 'charty/chart-types/bubble-chart' },
-        ],
-      },
-      {
-        id: 'radar-charts', title: 'Radar Charts', content: 'charty/chart-types/radar-chart', icon: Layers,
-        subsections: [
-          { id: 'radar-chart', title: 'Radar Chart', content: 'charty/chart-types/radar-chart' },
-          { id: 'multiple-radar-chart', title: 'Multiple Radar Chart', content: 'charty/chart-types/multiple-radar-chart' },
-        ],
-      },
-      {
-        id: 'other-charts', title: 'Other Charts', content: 'charty/chart-types/pie-charts', icon: Terminal,
-        subsections: [
-          { id: 'pie-charts', title: 'Pie Charts', content: 'charty/chart-types/pie-charts' },
-          { id: 'candle-stick-chart', title: 'Candlestick Chart', content: 'charty/chart-types/candle-stick-chart' },
-        ],
-      },
-      {
-        id: 'configurations', title: 'Configurations', content: 'charty/configurations/chart-scaffold-config', icon: Settings,
-        subsections: [
-          { id: 'chart-scaffold-config', title: 'ChartScaffoldConfig', content: 'charty/configurations/chart-scaffold-config' },
-          { id: 'bar-chart-config', title: 'BarChartConfig', content: 'charty/configurations/bar-chart-config' },
-          { id: 'line-chart-config', title: 'LineChartConfig', content: 'charty/configurations/line-chart-config' },
-          { id: 'pie-chart-config', title: 'PieChartConfig', content: 'charty/configurations/pie-chart-config' },
-          { id: 'radar-chart-config', title: 'RadarChartConfig', content: 'charty/configurations/radar-chart-config' },
-          { id: 'multiple-radar-chart-config', title: 'MultipleRadarChartConfig', content: 'charty/configurations/multiple-radar-chart-config' },
-          { id: 'point-chart-config', title: 'PointChartConfig', content: 'charty/configurations/point-chart-config' },
-          { id: 'candlestick-chart-config', title: 'CandlestickChartConfig', content: 'charty/configurations/candlestick-chart-config' },
-          { id: 'combo-chart-config', title: 'ComboChartConfig', content: 'charty/configurations/combo-chart-config' },
-          { id: 'stacked-bar-chart-config', title: 'StackedBarChartConfig', content: 'charty/configurations/stacked-bar-chart-config' },
-          { id: 'comparison-bar-chart-config', title: 'ComparisonBarChartConfig', content: 'charty/configurations/comparison-bar-chart-config' },
-          { id: 'bubble-bar-chart-config', title: 'BubbleBarChartConfig', content: 'charty/configurations/bubble-bar-chart-config' },
-          { id: 'lollipop-bar-chart-config', title: 'LollipopBarChartConfig', content: 'charty/configurations/lollipop-bar-chart-config' },
-          { id: 'mosiac-bar-chart-config', title: 'MosiacBarChartConfig', content: 'charty/configurations/mosiac-bar-chart-config' },
-          { id: 'waterfall-chart-config', title: 'WaterfallChartConfig', content: 'charty/configurations/waterfall-chart-config' },
-          { id: 'wavy-chart-config', title: 'WavyChartConfig', content: 'charty/configurations/wavy-chart-config' },
-          { id: 'block-bar-chart-config', title: 'BlockBarChartConfig', content: 'charty/configurations/block-bar-chart-config' },
-          { id: 'reference-line-config', title: 'ReferenceLineConfig', content: 'charty/configurations/reference-line-config' },
-        ],
-      },
-    ],
     code: {
       installation: `dependencies {\n    implementation("com.himanshoe:charty:3.0.0-beta01")\n}`,
       basicUsage: `BarChart(\n    data = chartData,\n    modifier = Modifier.fillMaxWidth().height(300.dp)\n)`,
@@ -132,43 +54,6 @@ const docsData: Record<string, DocData> = {
     githubUrl: 'https://github.com/hi-manshu/Krate',
     description: 'Type-safe reactive database for Kotlin Multiplatform — zero boilerplate, Flow-based reactivity, KSP-generated Store<T> backed by Room.',
     version: '0.1.0',
-    sections: [
-      {
-        id: 'getting-started', title: 'Getting Started', content: 'krate/getting-started/installation', icon: Zap,
-        subsections: [
-          { id: 'installation', title: 'Installation', content: 'krate/getting-started/installation' },
-          { id: 'setup', title: 'Setup', content: 'krate/getting-started/setup' },
-        ],
-      },
-      {
-        id: 'core', title: 'Core Concepts', content: 'krate/core/krate-annotation', icon: Database,
-        subsections: [
-          { id: 'krate-annotation', title: '@Storable Annotation', content: 'krate/core/krate-annotation' },
-          { id: 'kratename-annotation', title: '@KrateName Annotation', content: 'krate/core/kratename-annotation' },
-          { id: 'store', title: 'Store', content: 'krate/core/store' },
-        ],
-      },
-      {
-        id: 'queries', title: 'Queries', content: 'krate/queries/predicates', icon: Search,
-        subsections: [
-          { id: 'predicates', title: 'Predicates', content: 'krate/queries/predicates' },
-          { id: 'aggregate-queries', title: 'Aggregate Queries', content: 'krate/queries/aggregate-queries' },
-        ],
-      },
-      {
-        id: 'advanced', title: 'Advanced', content: 'krate/advanced/compose', icon: Settings,
-        subsections: [
-          { id: 'compose', title: 'Compose Integration', content: 'krate/advanced/compose' },
-          { id: 'migrations', title: 'Migrations', content: 'krate/advanced/migrations' },
-        ],
-      },
-      {
-        id: 'modules', title: 'Modules', content: 'krate/modules/overview', icon: Package,
-        subsections: [
-          { id: 'modules-overview', title: 'Modules Overview', content: 'krate/modules/overview' },
-        ],
-      },
-    ],
     code: {
       installation: `dependencies {\n    implementation(platform("com.himanshoe.krate:krate-bom:0.1.0"))\n    implementation("com.himanshoe.krate:krate-runtime")\n    ksp("com.himanshoe.krate:krate-processor")\n}`,
       basicUsage: `@Krate\ndata class User(val id: String, val name: String, val age: Int)\n\nval store = buildUserStore(context)\nstore.findAll().collect { users -> render(users) }`,
@@ -178,15 +63,7 @@ const docsData: Record<string, DocData> = {
     title: 'Kalendar',
     description: 'Modern calendar component for Jetpack Compose with event management and full customization.',
     version: '1.5.2',
-    sections: [
-      {
-        id: 'overview', title: 'Overview', content: 'kalendar/overview/features', icon: CalendarIcon,
-        subsections: [
-          { id: 'features', title: 'Features', content: 'kalendar/overview/features' },
-          { id: 'setup', title: 'Setup', content: 'kalendar/overview/setup' },
-        ],
-      },
-    ],
+    githubUrl: 'https://github.com/hi-manshu/Kalendar',
     code: {
       installation: `dependencies {\n    implementation("com.himanshoe:kalendar:1.5.2")\n}`,
       basicUsage: `Kalendar(\n    onCurrentDayClick = { day, events -> },\n    kalendarType = KalendarType.Firey\n)`,
@@ -199,6 +76,148 @@ const docsData: Record<string, DocData> = {
 ───────────────────────────────────────────────────────────────────────────── */
 
 const mdModules = import.meta.glob('/src/content/docs/**/*.md', { as: 'raw', eager: true });
+
+const FOLDER_ICONS: Record<string, React.ElementType> = {
+  'getting-started': Zap,
+  'installation':    Zap,
+  'overview':        BookOpen,
+  'core':            Database,
+  'chart-types':     BarChart2,
+  'charts':          BarChart2,
+  'bar':             BarChart2,
+  'line':            LineChart,
+  'radial':          PieChart,
+  'other':           Layout,
+  'line-charts':     Layout,
+  'bar-charts':      BarChart2,
+  'configurations':  Settings,
+  'configuration':   Settings,
+  'customization':   Terminal,
+  'advanced':        Layers,
+  'modules':         Package,
+  'queries':         Search,
+  'querying':        Search,
+  'aggregates':      BarChart2,
+  'relations':       GitMerge,
+  'migrations':      ArrowRight,
+  'middleware':      Workflow,
+  'integrations':    Puzzle,
+  'guides':          FileText,
+  'reference':       BookOpen,
+};
+
+// Lower weight = earlier in the sidebar; unknown folders default to 50.
+const SECTION_ORDER: Record<string, number> = {
+  'getting-started': 0,
+  'overview':        1,
+  'core':            2,
+  'charts':          3,
+  'chart-types':     3,
+  'querying':        4,
+  'queries':         4,
+  'aggregates':      5,
+  'relations':       6,
+  'migrations':      7,
+  'middleware':      8,
+  'configuration':   9,
+  'configurations':  9,
+  'customization':   10,
+  'advanced':        11,
+  'integrations':    12,
+  'modules':         13,
+  'guides':          90,
+  'reference':       95,
+};
+
+function toTitle(slug: string): string {
+  return slug
+    .replace(/^\d+-/, '')
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .split('-')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
+
+interface SectionGroup {
+  key: string;
+  title: string;
+  folder: string;
+  sub?: string;
+  files: { file: string; content: string }[];
+}
+
+function buildSections(library: string): Section[] {
+  const prefix = `/src/content/docs/${library}/`;
+  const paths = Object.keys(mdModules)
+    .filter((k) => k.startsWith(prefix))
+    .sort();
+
+  const groups = new Map<string, SectionGroup>();
+
+  for (const path of paths) {
+    const relative = path.slice(prefix.length).replace(/\.md$/, '');
+    const parts = relative.split('/');
+
+    let key: string;
+    let title: string;
+    let folder: string;
+    let sub: string | undefined;
+
+    if (parts.length === 1) {
+      // Root-level pages (e.g. krate/encryption.md) live under "Guides"
+      key = 'guides';
+      title = 'Guides';
+      folder = 'guides';
+    } else if (parts.length === 2) {
+      key = parts[0];
+      title = toTitle(parts[0]);
+      folder = parts[0];
+    } else {
+      // Nested folders (e.g. charty/charts/bar/BarChart.md) → "Bar Charts"
+      folder = parts[0];
+      sub = parts[1];
+      key = `${folder}__${sub}`;
+      title = `${toTitle(sub)} ${toTitle(folder)}`;
+    }
+
+    if (!groups.has(key)) groups.set(key, { key, title, folder, sub, files: [] });
+    groups.get(key)!.files.push({
+      file: parts[parts.length - 1],
+      content: `${library}/${relative}`,
+    });
+  }
+
+  const sorted = Array.from(groups.values()).sort((a, b) => {
+    const wa = SECTION_ORDER[a.folder] ?? 50;
+    const wb = SECTION_ORDER[b.folder] ?? 50;
+    if (wa !== wb) return wa - wb;
+    // Within the same parent folder, push "other" to the end
+    const sa = a.sub === 'other' ? 1 : 0;
+    const sb = b.sub === 'other' ? 1 : 0;
+    if (sa !== sb) return sa - sb;
+    return a.title.localeCompare(b.title);
+  });
+
+  for (const g of sorted) {
+    g.files.sort((a, b) => {
+      if (a.file === 'index') return -1;
+      if (b.file === 'index') return 1;
+      return a.file.localeCompare(b.file);
+    });
+  }
+
+  return sorted.map((g) => ({
+    id: g.key,
+    title: g.title,
+    content: g.files[0].content,
+    icon: FOLDER_ICONS[g.sub ?? g.folder] ?? FOLDER_ICONS[g.folder],
+    subsections: g.files.map(({ file, content }) => ({
+      id: content.slice(library.length + 1).replace(/\//g, '__'),
+      title: file === 'index' ? 'Overview' : toTitle(file),
+      content,
+    })),
+  }));
+}
 
 function getContent(path?: string): string {
   if (!path) return '';
@@ -329,23 +348,25 @@ function CodeBlock({ code, lang }: { code: string; lang?: string }) {
 
 function LeftSidebar({
   doc,
+  sections,
   project,
   activeSection,
   onNavigate,
 }: {
   doc: DocData;
+  sections: Section[];
   project: string;
   activeSection: string;
   onNavigate: (id: string) => void;
 }) {
   const [expanded, setExpanded] = useState<Set<string>>(() => {
     const initial = new Set<string>();
-    for (const s of doc.sections) {
+    for (const s of sections) {
       if (s.subsections?.some((sub) => sub.id === activeSection) || s.id === activeSection) {
         initial.add(s.id);
       }
     }
-    if (initial.size === 0 && doc.sections[0]) initial.add(doc.sections[0].id);
+    if (initial.size === 0 && sections[0]) initial.add(sections[0].id);
     return initial;
   });
   const [query, setQuery] = useState('');
@@ -360,7 +381,7 @@ function LeftSidebar({
     s.subsections?.some((sub) => sub.id === activeSection);
 
   const filteredSections = query.trim()
-    ? doc.sections.reduce<Section[]>((acc, s) => {
+    ? sections.reduce<Section[]>((acc, s) => {
         const sMatch = s.title.toLowerCase().includes(query.toLowerCase());
         const filteredSubs = s.subsections?.filter((sub) =>
           sub.title.toLowerCase().includes(query.toLowerCase())
@@ -370,11 +391,11 @@ function LeftSidebar({
         }
         return acc;
       }, [])
-    : doc.sections;
+    : sections;
 
   useEffect(() => {
-    if (query.trim()) setExpanded(new Set(doc.sections.map((s) => s.id)));
-  }, [query]);
+    if (query.trim()) setExpanded(new Set(sections.map((s) => s.id)));
+  }, [query, sections]);
 
   return (
     <aside className="flex flex-col h-full">
@@ -505,9 +526,11 @@ function LeftSidebar({
 function RightSidebar({
   headings,
   activeHeading,
+  githubUrl,
 }: {
   headings: { id: string; text: string; level: number }[];
   activeHeading: string;
+  githubUrl?: string;
 }) {
   return (
     <aside className="flex flex-col gap-5">
@@ -553,7 +576,7 @@ function RightSidebar({
           Join the community for support or browse the source code.
         </p>
         <a
-          href="https://github.com/hi-manshu/Charty/discussions"
+          href={`${githubUrl || 'https://github.com/hi-manshu'}/discussions`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-1.5 w-full py-1.5 rounded-lg bg-foreground text-background text-[11px] font-semibold hover:opacity-90 transition-opacity"
@@ -699,13 +722,23 @@ function DocContent({
 
 export default function Documentation() {
   const { project } = useParams<{ project: string }>();
-  const [activeSection, setActiveSection] = useState('installation');
   const [activeHeading, setActiveHeading] = useState('');
   const contentRef = useRef<HTMLDivElement>(null);
 
   const doc = project ? docsData[project] : null;
+  const sections = project ? buildSections(project) : [];
+  const firstSectionId = sections[0]?.subsections?.[0]?.id ?? sections[0]?.id ?? '';
 
-  const markdown = doc ? getContent(findSection(doc.sections, activeSection)?.content) : '';
+  const [activeSection, setActiveSection] = useState(firstSectionId);
+
+  useEffect(() => {
+    const secs = project ? buildSections(project) : [];
+    const first = secs[0]?.subsections?.[0]?.id ?? secs[0]?.id ?? '';
+    setActiveSection(first);
+    setActiveHeading('');
+  }, [project]);
+
+  const markdown = doc ? getContent(findSection(sections, activeSection)?.content) : '';
   const headings = extractHeadings(markdown);
 
   // Auto-highlight headings on scroll
@@ -747,14 +780,14 @@ export default function Documentation() {
     );
   }
 
-  const allSections = flattenAll(doc.sections);
+  const allSections = flattenAll(sections);
   const currentIdx = allSections.findIndex((s) => s.id === activeSection);
   const prevSection = currentIdx > 0 ? allSections[currentIdx - 1] : null;
   const nextSection = currentIdx < allSections.length - 1 ? allSections[currentIdx + 1] : null;
-  const currentSection = findSection(doc.sections, activeSection);
+  const currentSection = findSection(sections, activeSection);
 
   // Find which top-level section is parent of activeSection
-  const parentSection = doc.sections.find(
+  const parentSection = sections.find(
     (s) => s.id === activeSection || s.subsections?.some((sub) => sub.id === activeSection)
   );
 
@@ -769,6 +802,7 @@ export default function Documentation() {
         <div className="hidden lg:flex flex-col w-[230px] xl:w-[250px] flex-shrink-0 sticky top-14 h-[calc(100vh-56px)] border-r border-foreground/[0.06] bg-background/80 backdrop-blur-sm overflow-hidden">
           <LeftSidebar
             doc={doc}
+            sections={sections}
             project={project || ''}
             activeSection={activeSection}
             onNavigate={handleNavigate}
@@ -844,7 +878,7 @@ export default function Documentation() {
 
         {/* ── Right Sidebar ── */}
         <div className="hidden xl:block w-[200px] 2xl:w-[220px] flex-shrink-0 sticky top-14 h-[calc(100vh-56px)] overflow-y-auto border-l border-foreground/[0.06] bg-background/80 backdrop-blur-sm px-4 py-6">
-          <RightSidebar headings={headings} activeHeading={activeHeading} />
+          <RightSidebar headings={headings} activeHeading={activeHeading} githubUrl={doc.githubUrl} />
         </div>
       </div>
     </div>

@@ -1,49 +1,75 @@
-![Charty Banner](/charty/img/banner.png)
+# Installation
 
-Charty allows you to easily create beautiful and interactive charts in your Jetpack Compose applications.
+Charty is published to Maven Central. Add the single dependency to your shared
+`commonMain` source set — no platform-specific additions are required.
 
-## 🎉 Getting Started
+## Requirements
 
-### Version Catalog
+| Tool | Minimum version |
+|------|----------------|
+| Kotlin | 1.9+ |
+| Compose Multiplatform | 1.6+ |
+| Android `minSdk` | 24 |
 
-If you're using Version Catalog, you can configure the dependency by adding it to your
-`libs.versions.toml` file as follows:
-<details open>
+## Gradle dependency (Kotlin DSL)
 
-```toml
-[versions]
-charty = "3.0.0-rc01"
+Replace `<version>` with the latest release. You can always look up the current
+version from the Maven Central badge:
 
-[libraries]
-charty = { module = "com.himanshoe:charty", version.ref = "charty" }
+[![Maven Central](https://img.shields.io/maven-central/v/com.himanshoe/charty)](https://central.sonatype.com/artifact/com.himanshoe/charty)
+
+Badge image URL for your own README:
+```
+https://img.shields.io/maven-central/v/com.himanshoe/charty
 ```
 
-</details>
+### Multiplatform project (`build.gradle.kts`)
 
-### Gradle
+```kotlin
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation("com.himanshoe:charty:<version>")
+        }
+    }
+}
+```
 
-<details>
-Add the dependency below to your module's `build.gradle.kts` file:
+### Android-only project (`build.gradle.kts`)
 
-```gradle
+```kotlin
 dependencies {
-    implementation("com.himanshoe:charty:3.0.0-rc01")
-    
-    // if you're using Version Catalog
-    implementation(libs.charty)
-
+    implementation("com.himanshoe:charty:<version>")
 }
 ```
 
-For Kotlin Multiplatform, add the dependency below to your commonMain source set's
-`build.gradle.kts` file:
+## Supported platforms
 
-```gradle
-sourceSets {
-    commonMain.dependencies {
-          implementation(libs.charty)
-     }
-}
+The same artifact supports all five targets out of the box — nothing extra to
+configure per platform:
+
+| Platform | Target |
+|----------|--------|
+| Android | `minSdk 24` |
+| iOS (device) | `iosArm64` |
+| iOS (simulator) | `iosSimulatorArm64` |
+| JVM Desktop | `jvm` |
+| JS browser | `js` |
+| WasmJS browser | `wasmJs` |
+
+## Permissions and manifest entries
+
+No Android permissions, manifest entries, or `ProGuard`/`R8` rules are required.
+The library is pure Kotlin + Compose — it performs no I/O, camera, network, or
+storage access.
+
+## Verifying the installation
+
+After syncing, import any chart composable from `commonMain` to confirm the
+dependency resolved correctly:
+
+```kotlin
+import com.himanshoe.charty.bar.BarChart
 ```
 
-</details>
+If the import resolves, you are ready to render your first chart.

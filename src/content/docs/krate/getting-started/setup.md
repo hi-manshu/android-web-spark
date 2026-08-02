@@ -1,128 +1,153 @@
 # Setup
 
-Once dependencies are installed, setting up Krate takes three steps:
+## Gradle
 
-1. Annotate your data class with `@Storable` and mark its primary key with `@Key`
-2. Open a `Krate` database and register your types
-3. Obtain a `Store<K, T>` and start using it
+### Using the BOM (recommended)
 
----
-
-## Step 1 — Define your model
+The Bill of Materials keeps all Krate modules on the same version.
 
 ```kotlin
-import com.himanshoe.krate.annotations.Storable
-import com.himanshoe.krate.annotations.Key
-
-@Storable
-data class Note(
-    @Key val id: String,
-    val title: String,
-    val body: String,
-    val isPinned: Boolean = false,
-    val createdAt: Long = System.currentTimeMillis()
-)
-```
-
-Rules:
-
-- Must be a `data class`
-- Exactly one property must be annotated with `@Key`
-- `@Key` type must be `String`, `Int`, or `Long`
-
----
-
-## Step 2 — Open the database
-
-KSP generates a top-level `krate()` function. Call it once — in your `Application` class or DI
-setup.
-The Android version requires an explicit `Context`; the iOS version does not.
-
-```kotlin
-// Android — pass applicationContext to avoid leaking an Activity
-val db: Krate = krate(context, "my_app_db") {
-    store<Note>()    // register every @Storable type you want to use
+plugins {
+    id("com.google.devtools.ksp")
+    id("androidx.room")
 }
 
-// iOS
-val db: Krate = krate("my_app_db") {
-    store<Note>()
-}
-```
-
-### With multiple types
-
-```kotlin
-// Android
-val db: Krate = krate(context, "my_app_db") {
-    store<Note>()
-    store<User>()
-    store<Tag>()
-}
-```
-
-### With a DI framework (Hilt example)
-
-```kotlin
-@Module
-@InstallIn(SingletonComponent::class)
-object AppKrateModule {
-    @Provides
-    @Singleton
-    fun provideKrate(@ApplicationContext context: Context): Krate =
-        krate(context, "my_app_db") {
-            store<Note>()
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(platform("com.himanshoe:krate-bom:<version>"))
+            implementation("com.himanshoe:krate-runtime")
+            implementation("com.himanshoe:krate-annotations")
+            implementation("com.himanshoe:krate-compose")      // optional
         }
-}
-```
-
-### With a DI framework (Koin example)
-
-```kotlin
-val appModule = module {
-    single<Krate> {
-        // Android: inject androidContext() via Koin; iOS: omit context
-        krate(androidContext(), "my_app_db") {
-            store<Note>()
+        commonTest.dependencies {
+            implementation("com.himanshoe:krate-test")          // optional
         }
     }
-    single<Store<String, Note>> { get<Krate>().store(Note::class) }
+}
+
+dependencies {
+    add("kspAndroid",           "com.himanshoe:krate-processor:<version>")
+    add("kspIosArm64",          "com.himanshoe:krate-processor:<version>")
+    add("kspIosSimulatorArm64", "com.himanshoe:krate-processor:<version>")
+    add("kspIosX64",            "com.himanshoe:krate-processor:<version>")
+    // JVM consumers (desktop, server, integration tests) — add only if your
+    // module declares a `jvm()` target.
+    // add("kspJvm",            "com.himanshoe:krate-processor:<version>")
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 ```
 
----
-
-## Step 3 — Obtain a Store and use it
+### Without BOM
 
 ```kotlin
-val notes: Store<String, Note> = db.store(Note::class)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation("com.himanshoe:krate-runtime:<version>")
+            implementation("com.himanshoe:krate-annotations:<version>")
+            implementation("com.himanshoe:krate-compose:<version>")  // optional
+        }
+        commonTest.dependencies {
+            implementation("com.himanshoe:krate-test:<version>")     // optional
+        }
+    }
+}
 
-// Observe all — emits on every change
-notes.asFlow().collect { list -> render(list) }
-
-// Write
-notes.add(Note(id = "n1", title = "Hello", body = "World"))
-
-// Observe a single item
-notes.observe("n1").collect { note -> println(note) }
-
-// Delete by ID
-notes.delete("n1")
+dependencies {
+    add("kspAndroid",           "com.himanshoe:krate-processor:<version>")
+    add("kspIosArm64",          "com.himanshoe:krate-processor:<version>")
+    add("kspIosSimulatorArm64", "com.himanshoe:krate-processor:<version>")
+    add("kspIosX64",            "com.himanshoe:krate-processor:<version>")
+    // JVM consumers (desktop, server, integration tests) — add only if your
+    // module declares a `jvm()` target.
+    // add("kspJvm",            "com.himanshoe:krate-processor:<version>")
+}
 ```
 
----
+## Opening a database
 
-## What gets generated
+### Android
 
-For each `@Storable` class, KSP generates:
+```kotlin
+val db: Krate = krate(context, "my_app") {
+    store<String, Note>()
+    store<String, Label>()
+}
+```
 
-| Generated artifact                             | Description                                     |
-|------------------------------------------------|-------------------------------------------------|
-| `{Class}Entity`                                | Room `@Entity`                                  |
-| `{Class}Dao`                                   | Room `@Dao` with typed queries                  |
-| `{Class}TypeConverter`                         | JSON converters for `@Embeddable` / collections |
-| `{Class}Mapper`                                | Entity → domain mapper                          |
-| `KrateDatabase`                                | The Room `@Database` (shared across all types)  |
-| `krate(context, name) { }` / `krate(name) { }` | Top-level builder function (Android / iOS)      |
+### iOS
 
-You never write Room boilerplate manually.
+```kotlin
+val db: Krate = krate("my_app") {
+    store<String, Note>()
+    store<String, Label>()
+}
+```
+
+Retrieve a store anywhere — stores are keyed by type:
+
+```kotlin
+val notes:  Store<String, Note>  = db.store()
+val labels: Store<String, Label> = db.store()
+```
+
+The database file is created in the app's default database directory.
+
+## Per-store configuration
+
+```kotlin
+val db = krate(context, "my_app") {
+    store<String, Note> {
+        // Lifecycle hooks
+        afterPut  { note -> analytics.track("note_saved", note.id) }
+        onError   { op, err -> crashReporter.record("Store.$op", err) }
+
+        // Conflict handling
+        onConflict { existing, incoming ->
+            ConflictResolution.Replace(incoming.copy(isPinned = existing.isPinned))
+        }
+
+        // Validation
+        validate {
+            notBlank(Note::title)
+            maxLength(Note::title, 200)
+        }
+
+        // Middleware
+        middleware(MetricsMiddleware())
+
+        // Audit trail
+        audit(AuditMode.Rolling(50))
+    }
+}
+```
+
+## Database callbacks
+
+```kotlin
+krate(context, "my_app") {
+    onCreate { db -> db.store<String, Note>().add(Note("welcome", "Welcome!")) }
+    onOpen   { db -> logger.info("Opened") }
+    onClose  { analytics.flush() }
+}
+```
+
+## Migrations
+
+```kotlin
+val db = krate(context, "my_app") {
+    store<String, Note>()
+    migration(
+        krateMigration(from = 1, to = 2) {
+            addColumn(Note::wordCount, ColumnType.Integer, nullable = false, defaultValue = "0")
+        }
+    )
+    fallbackToDestructiveMigration()  // dev only
+}
+```
+
+See [Migrations](../migrations/index.md) for full details.

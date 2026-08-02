@@ -1,4 +1,16 @@
 {
+    "redirects": [
+        {
+            "source": "/krate",
+            "destination": "/docs/krate",
+            "permanent": false
+        },
+        {
+            "source": "/krate/(.*)",
+            "destination": "/docs/krate",
+            "permanent": false
+        }
+    ],
     "rewrites": [
         {
             "source": "/(.*)",
