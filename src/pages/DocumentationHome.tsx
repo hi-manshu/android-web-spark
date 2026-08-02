@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { BookOpen, ArrowUpRight, Github, Star, GitFork, Sparkles, Zap, Package, CalendarDays, MessageCircle, ExternalLink } from 'lucide-react';
 import { FadeInView } from '@/components/FadeInView';
+import { isFeatureEnabled } from '@/lib/features';
 
 const projects = [
   {
@@ -80,8 +81,18 @@ export default function DocumentationHome() {
                   />
                 </div>
 
-                <h1 className="text-5xl sm:text-6xl font-bold tracking-tight mb-5">
-                  <span className="text-gradient">Documentation</span>
+                <h1
+                  className={
+                    isFeatureEnabled('showcase')
+                      ? 'font-serif text-5xl sm:text-6xl font-bold tracking-tight mb-5 text-foreground'
+                      : 'text-5xl sm:text-6xl font-bold tracking-tight mb-5'
+                  }
+                >
+                  {isFeatureEnabled('showcase') ? (
+                    'Documentation'
+                  ) : (
+                    <span className="text-gradient">Documentation</span>
+                  )}
                 </h1>
                 <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
                   Comprehensive guides and API references for every open source project.

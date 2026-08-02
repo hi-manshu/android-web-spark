@@ -5,6 +5,8 @@ import { ProjectCardSkeleton } from '@/components/ProjectCardSkeleton';
 import { fetchGitHubRepos } from '@/services/githubService';
 import { FadeInView } from '@/components/FadeInView';
 import { Github, ArrowUpRight } from 'lucide-react';
+import { ShowcaseHeader } from '@/components/ShowcaseHeader';
+import { isFeatureEnabled } from '@/lib/features';
 
 export default function Projects() {
   const { data: repos, isLoading, error } = useQuery({
@@ -26,15 +28,23 @@ export default function Projects() {
       <div className="container max-w-6xl py-14 relative">
         {/* Page header */}
         <FadeInView>
-          <div className="mb-12">
-            <p className="text-white/35 uppercase text-xs tracking-widest mb-2">
-              Open Source
-            </p>
-            <h1 className="text-3xl font-bold tracking-tight mb-2 text-white">Projects</h1>
-            <p className="text-white/45 text-sm max-w-md">
-              A collection of open source libraries and applications for the Android ecosystem
-            </p>
-          </div>
+          {isFeatureEnabled('showcase') ? (
+            <ShowcaseHeader
+              eyebrow="Open Source"
+              title="Projects"
+              description="A collection of open source libraries and applications for the Android ecosystem"
+            />
+          ) : (
+            <div className="mb-12">
+              <p className="text-white/35 uppercase text-xs tracking-widest mb-2">
+                Open Source
+              </p>
+              <h1 className="text-3xl font-bold tracking-tight mb-2 text-white">Projects</h1>
+              <p className="text-white/45 text-sm max-w-md">
+                A collection of open source libraries and applications for the Android ecosystem
+              </p>
+            </div>
+          )}
         </FadeInView>
 
         {error ? (

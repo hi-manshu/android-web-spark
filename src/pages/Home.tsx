@@ -67,6 +67,7 @@ const stats = [
 ];
 
 export default function Home() {
+  const showcase = isFeatureEnabled('showcase');
   const { data: allProjects, isLoading: projectsLoading } = useQuery({
     queryKey: ['github-repos'],
     queryFn: () => fetchGitHubRepos('hi-manshu'),
@@ -84,7 +85,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {isFeatureEnabled('showcase') ? <HeroShowcase /> : <Hero />}
+      {showcase ? <HeroShowcase /> : <Hero />}
 
       {/* Stats */}
       <section className="py-16 border-y border-white/[0.06]">
@@ -115,7 +116,7 @@ export default function Home() {
               <p className="text-white/35 text-xs uppercase tracking-widest mb-2">
                 Signature Work
               </p>
-              <h2 className="text-3xl font-bold tracking-tight text-white mb-2">Open Source Libraries</h2>
+              <h2 className={`${showcase ? 'font-serif text-4xl' : 'text-3xl'} font-bold tracking-tight text-white mb-2`}>Open Source Libraries</h2>
               <p className="text-white/45 text-sm max-w-lg mx-auto">
                 Production-ready libraries for Android and Kotlin Multiplatform — each with full documentation.
               </p>
@@ -193,7 +194,7 @@ export default function Home() {
                 <p className="text-white/35 text-xs uppercase tracking-widest mb-2">
                   More on GitHub
                 </p>
-                <h2 className="text-2xl font-bold tracking-tight text-white">Featured Projects</h2>
+                <h2 className={`${showcase ? 'font-serif text-3xl' : 'text-2xl'} font-bold tracking-tight text-white`}>Featured Projects</h2>
                 <p className="text-white/45 mt-1 text-sm">
                   Popular libraries and applications for Android developers
                 </p>
@@ -246,7 +247,7 @@ export default function Home() {
                   <p className="text-white/35 text-xs uppercase tracking-widest mb-2">
                     Writing
                   </p>
-                  <h2 className="text-2xl font-bold tracking-tight text-white">Latest Articles</h2>
+                  <h2 className={`${showcase ? 'font-serif text-3xl' : 'text-2xl'} font-bold tracking-tight text-white`}>Latest Articles</h2>
                   <p className="text-white/45 mt-1 text-sm">
                     Thoughts on Android, open source, and technology
                   </p>
@@ -280,7 +281,7 @@ export default function Home() {
               <div className="w-14 h-14 rounded-2xl bg-white/[0.06] flex items-center justify-center mx-auto mb-5 relative z-10">
                 <BookOpen className="h-6 w-6 text-white/70" />
               </div>
-              <h2 className="text-2xl font-bold tracking-tight mb-3 text-white relative z-10">
+              <h2 className={`${showcase ? 'font-serif text-3xl' : 'text-2xl'} font-bold tracking-tight mb-3 text-white relative z-10`}>
                 Documentation
               </h2>
               <p className="text-white/50 text-sm leading-relaxed mb-6 max-w-md mx-auto relative z-10">

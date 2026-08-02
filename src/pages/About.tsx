@@ -4,6 +4,7 @@ import { Github, ArrowUpRight, MapPin, Coffee, Calendar, Download } from 'lucide
 import { Button } from '@/components/ui/button';
 import { LinkedInImport } from '@/components/LinkedInImport';
 import { FadeInView } from '@/components/FadeInView';
+import { isFeatureEnabled } from '@/lib/features';
 
 const skills = [
   "Android Development",
@@ -71,7 +72,15 @@ export default function About() {
               </span>
             </div>
 
-            <h1 className="text-4xl font-bold tracking-tight mb-2 text-white">About Me</h1>
+            <h1
+              className={
+                isFeatureEnabled('showcase')
+                  ? 'font-serif text-5xl sm:text-6xl font-bold tracking-tight mb-3 text-white leading-[1.05]'
+                  : 'text-4xl font-bold tracking-tight mb-2 text-white'
+              }
+            >
+              About Me
+            </h1>
             <p className="text-white/50 max-w-lg text-base leading-relaxed">
               Passionate Android developer building beautiful, performant applications for millions of users.
             </p>

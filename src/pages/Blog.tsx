@@ -7,6 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Search, BookOpen, FileText, Filter } from 'lucide-react';
 import { getBlogSeries, getIndividualBlogPosts, getAllBlogPosts, BlogPost, BlogSeries } from '@/utils/markdownUtils';
 import { FadeInView } from '@/components/FadeInView';
+import { ShowcaseHeader } from '@/components/ShowcaseHeader';
+import { isFeatureEnabled } from '@/lib/features';
 
 export default function Blog() {
   const [series, setSeries] = useState<BlogSeries[]>([]);
@@ -74,21 +76,39 @@ export default function Blog() {
         {/* Page header */}
         <FadeInView>
           <div className="mb-12">
-            <p className="text-xs font-semibold uppercase tracking-widest text-amber-600 dark:text-amber-400 mb-2">
-              Writing
-            </p>
-            <h1 className="text-3xl font-bold tracking-tight mb-2">Blog</h1>
-            <p className="text-foreground/50 text-sm max-w-lg">
-              Thoughts on Android development, open source, and technology.
-            </p>
+            {isFeatureEnabled('showcase') ? (
+              <ShowcaseHeader
+                eyebrow="Writing"
+                title="Blog"
+                description="Thoughts on Android development, open source, and technology."
+                className="mb-0"
+              />
+            ) : (
+              <>
+                <p className="text-xs font-semibold uppercase tracking-widest text-amber-600 dark:text-amber-400 mb-2">
+                  Writing
+                </p>
+                <h1 className="text-3xl font-bold tracking-tight mb-2">Blog</h1>
+                <p className="text-foreground/50 text-sm max-w-lg">
+                  Thoughts on Android development, open source, and technology.
+                </p>
+              </>
+            )}
 
             {/* Stats pills */}
             <div className="flex flex-wrap gap-2 mt-5">
-              {[
-                { label: `${allPosts.length} Posts`, color: 'bg-amber-500/10 text-amber-700 dark:text-amber-400' },
-                { label: `${series.length} Series`, color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400' },
-                { label: `${allTags.length} Topics`, color: 'bg-teal-500/10 text-teal-700 dark:text-teal-400' },
-              ].map((s) => (
+              {(isFeatureEnabled('showcase')
+                ? [
+                    { label: `${allPosts.length} Posts`, color: 'glass border border-foreground/[0.08] text-foreground/55' },
+                    { label: `${series.length} Series`, color: 'glass border border-foreground/[0.08] text-foreground/55' },
+                    { label: `${allTags.length} Topics`, color: 'glass border border-foreground/[0.08] text-foreground/55' },
+                  ]
+                : [
+                    { label: `${allPosts.length} Posts`, color: 'bg-amber-500/10 text-amber-700 dark:text-amber-400' },
+                    { label: `${series.length} Series`, color: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400' },
+                    { label: `${allTags.length} Topics`, color: 'bg-teal-500/10 text-teal-700 dark:text-teal-400' },
+                  ]
+              ).map((s) => (
                 <span
                   key={s.label}
                   className={`text-xs font-medium px-3 py-1 rounded-full ${s.color}`}
