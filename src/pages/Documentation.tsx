@@ -32,6 +32,8 @@ interface DocData {
   description: string;
   version: string;
   githubUrl?: string;
+  /** Wordmark shown on the library's landing section; per-theme variants. */
+  logo?: { light: string; dark: string };
   code: Record<string, string>;
 }
 
@@ -53,6 +55,7 @@ const docsData: Record<string, DocData> = {
   krate: {
     title: 'Krate',
     githubUrl: 'https://github.com/hi-manshu/Krate',
+    logo: { light: '/krate-logo.svg', dark: '/krate-logo-dark.svg' },
     description: 'Type-safe reactive database for Kotlin Multiplatform — zero boilerplate, Flow-based reactivity, KSP-generated Store<T> backed by Room.',
     version: '0.1.0',
     code: {
@@ -832,6 +835,20 @@ export default function Documentation() {
 
           {/* Page title — split color like reference */}
           <div className="mb-6">
+            {currentIdx === 0 && doc.logo && (
+              <>
+                <img
+                  src={doc.logo.light}
+                  alt={`${doc.title} logo`}
+                  className="h-16 sm:h-20 w-auto mb-6 dark:hidden"
+                />
+                <img
+                  src={doc.logo.dark}
+                  alt={`${doc.title} logo`}
+                  className="h-16 sm:h-20 w-auto mb-6 hidden dark:block"
+                />
+              </>
+            )}
             <h1
               className={`${
                 isFeatureEnabled('showcase') ? 'font-serif ' : ''
