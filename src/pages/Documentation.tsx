@@ -862,19 +862,19 @@ export default function Documentation() {
             <span className="text-emerald-600 dark:text-emerald-400">{currentSection?.title}</span>
           </nav>
 
-          {/* Page title — split color like reference */}
-          <div className="mb-6">
+          {/* Page title — split color like reference; centered hero on landing */}
+          <div className={`mb-6 ${isLanding ? 'text-center pt-8' : ''}`}>
             {currentIdx === 0 && doc.logo && (
               <>
                 <img
                   src={doc.logo.light}
                   alt={`${doc.title} logo`}
-                  className={`${isLanding ? 'h-20 sm:h-28' : 'h-16 sm:h-20'} w-auto mb-6 dark:hidden`}
+                  className={`${isLanding ? 'h-24 sm:h-32 mx-auto' : 'h-16 sm:h-20'} w-auto mb-6 dark:hidden`}
                 />
                 <img
                   src={doc.logo.dark}
                   alt={`${doc.title} logo`}
-                  className={`${isLanding ? 'h-20 sm:h-28' : 'h-16 sm:h-20'} w-auto mb-6 hidden dark:block`}
+                  className={`${isLanding ? 'h-24 sm:h-32 mx-auto' : 'h-16 sm:h-20'} w-auto mb-6 hidden dark:block`}
                 />
               </>
             )}
@@ -893,10 +893,10 @@ export default function Documentation() {
                 everywhere else it just pushes content down */}
             {currentIdx === 0 && (
               <>
-                <p className={`${isLanding ? 'text-base sm:text-lg' : 'text-sm'} text-foreground/55 leading-relaxed max-w-xl`}>
+                <p className={`${isLanding ? 'text-base sm:text-lg mx-auto' : 'text-sm'} text-foreground/55 leading-relaxed max-w-xl`}>
                   {doc.description}
                 </p>
-                <div className="flex flex-wrap items-center gap-3 mt-5">
+                <div className={`flex flex-wrap items-center gap-3 mt-6 ${isLanding ? 'justify-center' : ''}`}>
                   {nextSection && (
                     <button
                       onClick={() => handleNavigate(nextSection.id)}
@@ -949,8 +949,8 @@ export default function Documentation() {
             </div>
           )}
 
-          {/* Explore grid — landing section only, driven by the sidebar structure */}
-          {currentIdx === 0 && sections.length > 1 && (
+          {/* Explore grid — first content page only (the landing stays clean) */}
+          {currentIdx === 0 && !isLanding && sections.length > 1 && (
             <div className="mt-12">
               <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-foreground/35 mb-4">
                 Explore the docs
@@ -1004,8 +1004,8 @@ export default function Documentation() {
             </div>
           )}
 
-          {/* Prev / Next */}
-          <div className="flex justify-between items-stretch gap-4 mt-10 pt-6 border-t border-foreground/[0.07]">
+          {/* Prev / Next — hidden on the landing, where "Get Started" is the CTA */}
+          <div className={`${isLanding ? 'hidden ' : ''}flex justify-between items-stretch gap-4 mt-10 pt-6 border-t border-foreground/[0.07]`}>
             {prevSection ? (
               <button
                 onClick={() => handleNavigate(prevSection.id)}
