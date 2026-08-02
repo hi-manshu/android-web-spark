@@ -865,18 +865,20 @@ export default function Documentation() {
           {/* Page title — split color like reference; centered hero on landing */}
           <div className={`mb-6 ${isLanding ? 'text-center pt-8' : ''}`}>
             {currentIdx === 0 && doc.logo && (
-              <>
+              /* Outer div floats forever; the img handles the one-shot entrance
+                 so the two transforms don't fight on the same element */
+              <div className={isLanding ? 'animate-logo-float' : ''}>
                 <img
                   src={doc.logo.light}
                   alt={`${doc.title} logo`}
-                  className={`${isLanding ? 'h-24 sm:h-32 mx-auto' : 'h-16 sm:h-20'} w-auto mb-6 dark:hidden`}
+                  className={`${isLanding ? 'h-24 sm:h-32 mx-auto animate-pop-in' : 'h-16 sm:h-20'} w-auto mb-6 dark:hidden`}
                 />
                 <img
                   src={doc.logo.dark}
                   alt={`${doc.title} logo`}
-                  className={`${isLanding ? 'h-24 sm:h-32 mx-auto' : 'h-16 sm:h-20'} w-auto mb-6 hidden dark:block`}
+                  className={`${isLanding ? 'h-24 sm:h-32 mx-auto animate-pop-in' : 'h-16 sm:h-20'} w-auto mb-6 hidden dark:block`}
                 />
-              </>
+              </div>
             )}
             {/* On the landing page the wordmark is the title */}
             {!(isLanding && doc.logo) && (
@@ -893,10 +895,16 @@ export default function Documentation() {
                 everywhere else it just pushes content down */}
             {currentIdx === 0 && (
               <>
-                <p className={`${isLanding ? 'text-base sm:text-lg mx-auto' : 'text-sm'} text-foreground/55 leading-relaxed max-w-xl`}>
+                <p
+                  className={`${isLanding ? 'text-base sm:text-lg mx-auto opacity-0 animate-fade-in-up' : 'text-sm'} text-foreground/55 leading-relaxed max-w-xl`}
+                  style={isLanding ? { animationDelay: '0.2s' } : undefined}
+                >
                   {doc.description}
                 </p>
-                <div className={`flex flex-wrap items-center gap-3 mt-6 ${isLanding ? 'justify-center' : ''}`}>
+                <div
+                  className={`flex flex-wrap items-center gap-3 mt-6 ${isLanding ? 'justify-center opacity-0 animate-fade-in-up' : ''}`}
+                  style={isLanding ? { animationDelay: '0.32s' } : undefined}
+                >
                   {nextSection && (
                     <button
                       onClick={() => handleNavigate(nextSection.id)}
@@ -917,9 +925,11 @@ export default function Documentation() {
                       Star on GitHub
                     </a>
                   )}
-                  <span className="text-[11px] font-mono px-2.5 py-1 rounded-full border border-foreground/10 text-foreground/45">
-                    v{doc.version}
-                  </span>
+                  {!isLanding && (
+                    <span className="text-[11px] font-mono px-2.5 py-1 rounded-full border border-foreground/10 text-foreground/45">
+                      v{doc.version}
+                    </span>
+                  )}
                 </div>
               </>
             )}
@@ -929,10 +939,14 @@ export default function Documentation() {
           {isLanding ? (
             doc.highlights && (
               <div className="grid sm:grid-cols-2 gap-4 mt-10">
-                {doc.highlights.map((h) => {
+                {doc.highlights.map((h, i) => {
                   const HIcon = h.icon;
                   return (
-                    <div key={h.title} className="glass-card rounded-2xl p-5">
+                    <div
+                      key={h.title}
+                      className="glass-card rounded-2xl p-5 opacity-0 animate-fade-in-up"
+                      style={{ animationDelay: `${0.45 + i * 0.1}s` }}
+                    >
                       <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3 relative z-10">
                         <HIcon className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                       </div>
