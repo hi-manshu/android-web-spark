@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'http';
-import { parseSessionize, PROFILE_URL, FETCH_HEADERS } from '../shared/sessionize.ts';
+import { parseSessionize, PROFILE_URL, FETCH_HEADERS } from '../shared/sessionize';
 
 /**
  * Vercel serverless function: live talks from Sessionize.
