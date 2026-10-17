@@ -7,10 +7,10 @@ import { countryCount, inPersonCount, SESSIONIZE_PROFILE_URL } from '@/data/talk
 import { CONTACT_EMAIL } from '@/components/ContactSection';
 
 const SHORT_BIO =
-  'Himanshu Singh is a Google Developer Expert for Android based in Berlin. He works on the NordVPN Android app and maintains the open source libraries Krate, Charty, and Kalendar.';
+  'Himanshu Singh is a Google Developer Expert for Android based in Berlin, working on the NordVPN Android app and maintaining the open source libraries Krate, Charty, and Kalendar.';
 
 const LONG_BIO =
-  'Himanshu Singh is a Google Developer Expert for Android living in Berlin, Germany. He builds Android apps for a living, currently the NordVPN app, and maintains three open source libraries used in production: Krate, a reactive database for Kotlin Multiplatform; Charty, a charting library for Compose Multiplatform; and Kalendar, a calendar component for Jetpack Compose. He has spoken at droidcon and DevFest events across Europe, Africa, Asia, and North America on Android performance, Kotlin, Jetpack Compose, and Kotlin Multiplatform, and was named one of Sessionize’s most active speakers in 2023 and 2025.';
+  'Himanshu Singh is a Google Developer Expert for Android living in Berlin, Germany, building Android apps for a living, currently the NordVPN app, and maintaining three open source libraries used in production: Krate, a reactive database for Kotlin Multiplatform; Charty, a charting library for Compose Multiplatform; and Kalendar, a calendar component for Jetpack Compose. Himanshu has spoken at droidcon and DevFest events across Europe, Africa, Asia, and North America on Android performance, Kotlin, Jetpack Compose, and Kotlin Multiplatform, and was named one of Sessionize’s most active speakers in 2023 and 2025.';
 
 const TOPICS = [
   'Android performance and Baseline Profiles',
@@ -143,8 +143,7 @@ export default function SpeakerKit() {
           <div>
             <p className="font-bold tracking-tight text-lg">Practical details</p>
             <p className="text-sm text-dim mt-1 max-w-xl">
-              Based in Berlin, travels worldwide. Talks run 30 to 45 minutes, workshops half or full day. Slides are shared after the event.
-              Pronouns and name pronunciation: he/him, hi-MAN-shoo.
+              Based in Berlin, happy to travel. Talks, panels and workshops. Anything else you need for your programme, ask by email.
             </p>
           </div>
           <a href={`mailto:${CONTACT_EMAIL}?subject=Speaking%20invitation`} className="btn-ink whitespace-nowrap">
