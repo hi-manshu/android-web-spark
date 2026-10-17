@@ -1,7 +1,7 @@
-
-import { Badge } from '@/components/ui/badge';
 import { Github, ArrowUpRight, Star, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { CountUp } from '@/components/motion';
+import { docsLink, isExternal } from '@/data/libraries';
 
 interface ProjectCardProps {
   title: string;
@@ -10,10 +10,12 @@ interface ProjectCardProps {
   githubUrl: string;
   stars?: number;
   language?: string;
+  /** entrance delay, used to time the star count */
+  delay?: number;
 }
 
 const langColors: Record<string, string> = {
-  Kotlin: '#A97BFF',
+  Kotlin: '#7F52FF',
   Swift: '#F05138',
   TypeScript: '#3178C6',
   JavaScript: '#F7DF1E',
@@ -23,95 +25,70 @@ const langColors: Record<string, string> = {
   Go: '#00ADD8',
 };
 
-export function ProjectCard({ title, description, tags, githubUrl, stars, language }: ProjectCardProps) {
-  const hasDocumentation = title.toLowerCase() === 'charty' || title.toLowerCase() === 'kalendar';
-  const docPath = `/docs/${title.toLowerCase()}`;
-  const dotColor = language ? langColors[language] ?? '#888' : '#888';
+/** Card body for a repository. Wrap in TiltCard for the entrance and tilt. */
+export function ProjectCard({ title, description, tags, githubUrl, stars, language, delay = 0 }: ProjectCardProps) {
+  const docs = docsLink(title);
 
   return (
-    <div className="glass-card rounded-2xl flex flex-col h-full overflow-hidden group">
-      <div className="p-5 flex flex-col flex-1 relative z-10">
-        {/* Header */}
-        <div className="flex items-start justify-between gap-2 mb-2">
-          <h3 className="font-semibold text-base text-white/90 group-hover:text-white leading-snug transition-colors duration-200">
-            {title}
-          </h3>
-          <a
-            href={githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-white/30 hover:text-white hover:bg-white/[0.06] transition-all duration-150 opacity-0 group-hover:opacity-100"
-            aria-label={`Open ${title} on GitHub`}
-          >
-            <ArrowUpRight className="h-3.5 w-3.5" />
-          </a>
-        </div>
+    <div className="p-5 flex flex-col h-full">
+      <div className="flex items-start justify-between gap-3 mb-2">
+        <h3 className="text-lg font-bold tracking-tight text-ink leading-snug">{title}</h3>
+        <a
+          href={githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-dim transition-all duration-200 hover:text-ember group-hover:text-ember group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          aria-label={`Open ${title} on GitHub`}
+        >
+          <ArrowUpRight className="h-4 w-4" />
+        </a>
+      </div>
 
-        {/* Description */}
-        <p className="text-xs text-white/50 leading-relaxed line-clamp-3 mb-4 flex-1">
-          {description}
-        </p>
+      <p className="text-sm text-dim leading-relaxed line-clamp-3 flex-1">{description}</p>
 
-        {/* Tags */}
-        <div className="flex flex-wrap gap-1.5 mb-4">
+      {tags.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mt-4">
           {tags.slice(0, 3).map((tag) => (
-            <span
-              key={tag}
-              className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.04] text-white/45 border border-white/[0.07] font-medium"
-            >
+            <span key={tag} className="chip">
               {tag}
             </span>
           ))}
-          {tags.length > 3 && (
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.04] text-white/45 border border-white/[0.07] font-medium">
-              +{tags.length - 3}
+          {tags.length > 3 && <span className="chip">+{tags.length - 3}</span>}
+        </div>
+      )}
+
+      <div className="flex items-center justify-between pt-4 mt-4 border-t border-line text-xs text-dim">
+        <div className="flex items-center gap-3">
+          {language && (
+            <span className="inline-flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full" style={{ background: langColors[language] ?? '#999' }} />
+              {language}
+            </span>
+          )}
+          {stars !== undefined && (
+            <span className="inline-flex items-center gap-1 font-mono">
+              <Star className="h-3 w-3" />
+              <CountUp to={stars} delay={delay + 300} />
             </span>
           )}
         </div>
-
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-white/[0.06]">
-          <div className="flex items-center gap-3 text-xs text-white/35">
-            {language && (
-              <span className="flex items-center gap-1.5">
-                <span
-                  className="w-2 h-2 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: dotColor }}
-                />
-                {language}
-              </span>
-            )}
-            {stars !== undefined && (
-              <span className="flex items-center gap-1">
-                <Star className="h-3 w-3" />
-                {stars.toLocaleString()}
-              </span>
-            )}
-          </div>
-
-          <div className="flex items-center gap-0.5">
-            {hasDocumentation && (
-              <Link
-                to={docPath}
-                onClick={(e) => e.stopPropagation()}
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-white/30 hover:text-white hover:bg-white/[0.06] transition-all duration-150"
-                aria-label={`Docs for ${title}`}
-              >
+        <div className="flex items-center gap-3">
+          {docs &&
+            (isExternal(docs) ? (
+              <a href={docs} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 hover:text-ink transition-colors">
                 <BookOpen className="h-3.5 w-3.5" />
+                Docs
+              </a>
+            ) : (
+              <Link to={docs} className="inline-flex items-center gap-1 hover:text-ink transition-colors">
+                <BookOpen className="h-3.5 w-3.5" />
+                Docs
               </Link>
-            )}
-            <a
-              href={githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="w-7 h-7 rounded-lg flex items-center justify-center text-white/30 hover:text-white hover:bg-white/[0.06] transition-all duration-150"
-              aria-label={`GitHub: ${title}`}
-            >
-              <Github className="h-3.5 w-3.5" />
-            </a>
-          </div>
+            ))}
+          <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 hover:text-ink transition-colors">
+            <Github className="h-3.5 w-3.5" />
+            GitHub
+          </a>
         </div>
       </div>
     </div>

@@ -10,10 +10,10 @@ import {
   Puzzle, FileText, LineChart, PieChart,
 } from 'lucide-react';
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { DOCS_LINKS, isExternal } from '@/data/libraries';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
-import { isFeatureEnabled } from '@/lib/features';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Types
@@ -304,7 +304,7 @@ function ReadingProgressBar() {
   }, []);
   return (
     <div className="fixed top-0 left-0 right-0 h-[2px] z-[70] bg-foreground/[0.05]">
-      <div className="h-full progress-gradient transition-all duration-100" style={{ width: `${p}%` }} />
+      <div className="h-full progress-ink transition-all duration-100" style={{ width: `${p}%` }} />
     </div>
   );
 }
@@ -326,12 +326,12 @@ function CopyButton({ code, light }: { code: string; light?: boolean }) {
       className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] font-medium transition-all hover:scale-105 ${
         light
           ? 'bg-foreground/[0.06] hover:bg-foreground/10 text-foreground/50'
-          : 'bg-white/[0.06] hover:bg-white/10 text-white/50'
+          : 'bg-surface/[0.06] hover:bg-surface/10 text-white/50'
       }`}
       aria-label="Copy"
     >
       {copied ? (
-        <><Check className="h-3 w-3 text-emerald-400" /><span className="text-emerald-400">Copied</span></>
+        <><Check className="h-3 w-3 text-ember" /><span className="text-ember">Copied</span></>
       ) : (
         <><Copy className="h-3 w-3" /><span>Copy</span></>
       )}
@@ -345,9 +345,9 @@ function CopyButton({ code, light }: { code: string; light?: boolean }) {
 
 function CodeBlock({ code, lang }: { code: string; lang?: string }) {
   return (
-    <div className="relative rounded-xl overflow-hidden my-5 border border-white/[0.07] dark:border-white/[0.07]">
+    <div className="relative rounded-xl overflow-hidden my-5 border border-ink">
       {/* Toolbar */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#161616] border-b border-white/[0.06]">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-[#1a1a1a] border-b border-white/[0.08]">
         <div className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
           <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
@@ -355,7 +355,7 @@ function CodeBlock({ code, lang }: { code: string; lang?: string }) {
         </div>
         <div className="flex items-center gap-3">
           {lang && (
-            <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest">
+            <span className="text-[10px] font-mono text-white/40">
               {lang}
             </span>
           )}
@@ -363,7 +363,7 @@ function CodeBlock({ code, lang }: { code: string; lang?: string }) {
         </div>
       </div>
       {/* Code */}
-      <pre className="bg-[#0e0e0e] px-5 py-4 overflow-x-auto text-[12.5px] font-mono leading-[1.75] text-[#e2e8f0] m-0">
+      <pre className="bg-ink px-5 py-4 overflow-x-auto text-[12.5px] font-mono leading-[1.75] text-[#e2e8f0] m-0">
         <code>{code}</code>
       </pre>
     </div>
@@ -401,7 +401,8 @@ function LeftSidebar({
 
   const toggle = (id: string) => {
     const next = new Set(expanded);
-    next.has(id) ? next.delete(id) : next.add(id);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
     setExpanded(next);
   };
 
@@ -430,8 +431,8 @@ function LeftSidebar({
       {/* Library header */}
       <div className="px-4 py-4 border-b border-foreground/[0.06]">
         <Link to="/docs" className="flex items-center gap-2 group mb-0.5">
-          <div className="w-7 h-7 rounded-lg bg-emerald-500/15 flex items-center justify-center flex-shrink-0">
-            <BookOpen className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+          <div className="w-7 h-7 rounded-lg bg-ember-soft flex items-center justify-center flex-shrink-0">
+            <BookOpen className="h-3.5 w-3.5 text-ember" />
           </div>
           <div>
             <div className="text-xs font-bold text-foreground/80 group-hover:text-foreground transition-colors leading-none mb-0.5">
@@ -450,7 +451,7 @@ function LeftSidebar({
             placeholder="Search…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="pl-7 h-7 text-xs bg-foreground/[0.04] border-foreground/[0.07] focus:border-emerald-500/30 focus-visible:ring-0 rounded-lg placeholder:text-foreground/30"
+            className="pl-7 h-7 text-xs bg-surface border-line focus:border-ember focus-visible:ring-0 rounded-lg placeholder:text-foreground/30"
           />
         </div>
       </div>
@@ -472,7 +473,7 @@ function LeftSidebar({
                 }}
                 className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs transition-all duration-150 group ${
                   isActive && !hasChildren
-                    ? 'sidebar-active font-semibold'
+                    ? 'doc-active font-semibold'
                     : isActive
                     ? 'text-foreground/80 font-medium bg-foreground/[0.04]'
                     : 'text-foreground/55 hover:text-foreground hover:bg-foreground/[0.04]'
@@ -482,7 +483,7 @@ function LeftSidebar({
                   <Icon
                     className={`h-3.5 w-3.5 flex-shrink-0 transition-colors ${
                       isActive
-                        ? 'text-emerald-600 dark:text-emerald-400'
+                        ? 'text-ember'
                         : 'text-foreground/30 group-hover:text-foreground/55'
                     }`}
                   />
@@ -507,7 +508,7 @@ function LeftSidebar({
                       onClick={() => onNavigate(sub.id)}
                       className={`w-full text-left px-2 py-1.5 rounded-md text-[11px] transition-all duration-150 block ${
                         activeSection === sub.id
-                          ? 'sidebar-active font-semibold'
+                          ? 'doc-active font-semibold'
                           : 'text-foreground/45 hover:text-foreground hover:bg-foreground/[0.04]'
                       }`}
                     >
@@ -534,13 +535,13 @@ function LeftSidebar({
           <ExternalLink className="h-2.5 w-2.5 ml-auto opacity-40" />
         </a>
         <a
-          href="https://github.com/sponsors/hi-manshu"
+          href="https://buymeacoffee.com/himanshoe"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs text-foreground/45 hover:text-foreground hover:bg-foreground/[0.04] transition-all"
         >
-          <Heart className="h-3.5 w-3.5 flex-shrink-0 text-rose-500/70" />
-          <span>Sponsor</span>
+          <Heart className="h-3.5 w-3.5 flex-shrink-0 text-ember" />
+          <span>Buy me a coffee</span>
         </a>
       </div>
     </aside>
@@ -564,7 +565,7 @@ function RightSidebar({
     <aside className="flex flex-col gap-5">
       {headings.length > 0 && (
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-foreground/35 mb-3 px-1">
+          <p className="text-xs font-semibold text-dim mb-3 px-1">
             On this page
           </p>
           <nav className="space-y-0.5">
@@ -580,7 +581,7 @@ function RightSidebar({
                   h.level === 3 ? 'pl-4' : ''
                 } ${
                   activeHeading === h.id
-                    ? 'text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-500/[0.07]'
+                    ? 'text-ember font-semibold bg-ember-soft'
                     : 'text-foreground/45 hover:text-foreground hover:bg-foreground/[0.04]'
                 }`}
               >
@@ -592,11 +593,11 @@ function RightSidebar({
       )}
 
       {/* Need help card */}
-      <div className="glass-card rounded-xl p-4 overflow-hidden relative">
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-emerald-500/0 via-emerald-500/40 to-emerald-500/0" />
+      <div className="tile rounded-xl p-4 overflow-hidden relative">
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-ember/0 via-ember/60 to-ember/0" />
         <div className="flex items-center gap-2 mb-2">
-          <div className="w-6 h-6 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-            <HelpCircle className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+          <div className="w-6 h-6 rounded-lg bg-ember-soft flex items-center justify-center">
+            <HelpCircle className="h-3.5 w-3.5 text-ember" />
           </div>
           <p className="text-xs font-semibold text-foreground/80">Need help?</p>
         </div>
@@ -666,14 +667,14 @@ function DocContent({
               <a
                 {...props}
                 onClick={(e) => { e.preventDefault(); onSectionLink(id); }}
-                className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 underline underline-offset-2 cursor-pointer transition-colors"
+                className="text-ember hover:text-ember underline underline-offset-2 cursor-pointer transition-colors"
               />
             );
           }
           return (
             <a
               {...props}
-              className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 underline underline-offset-2 transition-colors"
+              className="text-ember hover:text-ember underline underline-offset-2 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
             />
@@ -699,7 +700,7 @@ function DocContent({
           if (isInline) {
             return (
               <code
-                className="px-1.5 py-0.5 rounded-md text-[11.5px] font-mono bg-emerald-500/[0.08] text-emerald-700 dark:text-emerald-300 border border-emerald-500/[0.12]"
+                className="px-1.5 py-0.5 rounded-md text-[11.5px] font-mono bg-secondary text-ink border border-line"
                 {...props}
               >
                 {children}
@@ -709,7 +710,7 @@ function DocContent({
           return <code className={className} {...props}>{children}</code>;
         },
         blockquote: ({ children }) => (
-          <blockquote className="relative pl-4 my-5 text-sm text-foreground/55 italic bg-emerald-500/[0.04] border-l-[3px] border-emerald-400/50 rounded-r-xl py-3 pr-4">
+          <blockquote className="relative pl-4 my-5 text-sm text-foreground/55 italic bg-surface border-l-[3px] border-ember rounded-r-xl py-3 pr-4">
             {children}
           </blockquote>
         ),
@@ -719,7 +720,7 @@ function DocContent({
           </div>
         ),
         th: ({ children }) => (
-          <th className="bg-foreground/[0.03] px-4 py-2.5 text-left font-semibold border-b border-foreground/[0.08] text-[11px] uppercase tracking-wider text-foreground/50">
+          <th className="bg-foreground/[0.03] px-4 py-2.5 text-left font-semibold border-b border-foreground/[0.08] text-xs text-dim">
             {children}
           </th>
         ),
@@ -750,6 +751,12 @@ function DocContent({
 
 export default function Documentation() {
   const { project } = useParams<{ project: string }>();
+
+  // Libraries documented elsewhere: send old /docs/<name> links there
+  const external = project && DOCS_LINKS[project] && isExternal(DOCS_LINKS[project]) ? DOCS_LINKS[project] : null;
+  useEffect(() => {
+    if (external) window.location.replace(external);
+  }, [external]);
   const [activeHeading, setActiveHeading] = useState('');
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -793,17 +800,25 @@ export default function Documentation() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  if (external) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6 text-sm text-dim">
+        Taking you to the {project} documentation…
+      </div>
+    );
+  }
+
   if (!doc) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6">
-        <div className="text-center glass-card rounded-2xl p-12 max-w-md mx-auto">
+        <div className="text-center tile rounded-2xl p-12 max-w-md mx-auto">
           <BookOpen className="h-10 w-10 text-foreground/20 mx-auto mb-4" />
           <h1 className="text-xl font-bold mb-2">Documentation Not Found</h1>
           <p className="text-foreground/50 text-sm mb-6">
             No docs for{' '}
             <code className="text-xs bg-foreground/[0.06] px-1.5 py-0.5 rounded">{project}</code>.
           </p>
-          <Button asChild variant="outline" size="sm" className="glass border-foreground/10">
+          <Button asChild variant="outline" size="sm" className="border-line">
             <Link to="/docs">Browse Docs</Link>
           </Button>
         </div>
@@ -828,14 +843,14 @@ export default function Documentation() {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background -mt-[5.25rem] pt-[5.25rem]">
       <ReadingProgressBar />
 
       {/* ── Three-column layout ── */}
-      <div className="flex min-h-[calc(100vh-56px)]">
+      <div className="flex min-h-[calc(100vh-5.25rem)]">
 
         {/* ── Left Sidebar ── */}
-        <div className="hidden lg:flex flex-col w-[230px] xl:w-[250px] flex-shrink-0 sticky top-14 h-[calc(100vh-56px)] border-r border-foreground/[0.06] bg-background/80 backdrop-blur-sm overflow-hidden">
+        <div className="hidden lg:flex flex-col w-[230px] xl:w-[250px] flex-shrink-0 sticky top-[5.25rem] h-[calc(100vh-5.25rem)] border-r border-foreground/[0.06] bg-paper overflow-hidden">
           <LeftSidebar
             doc={doc}
             sections={sections}
@@ -848,7 +863,7 @@ export default function Documentation() {
         {/* ── Main Content ── */}
         <main className="flex-1 min-w-0 px-6 md:px-10 py-8 max-w-[800px]">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-foreground/35 mb-7">
+          <nav className="flex items-center gap-1.5 text-xs text-dim mb-7">
             <Link to="/docs" className="hover:text-foreground/60 transition-colors">Docs</Link>
             <span className="opacity-30">›</span>
             <span className="text-foreground/45">{doc.title}</span>
@@ -859,7 +874,7 @@ export default function Documentation() {
               </>
             )}
             <span className="opacity-30">›</span>
-            <span className="text-emerald-600 dark:text-emerald-400">{currentSection?.title}</span>
+            <span className="text-ember">{currentSection?.title}</span>
           </nav>
 
           {/* Page title — split color like reference; centered hero on landing */}
@@ -867,28 +882,26 @@ export default function Documentation() {
             {currentIdx === 0 && doc.logo && (
               /* Outer div floats forever; the img handles the one-shot entrance
                  so the two transforms don't fight on the same element */
-              <div className={isLanding ? 'animate-logo-float' : ''}>
+              <div className={isLanding ? '' : ''}>
                 <img
                   src={doc.logo.light}
                   alt={`${doc.title} logo`}
-                  className={`${isLanding ? 'h-24 sm:h-32 mx-auto animate-pop-in' : 'h-16 sm:h-20'} w-auto mb-6 dark:hidden`}
+                  className={`${isLanding ? 'h-24 sm:h-32 mx-auto rise' : 'h-16 sm:h-20'} w-auto mb-6 dark:hidden`}
                 />
                 <img
                   src={doc.logo.dark}
                   alt={`${doc.title} logo`}
-                  className={`${isLanding ? 'h-24 sm:h-32 mx-auto animate-pop-in' : 'h-16 sm:h-20'} w-auto mb-6 hidden dark:block`}
+                  className={`${isLanding ? 'h-24 sm:h-32 mx-auto rise' : 'h-16 sm:h-20'} w-auto mb-6 hidden dark:block`}
                 />
               </div>
             )}
             {/* On the landing page the wordmark is the title */}
             {!(isLanding && doc.logo) && (
               <h1
-                className={`${
-                  isFeatureEnabled('showcase') ? 'font-serif ' : ''
-                }text-3xl md:text-4xl font-bold tracking-tight leading-tight mb-3`}
+                className="text-3xl md:text-4xl font-bold tracking-tight leading-tight mb-3"
               >
                 <span className="text-foreground">{doc.title} </span>
-                {!isLanding && <span className="text-gradient">{currentSection?.title}</span>}
+                {!isLanding && <span className="text-ember">{currentSection?.title}</span>}
               </h1>
             )}
             {/* The library tagline only belongs on the landing section —
@@ -896,19 +909,19 @@ export default function Documentation() {
             {currentIdx === 0 && (
               <>
                 <p
-                  className={`${isLanding ? 'text-base sm:text-lg mx-auto opacity-0 animate-fade-in-up' : 'text-sm'} text-foreground/55 leading-relaxed max-w-xl`}
+                  className={`${isLanding ? 'text-base sm:text-lg mx-auto rise' : 'text-sm'} text-foreground/55 leading-relaxed max-w-xl`}
                   style={isLanding ? { animationDelay: '0.2s' } : undefined}
                 >
                   {doc.description}
                 </p>
                 <div
-                  className={`flex flex-wrap items-center gap-3 mt-6 ${isLanding ? 'justify-center opacity-0 animate-fade-in-up' : ''}`}
+                  className={`flex flex-wrap items-center gap-3 mt-6 ${isLanding ? 'justify-center rise' : ''}`}
                   style={isLanding ? { animationDelay: '0.32s' } : undefined}
                 >
                   {nextSection && (
                     <button
                       onClick={() => handleNavigate(nextSection.id)}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-foreground text-background text-xs font-semibold hover:opacity-90 transition-opacity"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-ink text-paper hover:bg-ember text-xs font-semibold hover:opacity-90 transition-opacity"
                     >
                       Get Started
                       <ArrowRight className="h-3.5 w-3.5" />
@@ -919,7 +932,7 @@ export default function Documentation() {
                       href={doc.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl glass border border-foreground/10 text-xs font-medium text-foreground/60 hover:text-foreground hover:border-foreground/20 transition-all"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-surface border border-line text-xs font-medium text-foreground/60 hover:text-foreground hover:border-foreground/20 transition-all"
                     >
                       <Github className="h-3.5 w-3.5" />
                       Star on GitHub
@@ -944,11 +957,11 @@ export default function Documentation() {
                   return (
                     <div
                       key={h.title}
-                      className="glass-card rounded-2xl p-5 opacity-0 animate-fade-in-up"
+                      className="tile rounded-2xl p-5 rise"
                       style={{ animationDelay: `${0.45 + i * 0.1}s` }}
                     >
-                      <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-3 relative z-10">
-                        <HIcon className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                      <div className="w-9 h-9 rounded-lg bg-ember-soft flex items-center justify-center mb-3 relative z-10">
+                        <HIcon className="h-4 w-4 text-ember" />
                       </div>
                       <p className="text-sm font-semibold text-foreground/85 mb-1.5 relative z-10">{h.title}</p>
                       <p className="text-xs text-foreground/50 leading-relaxed relative z-10">{h.description}</p>
@@ -958,7 +971,7 @@ export default function Documentation() {
               </div>
             )
           ) : (
-            <div ref={contentRef}>
+            <div ref={contentRef} key={activeSection} className="doc-swap">
               <DocContent markdown={markdown} onSectionLink={handleNavigate} />
             </div>
           )}
@@ -966,7 +979,7 @@ export default function Documentation() {
           {/* Explore grid — first content page only (the landing stays clean) */}
           {currentIdx === 0 && !isLanding && sections.length > 1 && (
             <div className="mt-12">
-              <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-foreground/35 mb-4">
+              <p className="text-xs font-semibold text-dim mb-4">
                 Explore the docs
               </p>
               <div className="grid sm:grid-cols-2 gap-3">
@@ -981,10 +994,10 @@ export default function Documentation() {
                     <button
                       key={s.id}
                       onClick={() => handleNavigate(first)}
-                      className="glass-card rounded-xl px-4 py-3.5 flex items-center gap-3 text-left group hover:border-emerald-500/20 transition-all"
+                      className="tile rounded-xl px-4 py-3.5 flex items-center gap-3 text-left group hover:border-ink/40 transition-all"
                     >
                       <div className="w-9 h-9 rounded-lg bg-foreground/[0.05] flex items-center justify-center flex-shrink-0">
-                        <Icon className="h-4 w-4 text-foreground/50 group-hover:text-emerald-500 transition-colors" />
+                        <Icon className="h-4 w-4 text-foreground/50 group-hover:text-ember transition-colors" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="text-xs font-semibold text-foreground/80 group-hover:text-foreground transition-colors truncate">
@@ -994,7 +1007,7 @@ export default function Documentation() {
                           {count} {count === 1 ? 'page' : 'pages'}
                         </div>
                       </div>
-                      <ChevronRight className="h-3.5 w-3.5 text-foreground/25 group-hover:text-emerald-500 transition-colors flex-shrink-0" />
+                      <ChevronRight className="h-3.5 w-3.5 text-foreground/25 group-hover:text-ember transition-colors flex-shrink-0" />
                     </button>
                   );
                 })}
@@ -1023,11 +1036,11 @@ export default function Documentation() {
             {prevSection ? (
               <button
                 onClick={() => handleNavigate(prevSection.id)}
-                className="flex-1 flex items-center gap-3 glass-card rounded-xl px-4 py-3.5 text-left group hover:border-emerald-500/20 transition-all"
+                className="flex-1 flex items-center gap-3 tile rounded-xl px-4 py-3.5 text-left group hover:border-ink/40 transition-all"
               >
-                <ChevronLeft className="h-4 w-4 text-foreground/30 group-hover:text-emerald-500 transition-colors flex-shrink-0" />
+                <ChevronLeft className="h-4 w-4 text-foreground/30 group-hover:text-ember transition-colors flex-shrink-0" />
                 <div>
-                  <div className="text-[10px] uppercase tracking-widest text-foreground/30 mb-0.5">Previous</div>
+                  <div className="text-xs text-dim mb-0.5">Previous</div>
                   <div className="text-xs font-semibold text-foreground/70 group-hover:text-foreground transition-colors">
                     {prevSection.title}
                   </div>
@@ -1038,22 +1051,22 @@ export default function Documentation() {
             {nextSection && (
               <button
                 onClick={() => handleNavigate(nextSection.id)}
-                className="flex-1 flex items-center justify-end gap-3 glass-card rounded-xl px-4 py-3.5 text-right group hover:border-emerald-500/20 transition-all"
+                className="flex-1 flex items-center justify-end gap-3 tile rounded-xl px-4 py-3.5 text-right group hover:border-ink/40 transition-all"
               >
                 <div>
-                  <div className="text-[10px] uppercase tracking-widest text-foreground/30 mb-0.5">Next</div>
+                  <div className="text-xs text-dim mb-0.5">Next</div>
                   <div className="text-xs font-semibold text-foreground/70 group-hover:text-foreground transition-colors">
                     {nextSection.title}
                   </div>
                 </div>
-                <ChevronRight className="h-4 w-4 text-foreground/30 group-hover:text-emerald-500 transition-colors flex-shrink-0" />
+                <ChevronRight className="h-4 w-4 text-foreground/30 group-hover:text-ember transition-colors flex-shrink-0" />
               </button>
             )}
           </div>
         </main>
 
         {/* ── Right Sidebar ── */}
-        <div className="hidden xl:block w-[200px] 2xl:w-[220px] flex-shrink-0 sticky top-14 h-[calc(100vh-56px)] overflow-y-auto border-l border-foreground/[0.06] bg-background/80 backdrop-blur-sm px-4 py-6">
+        <div className="hidden xl:block w-[200px] 2xl:w-[220px] flex-shrink-0 sticky top-[5.25rem] h-[calc(100vh-5.25rem)] overflow-y-auto border-l border-foreground/[0.06] bg-paper px-4 py-6">
           <RightSidebar headings={isLanding ? [] : headings} activeHeading={activeHeading} githubUrl={doc.githubUrl} />
         </div>
       </div>

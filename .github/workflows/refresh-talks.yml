@@ -1,0 +1,31 @@
+name: Refresh talks from Sessionize
+
+# Re-fetches the Sessionize snapshot every Monday. When something changed, the
+# commit triggers a normal Vercel deploy, so Upcoming badges and new events stay fresh.
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run fetch-talks
+      - name: Commit snapshot if it changed
+        run: |
+          if git diff --quiet -- src/data/sessionize.json; then
+            echo "No changes"; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/sessionize.json
+          git commit -m "Refresh Sessionize snapshot"
+          git push

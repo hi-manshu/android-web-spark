@@ -1,303 +1,240 @@
-
-import { Hero } from '@/components/Hero';
-import { HeroShowcase } from '@/components/HeroShowcase';
-import { isFeatureEnabled } from '@/lib/features';
-import { ProjectCard } from '@/components/ProjectCard';
-import { BlogCard } from '@/components/BlogCard';
-import { ArrowUpRight, Github, Code2, Rocket, BookOpen, Package, BarChart2, CalendarDays } from 'lucide-react';
-import { getAllBlogPosts } from '@/utils/markdownUtils';
-import { useQuery } from '@tanstack/react-query';
-import { fetchGitHubRepos } from '@/services/githubService';
-import { FadeInView } from '@/components/FadeInView';
-import { ProjectCardSkeleton } from '@/components/ProjectCardSkeleton';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { IntroReveal, INTRO_HERO_START_MS } from '@/components/IntroReveal';
 import { Link } from 'react-router-dom';
+import { ArrowUpRight, Github, Instagram, Linkedin } from 'lucide-react';
+import { ConferenceMarquee } from '@/components/ConferenceMarquee';
+import { HomeTiles } from '@/components/HomeTiles';
+import { Chars } from '@/components/motion';
+import { SESSIONIZE_PROFILE_URL, inPersonCount } from '@/data/talks';
+import { useTalks } from '@/hooks/useTalks';
 
-const libraries = [
-  {
-    name: 'krate',
-    title: 'Krate',
-    tagline: 'Type-safe reactive database for Kotlin Multiplatform',
-    description:
-      'Zero-boilerplate persistence — a KSP-generated Store<T> backed by Room with Flow-based reactivity, querying, relations, and migrations. Ships to Android and iOS.',
-    version: '0.1.0',
-    isNew: true,
-    Icon: Package,
-    tags: ['KMP', 'Room', 'KSP'],
-  },
-  {
-    name: 'charty',
-    title: 'Charty',
-    tagline: 'Charts for Jetpack Compose & Compose Multiplatform',
-    description:
-      '25+ chart types — bar, line, radar, candlestick, waterfall, and more. Fully animated, interactive, and themeable out of the box.',
-    version: '3.0.0-beta01',
-    isNew: false,
-    Icon: BarChart2,
-    tags: ['Compose', 'KMP', 'Charts'],
-  },
-  {
-    name: 'kalendar',
-    title: 'Kalendar',
-    tagline: 'Calendar component for Jetpack Compose',
-    description:
-      'A modern, customizable calendar with event management that drops straight into any Android application.',
-    version: '1.5.2',
-    isNew: false,
-    Icon: CalendarDays,
-    tags: ['Compose', 'Calendar', 'UI'],
-  },
+const CYCLE_MS = 3200;
+
+const opener = ['Hi,', "I'm", 'Himanshu.', 'I', 'build'];
+
+/** Endings for "I build …". Each one is a real thing he ships. */
+const endings = [
+  'reactive databases for Kotlin Multiplatform.',
+  'charts for Compose Multiplatform.',
+  'the NordVPN app for Android.',
+  'calendars for Jetpack Compose.',
+  'open source for Android developers.',
 ];
 
-const stats = [
-  {
-    icon: Code2,
-    value: '50+',
-    label: 'Projects Created',
-  },
-  {
-    icon: Github,
-    value: '1000+',
-    label: 'GitHub Stars',
-  },
-  {
-    icon: Rocket,
-    value: '5+',
-    label: 'Years Experience',
-  },
+const socials = [
+  { label: 'GitHub', href: 'https://github.com/hi-manshu', Icon: Github },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/himanshoe/', Icon: Linkedin },
+  { label: 'X', href: 'https://x.com/hi_man_shoe' },
+  { label: 'Instagram', href: 'https://instagram.com/hi_man_shoe', Icon: Instagram },
+  { label: 'Sessionize', href: SESSIONIZE_PROFILE_URL },
 ];
+
+interface Sticker {
+  text: string;
+  tone: 'gold' | 'ember' | 'ink' | 'white';
+  /** Position inside the sticker column on desktop */
+  pos: string;
+  /** Parallax depth in px per unit of pointer offset */
+  depth: number;
+  rotate: number;
+  float: 'a' | 'b' | 'c';
+  href?: string;
+}
+
+function makeStickers(talkCount: number): Sticker[] {
+  return [
+  {
+    text: 'Most Active Speaker, Sessionize 2023 and 2025',
+    tone: 'gold',
+    pos: 'right-0 top-[6%]',
+    depth: 14,
+    rotate: -5,
+    float: 'a',
+    href: SESSIONIZE_PROFILE_URL,
+  },
+  { text: 'Google Developer Expert, Android', tone: 'ember', pos: 'left-0 top-[30%]', depth: 24, rotate: 4, float: 'b' },
+  { text: 'Berlin, Germany', tone: 'white', pos: 'right-[6%] top-[54%]', depth: 32, rotate: -8, float: 'c' },
+  { text: `${talkCount} conference talks`, tone: 'ink', pos: 'left-[12%] top-[76%]', depth: 18, rotate: 3, float: 'a' },
+  ];
+}
+
+function StickerPill({ s, delay, className = '' }: { s: Sticker; delay: number; className?: string }) {
+  const style = { '--d': `${delay}ms`, '--depth': s.depth, '--rot': `${s.rotate}deg` } as React.CSSProperties;
+  const inner = (
+    <span className={`sticker sticker-${s.tone} float-${s.float}`}>
+      {s.text}
+      {s.href && <ArrowUpRight className="h-3.5 w-3.5" />}
+    </span>
+  );
+  return (
+    <div className={`parallax pop ${className}`} style={style}>
+      {s.href ? (
+        <a href={s.href} target="_blank" rel="noopener noreferrer" className="inline-block">
+          {inner}
+        </a>
+      ) : (
+        inner
+      )}
+    </div>
+  );
+}
+
+/** Play the intro only on a fresh page load of "/", not on client-side navigation back home. */
+function shouldPlayIntro(): boolean {
+  if (typeof window === 'undefined') return false;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+  return performance.now() < 2500;
+}
 
 export default function Home() {
-  const showcase = isFeatureEnabled('showcase');
-  const { data: allProjects, isLoading: projectsLoading } = useQuery({
-    queryKey: ['github-repos'],
-    queryFn: () => fetchGitHubRepos('hi-manshu'),
-    staleTime: 5 * 60 * 1000,
-  });
+  const [index, setIndex] = useState(0);
+  const { events } = useTalks();
+  const stickers = makeStickers(inPersonCount(events));
+  const heroRef = useRef<HTMLElement>(null);
+  const [intro, setIntro] = useState(shouldPlayIntro);
+  const introOffset = intro ? INTRO_HERO_START_MS : 0;
+  const finishIntro = useCallback(() => setIntro(false), []);
 
-  const { data: allBlogPosts = [] } = useQuery({
-    queryKey: ['blog-posts'],
-    queryFn: getAllBlogPosts,
-    staleTime: 5 * 60 * 1000,
-  });
+  // While the sheet is up: no scrolling, and the nav and glow wait too
+  useEffect(() => {
+    if (!intro) return;
+    const root = document.documentElement;
+    const prev = root.style.overflow;
+    root.style.overflow = 'hidden';
+    root.classList.add('intro-playing');
+    return () => {
+      root.style.overflow = prev;
+      root.classList.remove('intro-playing');
+    };
+  }, [intro]);
 
-  const featuredProjects = allProjects?.slice(0, 4) || [];
-  const recentBlogPosts = allBlogPosts.slice(0, 3);
+  // Cycle the headline ending
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = window.setInterval(() => setIndex((i) => (i + 1) % endings.length), CYCLE_MS);
+    return () => window.clearInterval(id);
+  }, []);
+
+  // Pointer parallax: write a normalised offset to CSS variables on the hero
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let frame = 0;
+    const onMove = (e: PointerEvent) => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', (((e.clientX - r.left) / r.width - 0.5) * 2).toFixed(3));
+        el.style.setProperty('--my', (((e.clientY - r.top) / r.height - 0.5) * 2).toFixed(3));
+      });
+    };
+    const onLeave = () => {
+      el.style.setProperty('--mx', '0');
+      el.style.setProperty('--my', '0');
+    };
+    el.addEventListener('pointermove', onMove);
+    el.addEventListener('pointerleave', onLeave);
+    return () => {
+      el.removeEventListener('pointermove', onMove);
+      el.removeEventListener('pointerleave', onLeave);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  // Character timing for the opener line
+  let cursor = 80;
+  const openerStarts = opener.map((w) => {
+    const start = cursor;
+    cursor += w.length * 26 + 50;
+    return start;
+  });
+  const endingStart = cursor + 80;
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {showcase ? <HeroShowcase /> : <Hero />}
+    <div
+      className="flex-1 flex flex-col min-h-[calc(100svh-5.25rem)] overflow-x-clip"
+      style={{ '--intro': `${introOffset}ms` } as React.CSSProperties}
+    >
+      {intro && <IntroReveal onDone={finishIntro} />}
+      <section ref={heroRef} className="relative container flex-1 flex flex-col justify-center pt-6 pb-8 lg:pt-8">
+        <div aria-hidden className="glow parallax" style={{ '--depth': -10 } as React.CSSProperties} />
 
-      {/* Stats */}
-      <section className="py-16 border-y border-white/[0.06]">
-        <div className="container">
-          <FadeInView>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {stats.map((s) => (
-                <div key={s.label} className="glass-card rounded-2xl p-6 flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-white/[0.06] flex items-center justify-center flex-shrink-0 relative z-10">
-                    <s.icon className="h-5 w-5 text-white/70" />
-                  </div>
-                  <div className="relative z-10">
-                    <div className="text-2xl font-bold tracking-tight text-white">{s.value}</div>
-                    <div className="text-sm text-white/45 mt-0.5">{s.label}</div>
-                  </div>
-                </div>
+        <div className="relative lg:grid lg:grid-cols-[minmax(0,1fr)_19rem] xl:grid-cols-[minmax(0,1fr)_22rem] lg:gap-12 lg:items-center">
+          <div className="min-w-0">
+            <h1 className="display text-[clamp(2.75rem,6.6vw,6.25rem)] text-ink">
+              <span className="block">
+                {opener.map((word, i) => (
+                  <span key={word} className="inline-block mr-[0.22em] last:mr-0">
+                    <Chars text={word} start={openerStarts[i]} />
+                  </span>
+                ))}
+              </span>
+              <span className="clip block text-ember">
+                <span className="rise block" style={{ '--d': `${endingStart}ms` } as React.CSSProperties}>
+                  <span key={index} className="cycle-word">
+                    {endings[index]}
+                  </span>
+                </span>
+              </span>
+            </h1>
+
+            <p
+              className="rise mt-7 max-w-xl text-lg sm:text-xl text-dim leading-snug"
+              style={{ '--d': `${endingStart + 220}ms` } as React.CSSProperties}
+            >
+              Google Developer Expert for Android, based in Berlin. I work in Kotlin and Jetpack Compose,
+              and I maintain open source libraries that run in production apps.
+            </p>
+
+            <nav
+              className="rise mt-7 flex flex-wrap items-center gap-2"
+              style={{ '--d': `${endingStart + 340}ms` } as React.CSSProperties}
+              aria-label="Profiles"
+            >
+              {socials.map(({ label, href, Icon }) => (
+                <a
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm text-ink hover:border-ink hover:bg-ink hover:text-paper transition-colors"
+                >
+                  {Icon && <Icon className="h-3.5 w-3.5" />}
+                  {label === 'X' ? <span className="font-bold leading-none" aria-label="X">𝕏</span> : label}
+                </a>
+              ))}
+            </nav>
+
+            {/* Stickers as a wrapped row on smaller screens */}
+            <div className="lg:hidden mt-7 flex flex-wrap gap-3">
+              {stickers.map((s, i) => (
+                <StickerPill key={s.text} s={s} delay={endingStart + 400 + i * 110} />
               ))}
             </div>
-          </FadeInView>
-        </div>
-      </section>
+          </div>
 
-      {/* Libraries showcase */}
-      <section className="py-20">
-        <div className="container">
-          <FadeInView>
-            <div className="text-center mb-12">
-              <p className="text-white/35 text-xs uppercase tracking-widest mb-2">
-                Signature Work
-              </p>
-              <h2 className={`${showcase ? 'font-serif text-4xl' : 'text-3xl'} font-bold tracking-tight text-white mb-2`}>Open Source Libraries</h2>
-              <p className="text-white/45 text-sm max-w-lg mx-auto">
-                Production-ready libraries for Android and Kotlin Multiplatform — each with full documentation.
-              </p>
-            </div>
-          </FadeInView>
-
-          <div className="grid gap-5 md:grid-cols-3">
-            {libraries.map((lib, index) => (
-              <FadeInView key={lib.name} delay={index * 120}>
-                <div className="group glass-card rounded-2xl p-7 flex flex-col h-full">
-                  <div className="flex items-start justify-between mb-5 relative z-10">
-                    <div className="w-12 h-12 rounded-xl bg-white/[0.06] flex items-center justify-center">
-                      <lib.Icon className="h-6 w-6 text-white/70" />
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {lib.isNew && (
-                        <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded-full bg-white text-black">
-                          New
-                        </span>
-                      )}
-                      <span className="text-[10px] font-mono text-white/35 px-2 py-1 rounded-full border border-white/[0.08]">
-                        v{lib.version}
-                      </span>
-                    </div>
-                  </div>
-
-                  <h3 className="text-lg font-bold text-white mb-1 relative z-10">{lib.title}</h3>
-                  <p className="text-xs font-medium text-white/55 mb-3 relative z-10">{lib.tagline}</p>
-                  <p className="text-sm text-white/40 leading-relaxed flex-1 relative z-10">
-                    {lib.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-1.5 mt-4 mb-5 relative z-10">
-                    {lib.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[10px] px-2 py-0.5 rounded-full border border-white/[0.08] text-white/40"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center gap-3 relative z-10">
-                    <Link
-                      to={`/docs/${lib.name}`}
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white text-black text-xs font-semibold hover:bg-white/90 transition-colors"
-                    >
-                      <BookOpen className="h-3.5 w-3.5" />
-                      Docs
-                    </Link>
-                    <a
-                      href={`https://github.com/hi-manshu/${lib.title}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl border border-white/10 bg-white/[0.04] text-white/60 hover:text-white hover:bg-white/[0.08] text-xs font-medium transition-all"
-                    >
-                      <Github className="h-3.5 w-3.5" />
-                      GitHub
-                    </a>
-                  </div>
-                </div>
-              </FadeInView>
+          {/* Sticker field: its own column, so nothing lands on the headline */}
+          <div className="hidden lg:block relative h-[22rem] xl:h-[24rem]">
+            {stickers.map((s, i) => (
+              <StickerPill
+                key={s.text}
+                s={s}
+                delay={endingStart + 400 + i * 110}
+                className={`absolute ${s.pos}`}
+              />
             ))}
           </div>
         </div>
-      </section>
 
-      {/* Featured Projects */}
-      <section className="py-20 border-t border-white/[0.06]">
-        <div className="container">
-          <FadeInView>
-            <div className="flex items-end justify-between mb-10">
-              <div>
-                <p className="text-white/35 text-xs uppercase tracking-widest mb-2">
-                  More on GitHub
-                </p>
-                <h2 className={`${showcase ? 'font-serif text-3xl' : 'text-2xl'} font-bold tracking-tight text-white`}>Featured Projects</h2>
-                <p className="text-white/45 mt-1 text-sm">
-                  Popular libraries and applications for Android developers
-                </p>
-              </div>
-              <Link
-                to="/projects"
-                className="hidden sm:flex items-center gap-1.5 text-sm font-medium text-white/50 hover:text-white transition-colors"
-              >
-                View all
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-          </FadeInView>
-
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {projectsLoading
-              ? Array.from({ length: 4 }).map((_, i) => (
-                  <FadeInView key={i} delay={i * 100}>
-                    <ProjectCardSkeleton />
-                  </FadeInView>
-                ))
-              : featuredProjects.map((project, index) => (
-                  <FadeInView key={project.title} delay={index * 100}>
-                    <ProjectCard {...project} />
-                  </FadeInView>
-                ))}
-          </div>
-
-          <FadeInView delay={500}>
-            <div className="flex justify-center mt-10 sm:hidden">
-              <Link
-                to="/projects"
-                className="flex items-center gap-1.5 text-sm font-medium px-5 py-2.5 rounded-full glass border-white/10 text-white/60 hover:text-white transition-all duration-200"
-              >
-                View All Projects
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-          </FadeInView>
+        <div className="mt-8 lg:mt-10">
+          <HomeTiles baseDelay={endingStart + 520} />
         </div>
       </section>
 
-      {/* Recent Blog Posts */}
-      {recentBlogPosts.length > 0 && (
-        <section className="py-20 border-t border-white/[0.06]">
-          <div className="container">
-            <FadeInView>
-              <div className="flex items-end justify-between mb-10">
-                <div>
-                  <p className="text-white/35 text-xs uppercase tracking-widest mb-2">
-                    Writing
-                  </p>
-                  <h2 className={`${showcase ? 'font-serif text-3xl' : 'text-2xl'} font-bold tracking-tight text-white`}>Latest Articles</h2>
-                  <p className="text-white/45 mt-1 text-sm">
-                    Thoughts on Android, open source, and technology
-                  </p>
-                </div>
-                <Link
-                  to="/blog"
-                  className="hidden sm:flex items-center gap-1.5 text-sm font-medium text-white/50 hover:text-white transition-colors"
-                >
-                  Read all
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            </FadeInView>
-
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {recentBlogPosts.map((post, index) => (
-                <FadeInView key={post.slug} delay={index * 100}>
-                  <BlogCard {...post} />
-                </FadeInView>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Docs CTA */}
-      <section className="py-20 border-t border-white/[0.06]">
-        <div className="container">
-          <FadeInView>
-            <div className="glass-card rounded-3xl p-10 text-center max-w-2xl mx-auto">
-              <div className="w-14 h-14 rounded-2xl bg-white/[0.06] flex items-center justify-center mx-auto mb-5 relative z-10">
-                <BookOpen className="h-6 w-6 text-white/70" />
-              </div>
-              <h2 className={`${showcase ? 'font-serif text-3xl' : 'text-2xl'} font-bold tracking-tight mb-3 text-white relative z-10`}>
-                Documentation
-              </h2>
-              <p className="text-white/50 text-sm leading-relaxed mb-6 max-w-md mx-auto relative z-10">
-                Comprehensive docs for Charty, Krate, and Kalendar — open source libraries built for the Android ecosystem.
-              </p>
-              <Link
-                to="/docs"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-white text-black hover:bg-white/90 text-sm font-semibold transition-all duration-200 relative z-10"
-              >
-                Browse Docs
-                <ArrowUpRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </FadeInView>
-        </div>
-      </section>
+      <div className="rise pb-6" style={{ '--d': `${endingStart + 1000}ms` } as React.CSSProperties}>
+        <ConferenceMarquee />
+      </div>
     </div>
   );
 }

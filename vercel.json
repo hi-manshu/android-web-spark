@@ -13,6 +13,120 @@
     ],
     "rewrites": [
         {
+            "source": "/api/(.*)",
+            "destination": "/api/$1"
+        },
+        {
+            "source": "/",
+            "has": [
+                {
+                    "type": "header",
+                    "key": "user-agent",
+                    "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterest|Embedly|redditbot|Applebot|Googlebot|bingbot).*"
+                }
+            ],
+            "destination": "/api/share?path=/"
+        },
+        {
+            "source": "/talks",
+            "has": [
+                {
+                    "type": "header",
+                    "key": "user-agent",
+                    "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterest|Embedly|redditbot|Applebot|Googlebot|bingbot).*"
+                }
+            ],
+            "destination": "/api/share?path=/talks"
+        },
+        {
+            "source": "/about",
+            "has": [
+                {
+                    "type": "header",
+                    "key": "user-agent",
+                    "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterest|Embedly|redditbot|Applebot|Googlebot|bingbot).*"
+                }
+            ],
+            "destination": "/api/share?path=/about"
+        },
+        {
+            "source": "/projects",
+            "has": [
+                {
+                    "type": "header",
+                    "key": "user-agent",
+                    "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterest|Embedly|redditbot|Applebot|Googlebot|bingbot).*"
+                }
+            ],
+            "destination": "/api/share?path=/projects"
+        },
+        {
+            "source": "/docs",
+            "has": [
+                {
+                    "type": "header",
+                    "key": "user-agent",
+                    "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterest|Embedly|redditbot|Applebot|Googlebot|bingbot).*"
+                }
+            ],
+            "destination": "/api/share?path=/docs"
+        },
+        {
+            "source": "/contact",
+            "has": [
+                {
+                    "type": "header",
+                    "key": "user-agent",
+                    "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterest|Embedly|redditbot|Applebot|Googlebot|bingbot).*"
+                }
+            ],
+            "destination": "/api/share?path=/contact"
+        },
+        {
+            "source": "/blog",
+            "has": [
+                {
+                    "type": "header",
+                    "key": "user-agent",
+                    "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterest|Embedly|redditbot|Applebot|Googlebot|bingbot).*"
+                }
+            ],
+            "destination": "/api/share?path=/blog"
+        },
+        {
+            "source": "/speaker-kit",
+            "has": [
+                {
+                    "type": "header",
+                    "key": "user-agent",
+                    "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterest|Embedly|redditbot|Applebot|Googlebot|bingbot).*"
+                }
+            ],
+            "destination": "/api/share?path=/speaker-kit"
+        },
+        {
+            "source": "/blog/:slug",
+            "has": [
+                {
+                    "type": "header",
+                    "key": "user-agent",
+                    "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterest|Embedly|redditbot|Applebot|Googlebot|bingbot).*"
+                }
+            ],
+            "destination": "/api/share?path=/blog/:slug"
+        },
+        {
+            "source": "/docs/:project",
+            "has": [
+                {
+                    "type": "header",
+                    "key": "user-agent",
+                    "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|WhatsApp|TelegramBot|Discordbot|Pinterest|Embedly|redditbot|Applebot|Googlebot|bingbot).*"
+                }
+            ],
+            "destination": "/api/share?path=/docs/:project"
+        },
+        {
             "source": "/(.*)",
             "destination": "/index.html"
         }

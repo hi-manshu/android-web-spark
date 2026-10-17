@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Download, FileText, Calendar, User, ExternalLink, Copy, Check } from 'lucide-react';
-import { FadeInView } from '@/components/FadeInView';
 import { fetchHashnodePost } from '@/services/hashnodeService';
 
 interface BlogPost {
@@ -86,7 +85,7 @@ export default function FetchBlog() {
       <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-indigo-500/5" />
         <div className="container relative">
-          <FadeInView>
+          <div>
             <div className="max-w-4xl mx-auto text-center">
               <div className="flex justify-center mb-6">
                 <FileText className="h-16 w-16 text-blue-600" />
@@ -100,14 +99,14 @@ export default function FetchBlog() {
                 Perfect for content curation and documentation.
               </p>
             </div>
-          </FadeInView>
+          </div>
         </div>
       </section>
 
       {/* Main Content */}
       <section className="py-12 bg-gradient-to-br from-blue-50/30 via-white to-indigo-50/30 dark:from-blue-950/30 dark:via-background dark:to-indigo-950/30">
         <div className="container max-w-6xl">
-          <FadeInView>
+          <div>
             <Card className="mb-8 border-0 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm shadow-lg">
               <CardHeader>
                 <CardTitle className="text-2xl bg-gradient-to-r from-blue-700 to-indigo-700 dark:from-blue-300 dark:to-indigo-300 bg-clip-text text-transparent">
@@ -137,10 +136,10 @@ export default function FetchBlog() {
                 )}
               </CardContent>
             </Card>
-          </FadeInView>
+          </div>
 
           {blogPost && (
-            <FadeInView delay={200}>
+            <div>
               <div className="grid lg:grid-cols-3 gap-8">
                 {/* Blog Post Content */}
                 <div className="lg:col-span-2">
@@ -228,11 +227,11 @@ export default function FetchBlog() {
                   </div>
                 </div>
               </div>
-            </FadeInView>
+            </div>
           )}
 
           {!blogPost && !loading && (
-            <FadeInView delay={200}>
+            <div>
               <Card className="border-0 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm shadow-lg">
                 <CardContent className="py-16 text-center">
                   <FileText className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
@@ -242,7 +241,7 @@ export default function FetchBlog() {
                   </p>
                 </CardContent>
               </Card>
-            </FadeInView>
+            </div>
           )}
         </div>
       </section>

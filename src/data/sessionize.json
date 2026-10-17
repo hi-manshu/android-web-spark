@@ -1,0 +1,259 @@
+{
+  "fetchedAt": "2026-10-17T12:22:10.571Z",
+  "profileUrl": "https://sessionize.com/himanshoe",
+  "events": [
+    {
+      "name": "droidcon Lisbon 2026",
+      "date": "2026-10",
+      "location": "Lisbon, Portugal",
+      "url": "https://lisbon.droidcon.com",
+      "upcoming": true
+    },
+    {
+      "name": "next.app devCon",
+      "date": "2026-10",
+      "location": "Berlin, Germany",
+      "url": "https://nextappcon.com"
+    },
+    {
+      "name": "droidcon India 2025",
+      "date": "2025-12",
+      "location": "Bengaluru, India",
+      "url": "https://india.droidcon.com/"
+    },
+    {
+      "name": "DevFest Catania 2025",
+      "date": "2025-11",
+      "location": "Catania, Italy",
+      "url": "https://gdg.community.dev/e/mpk9c4/"
+    },
+    {
+      "name": "DevFest Milano 2025",
+      "date": "2025-10",
+      "location": "Milan, Italy",
+      "url": "https://www.devfestmilano.it"
+    },
+    {
+      "name": "droidcon Berlin 2025",
+      "date": "2025-09",
+      "location": "Berlin, Germany",
+      "url": "https://berlin.droidcon.com"
+    },
+    {
+      "name": "droidcon Lisbon 2025",
+      "date": "2025-09",
+      "location": "Lisbon, Portugal",
+      "url": "https://lisbon.droidcon.com"
+    },
+    {
+      "name": "DevFest Stockholm 2025",
+      "date": "2025-02",
+      "location": "Stockholm, Sweden",
+      "url": "https://devfest-stockholm.com"
+    },
+    {
+      "name": "droidcon Berlin 2024",
+      "date": "2024-07",
+      "location": "Berlin, Germany",
+      "url": "https://berlin.droidcon.com"
+    },
+    {
+      "name": "DevFest Stockholm 2023",
+      "date": "2023-12",
+      "location": "Stockholm, Sweden",
+      "url": "https://devfest-stockholm.com"
+    },
+    {
+      "name": "Warsaw DevFest 2023",
+      "date": "2023-11",
+      "location": "Warsaw, Poland"
+    },
+    {
+      "name": "DevFest Georgia 2023",
+      "date": "2023-10",
+      "location": "Tbilisi, Georgia",
+      "url": "https://gdg.community.dev/events/details/google-gdg-tbilisi-presents-devfest-georgia-2023/"
+    },
+    {
+      "name": "droidcon Lisbon 2023",
+      "date": "2023-09",
+      "location": "Lisbon, Portugal",
+      "url": "https://lisbon.droidcon.com"
+    },
+    {
+      "name": "droidcon Berlin 2023",
+      "date": "2023-07",
+      "location": "Berlin, Germany",
+      "url": "https://berlin.droidcon.com"
+    },
+    {
+      "name": "droidcon Kenya 2022",
+      "date": "2022-11",
+      "location": "Nairobi, Kenya",
+      "url": "https://droidcon.co.ke/"
+    },
+    {
+      "name": "droidcon London 2022",
+      "date": "2022-10",
+      "location": "London, United Kingdom",
+      "url": "https://london.droidcon.com"
+    },
+    {
+      "name": "droidcon Egypt 2022",
+      "date": "2022-10",
+      "location": "Cairo, Egypt",
+      "url": "https://egypt.droidcon.com"
+    },
+    {
+      "name": "droidcon San Francisco 2022",
+      "date": "2022-06",
+      "location": "San Francisco, USA",
+      "url": "https://www.sf.droidcon.com"
+    },
+    {
+      "name": "droidcon Lisbon 2022",
+      "date": "2022-04",
+      "location": "Lisbon, Portugal",
+      "url": "https://lisbon.droidcon.com"
+    },
+    {
+      "name": "GDG DevFest UK & Ireland",
+      "date": "2022-01",
+      "location": "London, United Kingdom",
+      "url": "https://devfest-uki.com"
+    },
+    {
+      "name": "droidcon London 2021",
+      "date": "2021-10",
+      "location": "London, United Kingdom",
+      "url": "https://london.droidcon.com"
+    },
+    {
+      "name": "droidcon Berlin 2021",
+      "date": "2021-10",
+      "location": "Berlin, Germany",
+      "url": "https://berlin.droidcon.com"
+    },
+    {
+      "name": "CodeAid",
+      "date": "2021-06",
+      "location": "Online",
+      "url": "https://codeaid.space"
+    },
+    {
+      "name": "Android Worldwide",
+      "date": "2021-01",
+      "location": "Online",
+      "url": "https://android-worldwide.com/"
+    },
+    {
+      "name": "droidcon APAC 2020",
+      "date": "2020-12",
+      "location": "Online",
+      "url": "https://online.droidcon.com"
+    },
+    {
+      "name": "GDG Ahmedabad DevFest 2019",
+      "date": "2019-10",
+      "location": "Ahmedabad, India",
+      "url": "https://devfest.gdgahmedabad.com/"
+    },
+    {
+      "name": "droidconKE",
+      "date": "2018-10",
+      "location": "Nairobi, Kenya"
+    }
+  ],
+  "sessions": [
+    {
+      "title": "Replace Views with Composable!",
+      "summary": "With compose breaking all the barriers, it is about time we start using it in our apps will small and gradual migration.",
+      "url": "https://sessionize.com/s/himanshoe/replace-views-with-composable/192068"
+    },
+    {
+      "title": "Testing your Composables!",
+      "summary": "With Jetpack Compose now integrated into our daily lives while developing Android apps, it's essential that we also consider how to test them.",
+      "url": "https://sessionize.com/s/himanshoe/testing-your-composables/192066"
+    },
+    {
+      "title": "Server Driven UI using Compose",
+      "summary": "Now, designing server-driven UI using views is a thing of the past. With Compose now in the picture time has come to start building server-driven UI using compose!",
+      "url": "https://sessionize.com/s/himanshoe/server-driven-ui-using-compose/192067"
+    },
+    {
+      "title": "Prompting for Performance: Writing Butter-Smooth Jetpack Compose in the AI Era",
+      "summary": "AI assistants can easily spit out 200 lines of flawless, compiling Jetpack Compose UI from a single prompt. It feels like magic—until you run it on a mid-range device, start scrolling, and hit massive jank.",
+      "url": "https://sessionize.com/s/himanshoe/prompting-for-performance-writing-butter-smooth-je/192065"
+    },
+    {
+      "title": "Lets Go Functional With Arrow",
+      "summary": "We will use Arrow to write Functional Programming in Kotlin.Arrow provides very valuable bits like determinism and testability, among many others. It helps to minimize errors like race conditions by removing side effects",
+      "url": "https://sessionize.com/s/himanshoe/lets-go-functional-with-arrow/192064"
+    },
+    {
+      "title": "Future-Proofing Your UI: Jetpack Compose for the Multi-Device World",
+      "summary": "As Android embraces into diverse form factors, building truly adaptive UIs is crucial. This session will explore the latest advancements in Compose's adaptive layouts library, including predictive back gestures, pane exp",
+      "url": "https://sessionize.com/s/himanshoe/future-proofing-your-ui-jetpack-compose-for-the-mu/192063"
+    },
+    {
+      "title": "Evaluating the Future of Open Source in Modern Android",
+      "summary": "Open-source frameworks are increasingly shaping the Android ecosystem, offering alternative solutions to Google’s standard libraries. This session will examine the practical benefits and trade-offs of adopting open-sourc",
+      "url": "https://sessionize.com/s/himanshoe/evaluating-the-future-of-open-source-in-modern-and/192062"
+    },
+    {
+      "title": "DAAS: Debugging as a skill!",
+      "summary": "Debugging is an underrated skill for every Android engineer. It not only helps us in identifying and fixing issues but also improves the overall learning experience as an individual.",
+      "url": "https://sessionize.com/s/himanshoe/daas-debugging-as-a-skill/192061"
+    },
+    {
+      "title": "Chai pe Charcha: FOMO in Android development",
+      "summary": "As the Android framework grows every day along with new library releases every now and then. The overall Android as tech growing vaster and vaster.",
+      "url": "https://sessionize.com/s/himanshoe/chai-pe-charcha-fomo-in-android-development/192059"
+    },
+    {
+      "title": "Chasing 60 FPS: Frame Time Profiling in Jetpack Compose",
+      "summary": "You built a beautiful Jetpack Compose UI... but it’s kinda laggy. The animations stutter, scrolling feels off, and you’re not sure where it all went wrong.",
+      "url": "https://sessionize.com/s/himanshoe/chasing-60-fps-frame-time-profiling-in-jetpack-com/192058"
+    },
+    {
+      "title": "Building Android Open Source Libraries: Managing Public APIs with Intention",
+      "summary": "Open source Android libraries are powerful tools—but with great power comes great responsibility, especially when it comes to your public API. In this talk, we’ll dive into the practical challenges of building Android li",
+      "url": "https://sessionize.com/s/himanshoe/building-android-open-source-libraries-managing-pu/192057"
+    },
+    {
+      "title": "Elevating Your App's Performance",
+      "summary": "With apps being developed at a rapid pace for diverse locales and users, it is crucial to continuously enhance app performance to provide an exceptional user experience. This talk will focus on various strategies to impr",
+      "url": "https://sessionize.com/s/himanshoe/elevating-your-apps-performance/79628"
+    },
+    {
+      "title": "Compose your next app",
+      "summary": "This talk would be focused on helping developers understand how to use the new Jetpack Compose UI toolkit in your application.",
+      "url": "https://sessionize.com/s/himanshoe/compose-your-next-app/87179"
+    },
+    {
+      "title": "Backend Engineering for Android Developers",
+      "summary": "With Kotlin growing in popularity, it's about time we start looking at Kotlin as a language that has superpowers.",
+      "url": "https://sessionize.com/s/himanshoe/backend-engineering-for-android-developers/83285"
+    },
+    {
+      "title": "Be the Flow in Reactive world",
+      "summary": "In this talk, I will be explaining the amazing things you can do with Flow. I will be also covering how with coroutines it can be a complete replacement of RxJava. Also, we will learn how to migrate from RxJava 1/2 to Co",
+      "url": "https://sessionize.com/s/himanshoe/be-the-flow-in-reactive-world/79631"
+    },
+    {
+      "title": "Flow in the world of Rx",
+      "summary": "Kotlin Flow is an API in Coroutines, where it helps us to handle the cold data stream asynchronously in a better way.",
+      "url": "https://sessionize.com/s/himanshoe/flow-in-the-world-of-rx/79630"
+    },
+    {
+      "title": "FOMO - How one Android dev cut through the noise and built proactive learning habits",
+      "summary": "Description",
+      "url": "https://sessionize.com/s/himanshoe/fomo-how-one-android-dev-cut-through-the-noise-and/79629"
+    },
+    {
+      "title": "Composing in your Canvas!",
+      "summary": "With compose getting attraction and many apps moving towards it, it's time to see how we can draw and design complex yet beautiful UI using Canvas in Canvas.",
+      "url": "https://sessionize.com/s/himanshoe/composing-in-your-canvas/79626"
+    }
+  ]
+}

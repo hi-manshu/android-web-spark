@@ -1,19 +1,33 @@
-
-import { useParams } from 'react-router-dom';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowUp, BookOpen, ArrowLeft, ArrowRight, Calendar, Clock, User, Share2 } from 'lucide-react';
-import { getBlogPostBySlug, getBlogSeries } from '@/utils/markdownUtils';
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { getBlogPostBySlug, getBlogSeries } from '@/utils/markdownUtils';
+
+function ReadingProgress() {
+  const [p, setP] = useState(0);
+  useEffect(() => {
+    const update = () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      setP(h > 0 ? Math.min(100, (window.scrollY / h) * 100) : 0);
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, []);
+  return (
+    <div className="read-progress" aria-hidden>
+      <div className="read-progress__bar" style={{ '--p': `${p}%` } as React.CSSProperties} />
+    </div>
+  );
+}
 
 export default function BlogPost() {
   const { slug } = useParams();
-  
+
   const { data: post, isLoading, error } = useQuery({
     queryKey: ['blog-post', slug],
-    queryFn: () => slug ? getBlogPostBySlug(slug) : Promise.resolve(null),
+    queryFn: () => (slug ? getBlogPostBySlug(slug) : Promise.resolve(null)),
     enabled: !!slug,
     staleTime: 5 * 60 * 1000,
   });
@@ -24,26 +38,22 @@ export default function BlogPost() {
     staleTime: 5 * 60 * 1000,
   });
 
-  // Find the series this post belongs to and navigation
-  const currentSeries = post?.series ? allSeries.find(s => s.name === post.series) : null;
-  const currentPostIndex = currentSeries ? currentSeries.posts.findIndex(p => p.slug === slug) : -1;
-  const previousPost = currentSeries && currentPostIndex > 0 ? currentSeries.posts[currentPostIndex - 1] : null;
-  const nextPost = currentSeries && currentPostIndex < currentSeries.posts.length - 1 ? currentSeries.posts[currentPostIndex + 1] : null;
+  const currentSeries = post?.series ? allSeries.find((s) => s.name === post.series) : null;
+  const currentIndex = currentSeries ? currentSeries.posts.findIndex((p) => p.slug === slug) : -1;
+  const previousPost = currentSeries && currentIndex > 0 ? currentSeries.posts[currentIndex - 1] : null;
+  const nextPost =
+    currentSeries && currentIndex < currentSeries.posts.length - 1 ? currentSeries.posts[currentIndex + 1] : null;
 
   if (isLoading) {
     return (
-      <div className="container py-16">
-        <div className="max-w-4xl mx-auto">
-          <div className="animate-pulse space-y-8">
-            <div className="h-4 bg-muted rounded w-1/4"></div>
-            <div className="h-12 bg-muted rounded w-3/4"></div>
-            <div className="h-4 bg-muted rounded w-1/2"></div>
-            <div className="space-y-4">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="h-4 bg-muted rounded"></div>
-              ))}
-            </div>
-          </div>
+      <div className="container py-16 max-w-3xl animate-pulse space-y-6">
+        <div className="h-4 w-24 rounded bg-secondary" />
+        <div className="h-12 w-3/4 rounded bg-secondary" />
+        <div className="h-4 w-1/2 rounded bg-secondary" />
+        <div className="space-y-3 pt-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="h-4 rounded bg-secondary" />
+          ))}
         </div>
       </div>
     );
@@ -51,158 +61,88 @@ export default function BlogPost() {
 
   if (error || !post) {
     return (
-      <div className="container py-16">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold tracking-tight mb-4">Post Not Found</h1>
-            <p className="text-xl text-muted-foreground mb-8">
-              The blog post you're looking for doesn't exist.
-            </p>
-          </div>
-          <Button variant="outline" asChild size="lg">
-            <Link to="/blog" className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Blog
-            </Link>
-          </Button>
-        </div>
+      <div className="container py-24 max-w-xl text-center">
+        <h1 className="display text-5xl mb-4">Not found</h1>
+        <p className="text-dim mb-8">There is no article at this address.</p>
+        <Link to="/blog" className="btn-ink">
+          <ArrowLeft className="h-4 w-4" />
+          All articles
+        </Link>
       </div>
     );
   }
 
-  return (
-    <div className="container py-12">
-      <div className="max-w-4xl mx-auto">
-        <article>
-          {/* Header */}
-          <header className="mb-12">
-            {/* Breadcrumb */}
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
-              <Link to="/blog" className="hover:text-primary transition-colors">Blog</Link>
-              <span>/</span>
-              <span>Article</span>
-            </div>
+  const date = new Date(post.date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 
-            {/* Series Badge */}
-            {post.series && (
-              <div className="flex items-center space-x-2 mb-6">
-                <BookOpen className="h-5 w-5 text-primary" />
-                <Badge variant="outline" className="text-sm px-3 py-1">
-                  Part {(currentPostIndex + 1)} of {currentSeries?.posts.length} in {post.series}
-                </Badge>
-              </div>
-            )}
-            
-            {/* Title */}
-            <h1 className="text-5xl font-bold tracking-tight mb-6 leading-tight bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-              {post.title}
-            </h1>
-            
-            {/* Meta information */}
-            <div className="flex flex-wrap items-center gap-6 mb-8 text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <User className="h-4 w-4" />
-                <span className="font-medium">{post.author}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                <time dateTime={post.date}>{new Date(post.date).toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}</time>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>{post.readTime}</span>
-              </div>
-              <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-primary">
-                <Share2 className="h-4 w-4" />
-                Share
-              </Button>
-            </div>
-            
-            {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-12">
-              {post.tags.map((tag) => (
-                <Badge key={tag} variant="secondary" className="px-3 py-1 bg-primary/10 text-primary hover:bg-primary/20">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </header>
-          
-          {/* Content */}
-          <div className="relative">
-            <div 
-              className="prose prose-lg prose-neutral dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:font-bold prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-p:leading-relaxed prose-pre:bg-muted prose-pre:border prose-img:rounded-lg prose-img:shadow-lg"
-              dangerouslySetInnerHTML={{ __html: post.content }}
-            />
+  return (
+    <article className="container py-12 md:py-16 max-w-3xl">
+      <ReadingProgress />
+      <header className="mb-12">
+        <Link to="/blog" className="inline-flex items-center gap-1.5 text-sm text-dim hover:text-ink transition-colors">
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Writing
+        </Link>
+
+        {post.series && currentSeries && (
+          <p className="mt-8 text-sm text-dim">
+            Part {currentIndex + 1} of {currentSeries.posts.length} in{' '}
+            <span className="text-ink font-medium">{post.series}</span>
+          </p>
+        )}
+
+        <h1 className="display mt-4 text-4xl sm:text-5xl md:text-6xl rise" style={{ '--d': '80ms' } as React.CSSProperties}>{post.title}</h1>
+
+        <p className="mt-6 text-dim text-sm flex flex-wrap gap-x-4 gap-y-1 rise" style={{ '--d': '240ms' } as React.CSSProperties}>
+          <time dateTime={post.date}>{date}</time>
+          <span>{post.readTime}</span>
+          <span>{post.author}</span>
+        </p>
+
+        {post.tags.length > 0 && (
+          <div className="mt-5 flex flex-wrap gap-1.5">
+            {post.tags.map((tag) => (
+              <span key={tag} className="chip">
+                {tag}
+              </span>
+            ))}
           </div>
-          
-          {/* Series Navigation */}
-          {currentSeries && (previousPost || nextPost) && (
-            <div className="mt-16 pt-12 border-t border-border">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-2">Continue Reading</h3>
-                <p className="text-muted-foreground">More articles from the {post.series} series</p>
-              </div>
-              <div className="grid gap-6 md:grid-cols-2">
-                {previousPost && (
-                  <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-card to-card/50 border-0">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center text-sm text-muted-foreground mb-2">
-                        <ArrowLeft className="h-4 w-4 mr-2" />
-                        Previous Article
-                      </div>
-                      <CardTitle className="text-lg group-hover:text-primary transition-colors">
-                        <Link to={`/blog/${previousPost.slug}`}>
-                          {previousPost.title}
-                        </Link>
-                      </CardTitle>
-                    </CardHeader>
-                  </Card>
-                )}
-                
-                {nextPost && (
-                  <Card className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-card to-card/50 border-0">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-end text-sm text-muted-foreground mb-2">
-                        Next Article
-                        <ArrowRight className="h-4 w-4 ml-2" />
-                      </div>
-                      <CardTitle className="text-lg text-right group-hover:text-primary transition-colors">
-                        <Link to={`/blog/${nextPost.slug}`}>
-                          {nextPost.title}
-                        </Link>
-                      </CardTitle>
-                    </CardHeader>
-                  </Card>
-                )}
-              </div>
-            </div>
+        )}
+      </header>
+
+      <div className="prose prose-lg rise" style={{ '--d': '380ms' } as React.CSSProperties} dangerouslySetInnerHTML={{ __html: post.content }} />
+
+      {currentSeries && (previousPost || nextPost) && (
+        <nav className="mt-16 pt-10 border-t border-line grid gap-4 sm:grid-cols-2">
+          {previousPost ? (
+            <Link to={`/blog/${previousPost.slug}`} className="tile group p-5">
+              <span className="text-xs text-dim inline-flex items-center gap-1">
+                <ArrowLeft className="h-3 w-3" />
+                Previous
+              </span>
+              <span className="block mt-2 font-semibold tracking-tight group-hover:text-ember transition-colors">
+                {previousPost.title}
+              </span>
+            </Link>
+          ) : (
+            <span />
           )}
-          
-          {/* Footer */}
-          <footer className="mt-16 pt-12 border-t border-border">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <Button variant="outline" asChild size="lg" className="gap-2">
-                <Link to="/blog">
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to Blog
-                </Link>
-              </Button>
-              
-              <Button variant="outline" asChild size="lg" className="gap-2">
-                <a href="https://github.com/hi-manshu" target="_blank" rel="noopener noreferrer">
-                  Follow on GitHub
-                  <ArrowUp className="h-4 w-4 rotate-45" />
-                </a>
-              </Button>
-            </div>
-          </footer>
-        </article>
-      </div>
-    </div>
+          {nextPost && (
+            <Link to={`/blog/${nextPost.slug}`} className="tile group p-5 text-right">
+              <span className="text-xs text-dim inline-flex items-center gap-1">
+                Next
+                <ArrowRight className="h-3 w-3" />
+              </span>
+              <span className="block mt-2 font-semibold tracking-tight group-hover:text-ember transition-colors">
+                {nextPost.title}
+              </span>
+            </Link>
+          )}
+        </nav>
+      )}
+    </article>
   );
 }
