@@ -19,9 +19,18 @@ export const INTRO_HERO_START_MS = INTRO_TOTAL_MS;
 
 const WORD = 'himanshoe';
 const VIEW_W = 1600;
-const VIEW_H = 900;
 const FONT_SIZE = 230;
-const BASELINE = 540;
+
+/** Canvas matches the viewport aspect so the wordmark always fits the screen width. */
+function viewportDims() {
+  const vw = typeof window === 'undefined' ? 1600 : Math.max(1, window.innerWidth);
+  const vh = typeof window === 'undefined' ? 900 : Math.max(1, window.innerHeight);
+  const ratio = vh / vw;
+  const h = Math.round(VIEW_W * Math.min(2.6, Math.max(0.4, ratio)));
+  // portrait screens get a smaller wordmark so it never kisses the edges
+  const font = ratio > 1 ? Math.round(FONT_SIZE * 0.78) : FONT_SIZE;
+  return { w: VIEW_W, h, baseline: Math.round(h / 2 + font * 0.35), font };
+}
 
 interface Guide {
   x1: number;
@@ -32,9 +41,17 @@ interface Guide {
 }
 
 export function IntroReveal({ onDone }: { onDone: () => void }) {
+  const [dims, setDims] = useState(viewportDims);
+  const { h: VIEW_H, baseline: BASELINE, font: SIZE } = dims;
+  useEffect(() => {
+    const onResize = () => setDims(viewportDims());
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
   const measureRef = useRef<SVGTextElement>(null);
   const [guides, setGuides] = useState<Guide[]>([]);
-  const [origin, setOrigin] = useState<string>(`${VIEW_W / 2 + FONT_SIZE * 1.95}px ${BASELINE - FONT_SIZE * 0.26}px`);
+  const [origin, setOrigin] = useState<string>(`${VIEW_W / 2 + SIZE * 1.95}px ${BASELINE - SIZE * 0.26}px`);
   const [phase, setPhase] = useState<'wait' | 'draw' | 'fill' | 'zoom'>('wait');
 
   useEffect(() => {
@@ -47,9 +64,9 @@ export function IntroReveal({ onDone }: { onDone: () => void }) {
       if (t) {
         const box = t.getBBox();
         const pad = 140;
-        const xh = BASELINE - FONT_SIZE * 0.52;
-        const asc = BASELINE - FONT_SIZE * 0.72;
-        const desc = BASELINE + FONT_SIZE * 0.2;
+        const xh = BASELINE - SIZE * 0.52;
+        const asc = BASELINE - SIZE * 0.72;
+        const desc = BASELINE + SIZE * 0.2;
         const g: Guide[] = [
           { x1: box.x - pad, y1: BASELINE, x2: box.x + box.width + pad, y2: BASELINE, delay: 0 },
           { x1: box.x - pad * 0.6, y1: xh, x2: box.x + box.width + pad * 0.6, y2: xh, delay: 120 },
@@ -69,7 +86,7 @@ export function IntroReveal({ onDone }: { onDone: () => void }) {
 
         try {
           const o = t.getExtentOfChar(WORD.length - 1);
-          setOrigin(`${o.x + o.width / 2}px ${BASELINE - FONT_SIZE * 0.26}px`);
+          setOrigin(`${o.x + o.width / 2}px ${BASELINE - SIZE * 0.26}px`);
         } catch {
           /* keep estimate */
         }
@@ -88,7 +105,7 @@ export function IntroReveal({ onDone }: { onDone: () => void }) {
       cancelled = true;
       timers.forEach(clearTimeout);
     };
-  }, [onDone]);
+  }, [onDone, dims]);
 
   const textProps = {
     x: VIEW_W / 2,
@@ -96,8 +113,8 @@ export function IntroReveal({ onDone }: { onDone: () => void }) {
     textAnchor: 'middle' as const,
     fontFamily: '"Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif',
     fontWeight: 800,
-    fontSize: FONT_SIZE,
-    letterSpacing: -FONT_SIZE * 0.04,
+    fontSize: SIZE,
+    letterSpacing: -SIZE * 0.04,
     style: { fontVariationSettings: '"opsz" 96, "wdth" 92' } as React.CSSProperties,
   };
 
